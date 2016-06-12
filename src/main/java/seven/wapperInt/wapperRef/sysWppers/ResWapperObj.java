@@ -34,11 +34,12 @@ import java.lang.reflect.ParameterizedType;
 //		   (______|______)
 //=======================================================
 /**
- * @author Seven<p>
- * @date   2016年6月4日-下午4:07:14
+ * @author Seven
+ *         <p>
+ * @date 2016年6月4日-下午4:07:14
  */
 public abstract class ResWapperObj<T> extends WapperObj<T> {
-	
+
 	@Override
 	@SuppressWarnings({ "resource", "deprecation", "unchecked" })
 	public List<T> RefResWapper(POIFSFileSystem fs) throws Exception {
@@ -76,7 +77,7 @@ public abstract class ResWapperObj<T> extends WapperObj<T> {
 		for (int i = 0, rows = row.getPhysicalNumberOfCells(); i < rows; i++) {
 			titles[i] = getCellFormatValue(row.getCell((short) i));
 		}
-	
+
 		if (config.getIs_loop_sheet()) {
 			end_sheet = config.getEnd_sheet() == null ? hhf.getNumberOfSheets() : config.getEnd_sheet();
 			if (end_sheet <= 0 || end_sheet > hhf.getNumberOfSheets()) {
@@ -84,8 +85,8 @@ public abstract class ResWapperObj<T> extends WapperObj<T> {
 			}
 		}
 		for (; start_sheet < end_sheet; start_sheet++) {
-
 			int start = config.getContent_row_start();
+			sheet = hhf.getSheetAt(start_sheet);
 			for (int rowNum = sheet.getLastRowNum(); start < rowNum; start++) {
 				row = sheet.getRow(start);
 				if (null != row) {
@@ -96,7 +97,8 @@ public abstract class ResWapperObj<T> extends WapperObj<T> {
 								if (RegHelper.require(reg[j], v = getCellFormatValue(row.getCell((short) j)))) {
 									MeThodCaChe.get(titles[j]).invoke(o, v);
 								} else {
-//									System.err.println("数据格 " + titles[j] + " 式不符合规范---->行:" + start + " 列" + j);
+									// System.err.println("数据格 " + titles[j] + "
+									// 式不符合规范---->行:" + start + " 列" + j);
 								}
 							} else {
 								MeThodCaChe.get(titles[j]).invoke(o, getCellFormatValue(row.getCell((short) j)));
@@ -109,7 +111,9 @@ public abstract class ResWapperObj<T> extends WapperObj<T> {
 		}
 		return list;
 	}
+
 	private T type;
+
 	@SuppressWarnings("unchecked")
 	public ResWapperObj() {
 		Type sType = getClass().getGenericSuperclass();
