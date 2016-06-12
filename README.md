@@ -13,6 +13,7 @@
 * 可以继承 WapperMap 和 WapperObj进行扩展
 * 直接使用ExcelFactory.getBeans进行获取，WapperObj则自己添加泛型
 * 注解Value对应列标题，Required对应正则，可自己写正则表达式或者直接使用RegHelper
+* 实体bean数据要比hashMap慢，7w条数据慢800ms，加入正则减慢速度(测试中加入了正则)
 * 加在一起没有200行，就那么一写，勿喷。
 ##效果
 ![ExcelReadshua](效果.png)
