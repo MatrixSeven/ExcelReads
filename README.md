@@ -1,5 +1,5 @@
 # ExcelReads(简单Excel通用读取器)
-##ExcelReads是什么?
+## ExcelReads是什么?
 * 这是一个通用的简单的Excel读取器
 * 支持自定义JavaBean实体读取和HashMap自动读取
 * 支持自定义扩展
@@ -7,7 +7,8 @@
 * 支持正则过滤数据格式
 * JavaBean实体支持使用注解添加正则规则校验，HashMap支持数组规则校验
 * 依赖POI，使用Maven构建
-### 更新2016/11/8（<font color=greent>*直接上java8，以保证正常运行*</font>）
+
+### 更新2016/11/8
 * 支持数据过滤和处理是转换，基于事件模式
 * 更新为Build模式创建实例
 * 增加数据过滤、数据转换和数据排序回调接口
