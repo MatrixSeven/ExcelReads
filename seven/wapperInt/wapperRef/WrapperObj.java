@@ -73,7 +73,7 @@ public abstract class WrapperObj<T> extends Wrapper<T> {
 	public Wrapper Sort(Comparator c) {
 		this.c = c;return this;
 	}
-	public List<T> Creart() throws Exception{
+	public List<T> Create() throws Exception{
 		return RefResWapper(fs);
 	}
 	public Wrapper Filter(DataFilterInterface<T> filter) {
