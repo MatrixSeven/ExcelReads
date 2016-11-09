@@ -211,7 +211,7 @@ public abstract class Wrapper<T> implements Serializable{
 		}
 
 	}
-	public abstract List<T> Creart() throws Exception;
+	public abstract List<T> Create() throws Exception;
 	public abstract Wrapper Filter(DataFilterInterface<T> filter);
 	public abstract Wrapper Process(DataProcessInterface<T> process);
 	public abstract Wrapper Sort(Comparator<? super T> c);
