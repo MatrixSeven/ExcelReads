@@ -2,8 +2,9 @@ package seven.wapperInt;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.ss.usermodel.Cell;
+import seven.wapperInt.callBack.DataFilterColumnInterface;
 import seven.wapperInt.callBack.DataFilterInterface;
-import seven.wapperInt.callBack.DataFiterColumnInterface;
 import seven.wapperInt.callBack.DataProcessInterface;
 
 import java.io.Serializable;
@@ -32,10 +33,10 @@ import java.util.List;
  * @author Seven<p>
  * @date   2016年4月12日-下午4:08:08
  */
-public abstract class Wrapper<T> implements Serializable{
+public abstract class Wrapper implements Serializable{
 	protected Config config=new Config();
 	protected DecimalFormat df = new DecimalFormat("0");
-	protected String getCellFormatValue(HSSFCell cell) {
+	protected String getCellFormatValue(Cell cell) {
 		String cellvalue = "";
 		if (cell != null) {
 			switch (cell.getCellType()) {
@@ -135,7 +136,6 @@ public abstract class Wrapper<T> implements Serializable{
 		/**
 		 * 内容开始行号
 		 * 
-		 * @param content_row_start
 		 */
 		public Integer getTitle_row() {
 			return title_row;
@@ -144,7 +144,6 @@ public abstract class Wrapper<T> implements Serializable{
 		/**
 		 * 标题行号
 		 * 
-		 * @param content_row_start
 		 */
 		public void setTitle_row(Integer title_row) {
 			this.title_row = title_row;
@@ -153,7 +152,6 @@ public abstract class Wrapper<T> implements Serializable{
 		/**
 		 * 内容开始行号
 		 * 
-		 * @param content_row_start
 		 */
 		public Integer getContent_row_start() {
 			return content_row_start;
@@ -170,8 +168,7 @@ public abstract class Wrapper<T> implements Serializable{
 
 		/**
 		 * 内容结束行号
-		 * 
-		 * @param content_row_start
+		 * @return
 		 */
 		public Integer getContent_row_end() {
 			return content_row_end;
@@ -180,7 +177,6 @@ public abstract class Wrapper<T> implements Serializable{
 		/**
 		 * 内容结束行号
 		 * 
-		 * @param content_row_start
 		 */
 		public void setContent_row_end(Integer content_row_end) {
 			this.content_row_end = content_row_end;
@@ -211,10 +207,45 @@ public abstract class Wrapper<T> implements Serializable{
 		}
 
 	}
-	public abstract List<T> Create() throws Exception;
-	public abstract Wrapper Filter(DataFilterInterface<T> filter);
-	public abstract Wrapper Process(DataProcessInterface<T> process);
-	public abstract Wrapper Sort(Comparator<? super T> c);
-	public abstract Wrapper FiterCol(DataFiterColumnInterface df);
+
+	/**
+	 * 生成数据包，返回打包好的数据
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract <T>List<T> Create() throws Exception;
+
+	/**
+	 * 对要包装的数据进行过滤，对应实体Bean\n
+	 * 如果返回false将放弃此条数据
+	 * @param filter {@link DataFilterInterface}
+	 * @return
+	 */
+	public abstract Wrapper Filter(DataFilterInterface<?> filter);
+
+	/**
+	 *此处传入每一行打包好的数据。对应一个实体\n
+	 * 在process方法里可对属性进行处理加工
+	 * @param process {@link DataProcessInterface}
+	 * @return
+	 */
+	public abstract Wrapper Process(DataProcessInterface<?> process);
+
+	/**
+	 *	对结果的List进行排序
+	 * @param c
+	 * @return
+	 */
+	public abstract Wrapper Sort(Comparator<?> c);
+
+	/**
+	 * 此处过滤Excel的列数据（列名）\n
+	 * 如果加入后，将不对实体进行赋值
+	 * @param df {@link DataFilterColumnInterface}
+	 */
+	public abstract Wrapper FilterCol(DataFilterColumnInterface df);
+
+	public abstract <T> T CreateMap(String key) throws Exception;
+
 //	public abstract Wrapper AsString(Comparator<? super T> c);
 }

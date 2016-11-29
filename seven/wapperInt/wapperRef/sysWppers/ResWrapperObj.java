@@ -1,9 +1,8 @@
 package seven.wapperInt.wapperRef.sysWppers;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import seven.wapperInt.anno.ExcelAnno;
 import seven.wapperInt.anno.RegHelper;
 import seven.wapperInt.wapperRef.WrapperObj;
@@ -38,15 +37,25 @@ public abstract class ResWrapperObj<T> extends WrapperObj<T> {
 
     @Override
 	@SuppressWarnings({ "resource", "deprecation", "unchecked" })
-	public List<T> RefResWapper(POIFSFileSystem fs) throws Exception {
-		List<T> list = new ArrayList<T>(config.getVoc_size());
+	protected <T> T RefResWapper(String fs, boolean isMap, String key) throws Exception {
 		HashMap<String, Method> MeThodCaChe = new HashMap<String, Method>();
+		HashMap<String,T> maps=null;
+		List<T> list=null;
+
 		Class<? extends Object> clazz = type.getClass();
 		Field[] F = clazz.getDeclaredFields();
 		ExcelAnno Ex = null;
 		String reg[] = new String[F.length];
 		Arrays.fill(reg, "Null");
 		int reg_index = 0;
+		Field Map_key=null;
+		if(isMap){
+			maps=  new HashMap<String,T>(config.getVoc_size());
+			Map_key=clazz.getDeclaredField(key);
+			Map_key.setAccessible(true);
+		}else {
+			list = new ArrayList<T>(config.getVoc_size());
+		}
 		for (Field f : F) {
 			if ((Ex = f.getAnnotation(ExcelAnno.class)) != null&&!Ex.Pass()) {
 				reg[reg_index++] = Ex.Required();
@@ -60,12 +69,12 @@ public abstract class ResWrapperObj<T> extends WrapperObj<T> {
 			}
 		}
 		String[] titles;
-		HSSFSheet sheet;
-		HSSFRow row;
+		Sheet sheet;
+		Row row;
 		T o;
 		String v;
 		int start_sheet = config.getStart_sheet();
-		HSSFWorkbook hhf = new HSSFWorkbook(fs);
+		Workbook hhf = newInstance(fs);
 		int end_sheet = start_sheet + 1;
 		sheet = hhf.getSheetAt(start_sheet);
 		row = sheet.getRow(config.getTitle_row());
@@ -104,12 +113,19 @@ public abstract class ResWrapperObj<T> extends WrapperObj<T> {
 						continue;
 					}
 					process.process(o);
-					list.add(o);
+					if(isMap){
+						maps.put(Map_key.get(o).toString(),o);
+					}else {
+						list.add((T)o);
+					}
 				}
 			}
 		}
-		list.sort(c);
-        return list;
+		if (!isMap){
+			list.sort(c);
+			return (T)list;
+		}
+		return (T) maps;
 	}
 
     private T type;
