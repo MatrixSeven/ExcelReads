@@ -34,17 +34,21 @@ import static seven.ExcelFactory.getBeans;
 public class Demo {
     @Test
     public void Test_01() throws Exception {
-        getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
+        ExcelFactory.getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
                 new ResWrapperMap() {
                     @Override
                     protected void LoadConfig(Config config) {
                         config.setContent_row_start(3);
                         config.setTitle_row(2);
                     }
-                }).
+                }).//这里能够处理每一行数据
                 Process((HashMap<String, String> o) -> System.out.println(o + "\n")
+                //这里能够处理时候过滤某一列
                 ).FilterCol(() -> new String[]{}
-        ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5).Create();
+                //这里能根据某一行的某一列的内容来取舍这行数据
+        ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5
+                //排序
+        ).Sort((o1, o2) -> o1.hashCode()>o2.hashCode()?1:hashCode()==o2.hashCode()?0:-1).Create();
 
         System.out.println(
         getBeans(System.getProperty("user.dir").concat("\\测试.xls"),

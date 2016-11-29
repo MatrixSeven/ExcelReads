@@ -5,7 +5,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import seven.wapperInt.callBack.DataFilterColumnInterface;
 import seven.wapperInt.callBack.DataFilterInterface;
-import seven.wapperInt.callBack.DataProcessInterface;
+import seven.wapperInt.callBack.DataFilterProcessInterface;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -226,10 +226,10 @@ public abstract class Wrapper implements Serializable{
 	/**
 	 *此处传入每一行打包好的数据。对应一个实体\n
 	 * 在process方法里可对属性进行处理加工
-	 * @param process {@link DataProcessInterface}
+	 * @param process {@link DataFilterProcessInterface}
 	 * @return
 	 */
-	public abstract Wrapper Process(DataProcessInterface<?> process);
+	public abstract Wrapper Process(DataFilterProcessInterface<?> process);
 
 	/**
 	 *	对结果的List进行排序

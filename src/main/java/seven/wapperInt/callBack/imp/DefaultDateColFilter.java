@@ -7,10 +7,10 @@ import seven.wapperInt.callBack.DataFilterColumnInterface;
  * [Bolg]https://matrixseven.github.io/
  * Created by seven on 2016/10/19.
  */
-public class DefaultDateColFiter implements DataFilterColumnInterface {
+public class DefaultDateColFilter implements DataFilterColumnInterface {
 
     @Override
-    public String[] Filter() {
+    public String[] filter() {
         return new String[0];
     }
 }

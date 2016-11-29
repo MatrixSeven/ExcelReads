@@ -13,5 +13,5 @@ public interface DataFilterColumnInterface {
      * 如果加入后，将不对实体进行赋值
      * @return
      */
-    public String[] Filter();
+    public String[] filter();
 }

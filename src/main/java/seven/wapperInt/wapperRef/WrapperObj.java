@@ -25,9 +25,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import seven.wapperInt.Wrapper;
 import seven.wapperInt.callBack.DataFilterInterface;
 import seven.wapperInt.callBack.DataFilterColumnInterface;
-import seven.wapperInt.callBack.DataProcessInterface;
-import seven.wapperInt.callBack.imp.DefaultDataFiter;
-import seven.wapperInt.callBack.imp.DefaultProcess;
+import seven.wapperInt.callBack.DataFilterProcessInterface;
+import seven.wapperInt.callBack.imp.DefaultDataFilter;
+import seven.wapperInt.callBack.imp.DefaultDataProFilter;
 
 import java.io.File;
 import java.util.*;
@@ -37,8 +37,8 @@ import java.util.*;
  * @date   2016年4月12日-下午4:07:57
  */
 public abstract class WrapperObj<T> extends Wrapper {
-	protected DataFilterInterface filter=new DefaultDataFiter<Object>();
-	protected DataProcessInterface process=new DefaultProcess<Object>();
+	protected DataFilterInterface filter=new DefaultDataFilter<Object>();
+	protected DataFilterProcessInterface process=new DefaultDataProFilter<Object>();
 	protected List<String> filterColBy_key=new ArrayList<>();
 	protected List<String> filterColBy_value=new ArrayList<>();
 	protected Comparator<? super Object> c;
@@ -58,7 +58,7 @@ public abstract class WrapperObj<T> extends Wrapper {
 
 
 	public Wrapper FilterCol(DataFilterColumnInterface df) {
-		for (String s:df.Filter() ) {
+		for (String s:df.filter() ) {
 			filterColBy_key.add(s);
 		}
 		return this;
@@ -103,7 +103,7 @@ public abstract class WrapperObj<T> extends Wrapper {
 	public Wrapper Filter(DataFilterInterface<?> filter) {
 		this.filter = filter;return this;
 	}
-	public Wrapper Process(DataProcessInterface<?> process) {
+	public Wrapper Process(DataFilterProcessInterface<?> process) {
 		this.process = process;return this;
 	}
 }

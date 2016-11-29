@@ -1,6 +1,6 @@
 package seven.wapperInt.callBack.imp;
 
-import seven.wapperInt.callBack.DataProcessInterface;
+import seven.wapperInt.callBack.DataFilterProcessInterface;
 
 /**
  * [Github]https://github.com/MatrixSeven
@@ -8,7 +8,7 @@ import seven.wapperInt.callBack.DataProcessInterface;
  * Created by seven on 2016/10/18.
  */
 @SuppressWarnings("unchecked")
-public class DefaultProcess<T> implements DataProcessInterface<T>{
+public class DefaultDataProFilter<T> implements DataFilterProcessInterface<T> {
     @Override
     public void process(T o) {
 

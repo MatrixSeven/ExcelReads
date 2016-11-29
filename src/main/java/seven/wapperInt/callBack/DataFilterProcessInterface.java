@@ -9,7 +9,7 @@ package seven.wapperInt.callBack;
  * 此处传入每一行打包好的数据。对应一个实体
  * T为实体Bean类型
  */
-public interface DataProcessInterface<T>{
+public interface DataFilterProcessInterface<T>{
     /***
      * 此处传入每一行打包好的数据。对应一个实体，
      * 在process方法里可对属性进行处理加工
