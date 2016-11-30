@@ -57,7 +57,8 @@ ExcelFactory.saveExcel(aa,
         .FilterCol(() -> new String[]{"B"})
         //根据某个字段来处理数据时候丢弃
         .Filter((A a) -> a.getA().length() > 1)
-        .Sort((A a,A 2) -> o1.getAge()>o2.getAge()?1:o1.getAge()==o2.getAge()?0:-1)
+        //排序
+        .Sort((A o1,A o2 ) -> o1.getAge()>o2.getAge()?1:o1.getAge()==o2.getAge()?0:-1)
         .Save();
 ```
 ## 读取例子
