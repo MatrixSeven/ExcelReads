@@ -1,6 +1,6 @@
-package seven.wapperInt.callBack.imp;
+package seven.callBack.imp;
 
-import seven.wapperInt.callBack.DataFilterProcessInterface;
+import seven.callBack.DataFilterProcessInterface;
 
 /**
  * [Github]https://github.com/MatrixSeven

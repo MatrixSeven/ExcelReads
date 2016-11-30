@@ -20,7 +20,9 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import seven.ExcelFactory;
 import seven.wapperInt.wapperRef.sysWppers.ResWrapperMap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static seven.ExcelFactory.getBeans;
@@ -34,6 +36,8 @@ import static seven.ExcelFactory.getBeans;
 public class Demo {
     @Test
     public void Test_01() throws Exception {
+
+
         ExcelFactory.getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
                 new ResWrapperMap() {
                     @Override
@@ -41,27 +45,28 @@ public class Demo {
                         config.setContent_row_start(3);
                         config.setTitle_row(2);
                     }
-                }).//这里能够处理每一行数据
+                }). //这里能够处理每一行数据
                 Process((HashMap<String, String> o) -> System.out.println(o + "\n")
                 //这里能够处理时候过滤某一列
-                ).FilterCol(() -> new String[]{}
+        ).FilterCol(() -> new String[]{}
                 //这里能根据某一行的某一列的内容来取舍这行数据
         ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5
                 //排序
-        ).Sort((o1, o2) -> o1.hashCode()>o2.hashCode()?1:hashCode()==o2.hashCode()?0:-1).Create();
+        ).Sort((o1, o2) -> o1.hashCode() > o2.hashCode() ? 1 : hashCode() == o2.hashCode() ? 0 : -1).Create();
 
         System.out.println(
-        getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
-                new ResWrapperMap() {
-                    @Override
-                    protected void LoadConfig(Config config) {
-                        config.setContent_row_start(3);
-                        config.setTitle_row(2);
-                    }
-                }).
-                Process((HashMap<String, String> o) ->{}
-                ).FilterCol(() -> new String[]{}
-        ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5).<Map>CreateMap("创建人"));
+                getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
+                        new ResWrapperMap() {
+                            @Override
+                            protected void LoadConfig(Config config) {
+                                config.setContent_row_start(3);
+                                config.setTitle_row(2);
+                            }
+                        }).
+                        Process((HashMap<String, String> o) -> {
+                                }
+                        ).FilterCol(() -> new String[]{}
+                ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5).<Map>CreateMap("创建人"));
         System.err.println("=======================================================================");
         getBeans(System.getProperty("user.dir").concat("\\测试.xlsx"),
                 new ResWrapperMap() {
@@ -71,12 +76,13 @@ public class Demo {
                         config.setTitle_row(2);
                     }
                 }).
-                Process((HashMap<String, String> o) -> {}
+                Process((HashMap<String, String> o) -> {
+                        }
                 ).FilterCol(() -> new String[]{}
         ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5).Create();
 
 
-        System.out.println( ExcelFactory.getBeans(System.getProperty("user.dir").concat("\\测试.xlsx"),
+        System.out.println(ExcelFactory.getBeans(System.getProperty("user.dir").concat("\\测试.xlsx"),
                 new ResWrapperMap() {
                     @Override
                     protected void LoadConfig(Config config) {
@@ -84,7 +90,8 @@ public class Demo {
                         config.setTitle_row(2);
                     }
                 }).
-                Process((HashMap<String, String> o) -> {}
+                Process((HashMap<String, String> o) -> {
+                        }
                 ).FilterCol(() -> new String[]{}
         ).Filter((HashMap<String, String> o) -> o.get("创建人") != null &&
                 o.get("创建人").length() > 4).<Map>CreateMap("创建人"));
@@ -93,4 +100,53 @@ public class Demo {
     }
 
 
+    @Test
+    public void Test_02() throws Exception {
+        List<A> aa = new ArrayList<>();
+        aa.add(new A("a", "b"));
+        aa.add(new A("aa", "bb"));
+        ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("\\Save.xlsx")
+        ).Process((A a) -> a.setA("xxxxxxx")).FilterCol(() -> new String[]{"B"}).
+                Filter((A a) -> a.getA().length() > 1).Save();
+        List<Map> m = new ArrayList<>();
+        Map mm = new HashMap();
+        mm.put("A", "w");
+        mm.put("A1", "w2");
+        mm.put("A2", "w3");
+        Map mmm = new HashMap();
+        mmm.put("A", "23");
+        mmm.put("A1", "w3asf2");
+        mmm.put("A2", "w二3");
+        m.add(mm);
+        m.add(mmm);
+        ExcelFactory.saveExcel(m, System.getProperty("user.dir").concat("\\SaveMap.xlsx")
+        ).Save();
+
+    }
+}
+
+class A {
+    String A;
+    String B;
+
+    public A(String a, String b) {
+        A = a;
+        B = b;
+    }
+
+    public String getA() {
+        return A;
+    }
+
+    public void setA(String a) {
+        A = a;
+    }
+
+    public String getB() {
+        return B;
+    }
+
+    public void setB(String b) {
+        B = b;
+    }
 }

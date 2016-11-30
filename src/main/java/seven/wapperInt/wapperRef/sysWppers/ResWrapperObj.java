@@ -3,15 +3,19 @@ package seven.wapperInt.wapperRef.sysWppers;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import seven.util.ExcelTool;
 import seven.wapperInt.anno.ExcelAnno;
-import seven.wapperInt.anno.RegHelper;
+import seven.util.RegHelper;
 import seven.wapperInt.wapperRef.WrapperObj;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 //=======================================================
 //		          .----.
@@ -74,7 +78,7 @@ public abstract class ResWrapperObj<T> extends WrapperObj<T> {
 		T o;
 		String v;
 		int start_sheet = config.getStart_sheet();
-		Workbook hhf = newInstance(fs);
+		Workbook hhf =  ExcelTool.newInstance(fs,false);;
 		int end_sheet = start_sheet + 1;
 		sheet = hhf.getSheetAt(start_sheet);
 		row = sheet.getRow(config.getTitle_row());
@@ -122,7 +126,9 @@ public abstract class ResWrapperObj<T> extends WrapperObj<T> {
 			}
 		}
 		if (!isMap){
-			list.sort(c);
+			if(c!=null) {
+				list.sort(c);
+			}
 			return (T)list;
 		}
 		return (T) maps;

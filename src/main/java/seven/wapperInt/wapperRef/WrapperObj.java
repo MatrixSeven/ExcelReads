@@ -18,19 +18,17 @@ package seven.wapperInt.wapperRef;
 //		   (______|______)
 //=======================================================
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import seven.wapperInt.Wrapper;
-import seven.wapperInt.callBack.DataFilterInterface;
-import seven.wapperInt.callBack.DataFilterColumnInterface;
-import seven.wapperInt.callBack.DataFilterProcessInterface;
-import seven.wapperInt.callBack.imp.DefaultDataFilter;
-import seven.wapperInt.callBack.imp.DefaultDataProFilter;
+import seven.callBack.DataFilterColumnInterface;
+import seven.callBack.DataFilterInterface;
+import seven.callBack.DataFilterProcessInterface;
+import seven.callBack.imp.DefaultDataFilter;
+import seven.callBack.imp.DefaultDataProFilter;
 
-import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Seven<p>
@@ -41,7 +39,7 @@ public abstract class WrapperObj<T> extends Wrapper {
 	protected DataFilterProcessInterface process=new DefaultDataProFilter<Object>();
 	protected List<String> filterColBy_key=new ArrayList<>();
 	protected List<String> filterColBy_value=new ArrayList<>();
-	protected Comparator<? super Object> c;
+	protected Comparator<? super Object> c=null;
     protected String fs;
 	protected static final  boolean isMap=false;
 
@@ -64,26 +62,7 @@ public abstract class WrapperObj<T> extends Wrapper {
 		return this;
 	}
 
-    protected Workbook newInstance (String type) throws Exception{
-        File f=new File(type);
-        if(!f.isFile()){
-            throw new Exception("请填写正确路径");
-        }
-        type=type.substring(type.lastIndexOf(".")+1);
-        if(type.equals("xls")){
-            return new HSSFWorkbook(new POIFSFileSystem(f));
-        }
-        return new XSSFWorkbook(f);
-    }
-
 	public Wrapper init(String FilePath){
-		this.c=new Comparator<Object>() {
-			@Override
-			public int compare(Object o1,Object o2) {
-				return 0;
-			}
-		};
-
 		this.fs=FilePath;
 		return this;
 	}

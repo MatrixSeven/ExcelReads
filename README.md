@@ -10,6 +10,12 @@
 ## 更新纪录
 
 ### 更新2016/11/29
+* 增加了简单类型得写入，生成xls/xlsx
+* 直接JavaBean类型写入，注解命名
+* 支持Map key-value类型写入
+* 写入时支持和读取一样得过滤加工排序等写法
+
+### 更新2016/11/29
 * 增加CreateMap By Key
 * 去除无用泛型
 * 增加xlsx支持
@@ -38,16 +44,75 @@
 |bar    | bar   | bar   |
 |baz    | baz   | baz   |
 
+## 写入例子
+```java
+List<A> aa = new ArrayList<>();
+        aa.add(new A("a", "b"));
+        aa.add(new A("aa", "bb"));
+        ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("\\Save.xlsx")
+        ).Process((A a) -> a.setA("xxxxxxx")).FilterCol(() -> new String[]{"B"}).
+                Filter((A a) -> a.getA().length() > 1).Save();
+        List<Map> m = new ArrayList<>();
+        Map mm = new HashMap();
+        mm.put("A", "w");
+        mm.put("A1", "w2");
+        mm.put("A2", "w3");
+        Map mmm = new HashMap();
+        mmm.put("A", "23");
+        mmm.put("A1", "w3asf2");
+        mmm.put("A2", "w二3");
+        m.add(mm);
+        m.add(mmm);
+        ExcelFactory.saveExcel(m, System.getProperty("user.dir").concat("\\SaveMap.xlsx")
+        ).Save();
+```
+## 读取例子
+```java
+ List<Map<String,String>> data=ExcelFactory.getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
+                new ResWrapperMap() {
+                    @Override//配置Excel属性
+                    protected void LoadConfig(Config config) {
+                        config.setContent_row_start(3);
+                        config.setTitle_row(2);
+                    }
+                }).//这里能够处理每一行数据
+                Process((HashMap<String, String> o) -> System.out.println(o + "\n")
+                //这里能够处理时候过滤某一列
+                ).FilterCol(() -> new String[]{}
+                //这里能根据某一行的某一列的内容来取舍这行数据
+        ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5
+                //排序
+        ).Sort((o1, o2) -> o1.hashCode()>o2.hashCode()?1:hashCode()==o2.hashCode()?0:-1).Create();
+
+//使用 .CreateMap(key_v) 生成Map<Key,Map>类型数据
+
+```
+生成对应自定义类型的写法
+
+```java
+Map<String,Seven> map=new ResWrapperObj(Seven) {
+                    @Override
+                    protected void LoadConfig(Config config) {
+                        config.setContent_row_start(3);
+                        config.setTitle_row(2);
+                    }
+                }).
+                Process((HashMap<String, String> o) -> {}
+                ).FilterCol(() -> new String[]{}
+        ).Filter((HashMap<String, String> o) -> o.get("创建人") != null &&
+```
  ## 效果
-![ExcelReadshua](效果.png)
+![ExcelReads](效果.png)
 ## 实体类截图
-![ExcelReadshua](实体类.png)
+![ExcelReads](实体类.png)
 ## 继承关系
-![ExcelReadshua](关系.png)
+![ExcelReads](关系.png)
 ## 加载Map模式
-![ExcelReadshua](pic1.png)
+![ExcelReads](pic1.png)
 ## 加载Bean模式
-![ExcelReadshua](pic2.png)
+![ExcelReads](pic2.png)
+## 写入效果
+![ExcelReads](write.png)
 
 * 邮件(hacker.kill07@gmail.com)
 * QQ: 985390927

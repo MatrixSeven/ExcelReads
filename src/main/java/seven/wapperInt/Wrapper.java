@@ -1,11 +1,11 @@
 package seven.wapperInt;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
-import seven.wapperInt.callBack.DataFilterColumnInterface;
-import seven.wapperInt.callBack.DataFilterInterface;
-import seven.wapperInt.callBack.DataFilterProcessInterface;
+import seven.callBack.DataFilterColumnInterface;
+import seven.callBack.DataFilterInterface;
+import seven.callBack.DataFilterProcessInterface;
+import seven.util.RegHelper;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -40,10 +40,10 @@ public abstract class Wrapper implements Serializable{
 		String cellvalue = "";
 		if (cell != null) {
 			switch (cell.getCellType()) {
-			case HSSFCell.CELL_TYPE_NUMERIC:
+			case Cell.CELL_TYPE_NUMERIC:
 				cellvalue = df.format(cell.getNumericCellValue());
 				break;
-			case HSSFCell.CELL_TYPE_FORMULA: {
+			case Cell.CELL_TYPE_FORMULA: {
 				if (HSSFDateUtil.isCellDateFormatted(cell)) {
 					Date date = cell.getDateCellValue();
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -53,13 +53,13 @@ public abstract class Wrapper implements Serializable{
 				}
 				break;
 			}
-			case HSSFCell.CELL_TYPE_BLANK:
+			case Cell.CELL_TYPE_BLANK:
 				cellvalue = " ";
 				break;
-			case HSSFCell.CELL_TYPE_STRING:
+			case Cell.CELL_TYPE_STRING:
 				cellvalue = cell.getStringCellValue();
 				break;
-			case HSSFCell.CELL_TYPE_ERROR:
+			case Cell.CELL_TYPE_ERROR:
 				cellvalue = " ";
 				break;
 			default:
@@ -97,7 +97,7 @@ public abstract class Wrapper implements Serializable{
 		 * <p>
 		 * 支持正则表达式
 		 * 
-		 * @see seven.wapperInt.anno.RegHelper
+		 * @see RegHelper
 		 * @return
 		 */
 		public void setRequire(String[] require) {
@@ -215,6 +215,11 @@ public abstract class Wrapper implements Serializable{
 	 */
 	public abstract <T>List<T> Create() throws Exception;
 
+
+
+	public abstract <T> T CreateMap(String key) throws Exception;
+
+
 	/**
 	 * 对要包装的数据进行过滤，对应实体Bean\n
 	 * 如果返回false将放弃此条数据
@@ -245,7 +250,6 @@ public abstract class Wrapper implements Serializable{
 	 */
 	public abstract Wrapper FilterCol(DataFilterColumnInterface df);
 
-	public abstract <T> T CreateMap(String key) throws Exception;
 
 //	public abstract Wrapper AsString(Comparator<? super T> c);
 }

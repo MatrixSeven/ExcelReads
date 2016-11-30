@@ -4,7 +4,8 @@ import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import seven.wapperInt.anno.RegHelper;
+import seven.util.ExcelTool;
+import seven.util.RegHelper;
 import seven.wapperInt.wapperRef.WrapperObj;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public abstract class ResWrapperMap extends WrapperObj<T> {
         Sheet sheet;
         Row row;
         String _Require[] = config.getRequire();
-        Workbook hhf = newInstance(fs);
+        Workbook hhf = ExcelTool.newInstance(fs,false);
         int start_sheet = config.getStart_sheet();
         int end_sheet = start_sheet + 1;
         if (config.getIs_loop_sheet()) {
@@ -123,7 +124,9 @@ public abstract class ResWrapperMap extends WrapperObj<T> {
             }
         }
         if (!isMap){
-            list.sort(c);
+            if(c!=null) {
+                list.sort(c);
+            }
             return (T)list;
         }
         return (T) maps;
