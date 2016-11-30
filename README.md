@@ -47,24 +47,18 @@
 ## 写入例子
 ```java
 List<A> aa = new ArrayList<>();
-        aa.add(new A("a", "b"));
-        aa.add(new A("aa", "bb"));
-        ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("\\Save.xlsx")
-        ).Process((A a) -> a.setA("xxxxxxx")).FilterCol(() -> new String[]{"B"}).
-                Filter((A a) -> a.getA().length() > 1).Save();
-        List<Map> m = new ArrayList<>();
-        Map mm = new HashMap();
-        mm.put("A", "w");
-        mm.put("A1", "w2");
-        mm.put("A2", "w3");
-        Map mmm = new HashMap();
-        mmm.put("A", "23");
-        mmm.put("A1", "w3asf2");
-        mmm.put("A2", "w二3");
-        m.add(mm);
-        m.add(mmm);
-        ExcelFactory.saveExcel(m, System.getProperty("user.dir").concat("\\SaveMap.xlsx")
-        ).Save();
+aa.add(new A("a", "b"));
+aa.add(new A("aa", "bb"));
+ExcelFactory.saveExcel(aa,
+    System.getProperty("user.dir").concat("\\Save.xlsx"))
+        ///这里能够处理每一行数据
+        .Process((A a) -> a.setA("xxxxxxx"))
+        //过滤列
+        .FilterCol(() -> new String[]{"B"})
+        //根据某个字段来处理数据时候丢弃
+        .Filter((A a) -> a.getA().length() > 1)
+        .Sort((A a,A 2) -> o1.getAge()>o2.getAge()?1:o1.getAge()==o2.getAge()?0:-1)
+        .Save();
 ```
 ## 读取例子
 ```java
