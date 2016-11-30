@@ -99,7 +99,8 @@ Map<String,Seven> map=new ResWrapperObj(Seven) {
                 }).
                 Process((HashMap<String, String> o) -> {}
                 ).FilterCol(() -> new String[]{}
-        ).Filter((HashMap<String, String> o) -> o.get("创建人") != null &&
+        ).Filter((HashMap<String, String> o) -> o.get("创建人") != 
+        null &&o.get("创建人").length() > 4).<Map>CreateMap("创建人"));
 ```
  ## 效果
 ![ExcelReads](效果.png)
