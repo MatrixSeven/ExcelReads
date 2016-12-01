@@ -103,10 +103,8 @@ Map<String,Seven> map=new ResWrapperObj(Seven) {
 ![ExcelReads](实体类.png)
 ## 继承关系
 ![ExcelReads](关系.png)
-## 加载Map模式
-![ExcelReads](pic1.png)
-## 加载Bean模式
-![ExcelReads](pic2.png)
+## 引用关系
+![ExcelReads](引用.png)
 ## 写入效果
 ![ExcelReads](write.png)
 
