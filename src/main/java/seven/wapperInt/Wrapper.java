@@ -2,6 +2,7 @@ package seven.wapperInt;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
+import seven.ExcelSuperInterface;
 import seven.callBack.DataFilterColumnInterface;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
@@ -33,7 +34,7 @@ import java.util.List;
  * @author Seven<p>
  * @date   2016年4月12日-下午4:08:08
  */
-public abstract class Wrapper implements Serializable{
+public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 	protected Config config=new Config();
 	protected DecimalFormat df = new DecimalFormat("0");
 	protected String getCellFormatValue(Cell cell) {

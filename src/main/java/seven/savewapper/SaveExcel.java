@@ -15,6 +15,7 @@ package seven.savewapper;
 //		   (______|______)
 //=======================================================
 
+import seven.ExcelSuperInterface;
 import seven.callBack.DataFilterColumnInterface;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
@@ -26,7 +27,7 @@ import java.util.Comparator;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2016/11/30.
  */
-public interface SaveExcel {
+public interface SaveExcel extends ExcelSuperInterface {
 
     void Save() throws Exception;
     /**
