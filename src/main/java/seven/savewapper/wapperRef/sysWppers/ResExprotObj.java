@@ -58,6 +58,7 @@ public class ResExprotObj extends SaveExcelObject<Object> {
                 continue;
             }
             title[i] = fields[i].getName();
+            align[i] = 0x2;
         }
 
         if (c != null) {

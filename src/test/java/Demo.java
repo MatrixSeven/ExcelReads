@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import seven.ExcelFactory;
+import seven.savewapper.anno.ExcelAnno;
 import seven.wapperInt.wapperRef.sysWppers.ResWrapperMap;
 
 import java.util.ArrayList;
@@ -103,11 +104,17 @@ public class Demo {
     @Test
     public void Test_02() throws Exception {
         List<A> aa = new ArrayList<>();
-        aa.add(new A("a", "b"));
-        aa.add(new A("aa", "bb"));
-        ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("\\Save.xlsx")
-        ).Process((A a) -> a.setA("xxxxxxx")).FilterCol(() -> new String[]{"B"}).
-                Filter((A a) -> a.getA().length() > 1).Save();
+        aa.add(new A("小明", "15"));
+        aa.add(new A("小绿", "13"));
+        aa.add(new A("唐山", "18"));
+        aa.add(new A("狗东", "15"));
+        aa.add(new A("百毒", "12"));
+        ExcelFactory.saveExcel(aa,System.getProperty("user.dir").concat("\\seven.xlsx"))
+                .Filter((A a) ->a.getA().length()==2 )
+                .Process((A a)->a.setA(a.getA().concat("_seven")))
+                .Save();
+
+
         List<Map> m = new ArrayList<>();
         Map mm = new HashMap();
         mm.put("A", "w");
@@ -126,7 +133,9 @@ public class Demo {
 }
 
 class A {
+    @ExcelAnno(value ="姓名")
     String A;
+    @ExcelAnno(value = "年龄")
     String B;
 
     public A(String a, String b) {
