@@ -82,6 +82,7 @@ public class ResExprotObj extends SaveExcelObject<Object> {
             cell.setCellValue(title[i]);
         }
         int index = 0;
+        Object object=null;
         for (Object o : list) {
             //¹ýÂËÐÐ
             if (!filter.filter(o)) {
@@ -92,7 +93,8 @@ public class ResExprotObj extends SaveExcelObject<Object> {
             for (int i = 0; i < title.length; i++) {
                 Cell cell = row.createCell(i);
                 cell.setCellStyle(style);
-                cell.setCellValue(fields[i].get(o).toString());
+                object=fields[i].get(o);
+                cell.setCellValue(object==null?"":object.toString());
             }
         }
 
