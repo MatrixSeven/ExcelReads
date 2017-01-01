@@ -23,6 +23,7 @@ import seven.util.ExcelTool;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -34,6 +35,9 @@ public class ResExprotObj extends SaveExcelObject<Object> {
 
     public ResExprotObj(List<Object> list, String path) {
         super(list, path);
+    }
+    public ResExprotObj(ResultSet resultSet, String path) {
+        super(resultSet, path);
     }
 
     @Override

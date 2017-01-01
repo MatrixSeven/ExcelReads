@@ -21,6 +21,7 @@ import seven.util.ExcelTool;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.sql.ResultSet;
 import java.util.*;
 
 /**
@@ -32,6 +33,12 @@ public class ResExprotMap extends SaveExcelObject<Map> {
     public ResExprotMap(List<Map> list, String path) {
         super(list, path);
     }
+
+    public ResExprotMap(ResultSet resultSet, String path) {
+        super(resultSet, path);
+    }
+
+
 
     @Override
     public void Save() throws Exception {
@@ -87,6 +94,7 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         }
         try {
             wk.write(out);
+
         } finally {
             wk.close();
             out.close();

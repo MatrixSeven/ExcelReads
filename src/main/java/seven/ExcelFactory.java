@@ -1,11 +1,15 @@
 package seven;
 
+import seven.callBack.PackageDataInterface;
 import seven.savewapper.SaveExcel;
+import seven.savewapper.wapperRef.sysWppers.ResExprotDBMap;
+import seven.savewapper.wapperRef.sysWppers.ResExprotDBObj;
 import seven.savewapper.wapperRef.sysWppers.ResExprotMap;
 import seven.savewapper.wapperRef.sysWppers.ResExprotObj;
 import seven.wapperInt.Wrapper;
 import seven.wapperInt.wapperRef.WrapperObj;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 
@@ -47,5 +51,11 @@ public class ExcelFactory {
             }
          return new ResExprotObj((List)bean, FilePath);
 	}
+    public static SaveExcel saveExcel(ResultSet resultSet, String FilePath) throws Exception {
+            return new ResExprotDBMap(resultSet,FilePath);
+    }
+    public static SaveExcel saveExcel(ResultSet resultSet, String FilePath, PackageDataInterface packageDataInterface) throws Exception {
+        return new ResExprotDBObj(resultSet,FilePath,packageDataInterface);
+    }
 
 }

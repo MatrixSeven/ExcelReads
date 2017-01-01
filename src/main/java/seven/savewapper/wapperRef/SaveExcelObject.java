@@ -22,6 +22,7 @@ import seven.callBack.imp.DefaultDataFilter;
 import seven.callBack.imp.DefaultDataProFilter;
 import seven.savewapper.SaveExcel;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -37,12 +38,16 @@ public abstract class SaveExcelObject<T> implements SaveExcel{
     protected List<String> filterColBy_key=new ArrayList<>();
     protected DataFilterInterface filter=new DefaultDataFilter<Object>();
     protected DataFilterProcessInterface process=new DefaultDataProFilter<Object>();
-    protected Comparator<? super Object> c=null;;
+    protected Comparator<? super Object> c=null;
+    protected ResultSet resultSet=null;
 
     public SaveExcelObject(List<T> list, String path) {
         this.list = list;
         this.path = path;
-
+    }
+    public SaveExcelObject(ResultSet resultSet, String path) {
+        this.resultSet=resultSet;
+        this.path = path;
     }
 
     @Override

@@ -38,7 +38,6 @@ public class Demo {
     @Test
     public void Test_01() throws Exception {
 
-
         ExcelFactory.getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
                 new ResWrapperMap() {
                     @Override
