@@ -14,7 +14,7 @@
 ### 更新2017/01/04
 * 修复据库查询的导出(Map)空指针&下标越界问题
 * 修复在Filter数据后出现空行问题
-* 丢如Result后的操作就如同操作Map/Object一样
+* 丢入Result参数后的操作就如同操作Map/Object一样
 
 ### 更新2017/01/01
 * 增加ResExprotDBMap&ResExprotDBObj用于支持数据库导出
