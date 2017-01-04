@@ -22,6 +22,7 @@ import java.sql.ResultSet;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2017/1/1.
  */
+@FunctionalInterface
 public interface PackageDataInterface<T> {
     T PackageDataProcess(ResultSet res);
 }

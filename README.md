@@ -1,18 +1,25 @@
-# ExcelReads(简单Excel通用读取器)
+# ExcelReads(简单Excel通用读写器)
 ## ExcelReads是什么?
 * 这是一个通用的简单的Excel读取器
 * 支持自定义JavaBean实体读取和HashMap自动读取
 * 支持自定义扩展
 * 支持自定义Sheet范围，数据开始行数
+* 支持数据库查询直接导出Excel(Map/Object)
 * 支持正则过滤数据格式
 * JavaBean实体支持使用注解添加正则规则校验，HashMap支持数组规则校验
 * 依赖POI，使用Maven构建
 
 ## 更新纪录
 
+### 更新2017/01/04
+* 修复据库查询的导出(Map)空指针&下标越界问题
+* 修复在Filter数据后出现空行问题
+* 丢如Result后的操作就如同操作Map/Object一样
+
 ### 更新2017/01/01
-* 支持基于数据库查新的导出(Map),直接放入Result对象即可
-* 支持基于数据库查新的导出(Object),直接放入Result对象即可
+* 增加ResExprotDBMap&ResExprotDBObj用于支持数据库导出
+* 支持基于数据库查询的导出(Map),直接放入Result对象即可
+* 支持基于数据库查询的导出(Object),直接放入Result对象即可
 
 ### 更新2016/11/30
 * 增加了简单类型得写入，生成xls/xlsx
@@ -49,7 +56,26 @@
 |bar    | bar   | bar   |
 |baz    | baz   | baz   |
 
-## 写入例子
+##  数据库直接导出到Excel例子
+```java
+ UnpooledDataSource UNPOOLED_DATA_SOURCE = new UnpooledDataSource("com.mysql.jdbc.Driver",
+                "jdbc:mysql://127.0.0.1:3306/zhihuspider",
+                "xxxx", "xxxxx"
+        );
+        ExcelFactory.saveExcel(
+                UNPOOLED_DATA_SOURCE.getConnection().
+                        prepareStatement("select * FROM  users_info limit 10000").
+                        executeQuery(), "知乎导出Excel.xlsx")
+                //过滤字段
+           .FilterCol(() -> new String[]{"updatetime"})
+                //过滤数据条件
+           .Filter((HashMap<String, String> o) ->
+                    o.get("address").equals("\u5317\u4eac"))
+           .Save();
+
+```
+
+## 自定义类型导出到Excel例子
 ```java
 List<A> aa = new ArrayList<>();
 aa.add(new A("a", "b"));
@@ -66,7 +92,7 @@ ExcelFactory.saveExcel(aa,
         .Sort((A o1,A o2 ) -> o1.getAge()>o2.getAge()?1:o1.getAge()==o2.getAge()?0:-1)
         .Save();
 ```
-## 读取例子
+## 读取Excel到Map例子
 ```java
  List<Map<String,String>> data=ExcelFactory.getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
                 new ResWrapperMap() {
@@ -87,7 +113,7 @@ ExcelFactory.saveExcel(aa,
 //使用 .CreateMap(key_v) 生成Map<Key,Map>类型数据
 
 ```
-生成对应自定义类型的写法
+## 读取Excel到自定义类型的例子
 
 ```java
 Map<String,Seven> map=new ResWrapperObj(Seven) {

@@ -35,11 +35,11 @@ public class ResExprotDBMap extends ResExprotMap {
         this.list = new ArrayList<>();
         HashMap<String, String> stringStringHashMap;
         if (resultSet != null) {
-            stringStringHashMap = new HashMap<>();
             ResultSetMetaData res = resultSet.getMetaData();
-            int index = res.getColumnCount() + 1;
+            int index = res.getColumnCount()+1 ;
             while (resultSet.next()) {
-                for (int i = 0; i < index; i++) {
+                stringStringHashMap = new HashMap<>();
+                for (int i = 1; i < index; i++) {
                     stringStringHashMap.put(res.getColumnName(i),
                             resultSet.getString(res.getColumnName(i)));
                 }
@@ -51,6 +51,7 @@ public class ResExprotDBMap extends ResExprotMap {
 
     @Override
     public void Save() throws Exception {
-        CreateList().Save();
+        this.CreateList();
+        super.Save();
     }
 }

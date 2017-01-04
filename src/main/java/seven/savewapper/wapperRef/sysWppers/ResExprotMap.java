@@ -81,10 +81,10 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         }
         int index = 0;
         for (Map<String, String> o : list) {
-            row = sheet.createRow(++index);
-            if (!filter.filter(o)) {
+            if (!filter.filter(o).booleanValue()) {
                 continue;
             }
+            row = sheet.createRow(++index);
             process.process(o);//加工每一行
             for (int i = 0; i < title.length; i++) {
                 Cell cell = row.createCell(i);

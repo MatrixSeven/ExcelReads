@@ -9,6 +9,7 @@ package seven.callBack;
  * 此处传入每一行打包好的数据。对应一个实体
  * T为实体Bean类型
  */
+@FunctionalInterface
 public interface DataFilterProcessInterface<T>{
     /***
      * 此处传入每一行打包好的数据。对应一个实体，

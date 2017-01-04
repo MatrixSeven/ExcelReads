@@ -5,6 +5,7 @@ package seven.callBack;
  * [Bolg]https://matrixseven.github.io/
  * Created by seven on 2016/10/19.
  */
+@FunctionalInterface
 public interface DataFiterColumnInterface {
     public String[] Filter();
 }

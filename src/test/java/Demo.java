@@ -101,6 +101,11 @@ public class Demo {
 
 
     @Test
+    public void Test_03() throws Exception {
+
+    }
+
+    @Test
     public void Test_02() throws Exception {
         List<A> aa = new ArrayList<>();
         aa.add(new A("小明", "15"));
@@ -108,9 +113,9 @@ public class Demo {
         aa.add(new A("唐山", "18"));
         aa.add(new A("狗东", "15"));
         aa.add(new A("百毒", "12"));
-        ExcelFactory.saveExcel(aa,System.getProperty("user.dir").concat("\\seven.xlsx"))
-                .Filter((A a) ->a.getA().length()==2 )
-                .Process((A a)->a.setA(a.getA().concat("_seven")))
+        ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("\\seven.xlsx"))
+                .Filter((A a) -> a.getA().length() == 2)
+                .Process((A a) -> a.setA(a.getA().concat("_seven")))
                 .Save();
 
 
@@ -132,7 +137,7 @@ public class Demo {
 }
 
 class A {
-    @ExcelAnno(value ="姓名")
+    @ExcelAnno(value = "姓名")
     String A;
     @ExcelAnno(value = "年龄")
     String B;
