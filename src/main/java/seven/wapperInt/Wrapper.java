@@ -82,7 +82,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		Boolean is_loop_sheet = false;
 		Boolean error_log = true;
 		Integer Voc_size = 10000;
-		String Require[] = null;
+		String Require[] = new String[]{};
 		Integer start_sheet = 0;
 		Integer end_sheet = null;
 

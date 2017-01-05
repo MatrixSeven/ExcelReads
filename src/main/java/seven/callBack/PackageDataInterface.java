@@ -24,5 +24,4 @@ import java.sql.ResultSet;
  */
 @FunctionalInterface
 public interface PackageDataInterface<T> {
-    T PackageDataProcess(ResultSet res);
-}
+    T PackageDataProcess(ResultSet res) throws Exception;}

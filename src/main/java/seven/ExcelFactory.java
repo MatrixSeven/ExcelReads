@@ -57,5 +57,8 @@ public class ExcelFactory {
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath, PackageDataInterface packageDataInterface) throws Exception {
         return new ResExprotDBObj(resultSet,FilePath,packageDataInterface);
     }
+    public static SaveExcel saveExcel(ResultSet resultSet, String FilePath, Class type) throws Exception {
+        return new ResExprotDBObj(resultSet,FilePath,type);
+    }
 
 }

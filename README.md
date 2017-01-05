@@ -10,6 +10,10 @@
 * 依赖POI，使用Maven构建
 
 ## 更新纪录
+### 更新2017/01/05
+* 修复据库查询的导出(Object)递归越栈问题
+* 增加新的xxx.Class定义类型导出，操作更新点
+* 导出注解支持
 
 ### 更新2017/01/04
 * 修复据库查询的导出(Map)空指针&下标越界问题
@@ -56,22 +60,45 @@
 |bar    | bar   | bar   |
 |baz    | baz   | baz   |
 
+
+## 数据库导出自定义Bean类型写法（xxx.Class类型）
+```java
+ExcelFactory.saveExcel(
+        UNPOOLED_DATA_SOURCE.getConnection().
+                prepareStatement("select * FROM  users_info limit 1000").executeQuery(),
+        "\u5317\u4eac__Excel.xlsx",
+         AS.class)
+    .FilterCol(() -> new String[]{"updatetime"})
+    .Filter((AS o) ->o.getA().length() > 3)
+    .Save();
+```
+## 数据库导出自定义Bean类型写法（自己实现包装）
+```java
+ExcelFactory.saveExcel(
+        UNPOOLED_DATA_SOURCE.getConnection().
+                prepareStatement("select * FROM  users_info limit 1000").executeQuery(),
+        "\u5317\u4eac__Excel.xlsx",
+            res -> {
+                AS a = new AS();
+                a.setA(res.getString("name"));
+                return a;
+            })
+    .FilterCol(() -> new String[]{"updatetime"})
+    .Filter((AS o) ->o.getA().length() > 3)
+    .Save();
+```
 ##  数据库直接导出到Excel例子
 ```java
- UnpooledDataSource UNPOOLED_DATA_SOURCE = new UnpooledDataSource("com.mysql.jdbc.Driver",
-                "jdbc:mysql://127.0.0.1:3306/zhihuspider",
-                "xxxx", "xxxxx"
-        );
-        ExcelFactory.saveExcel(
-                UNPOOLED_DATA_SOURCE.getConnection().
-                        prepareStatement("select * FROM  users_info limit 10000").
-                        executeQuery(), "知乎导出Excel.xlsx")
-                //过滤字段
-           .FilterCol(() -> new String[]{"updatetime"})
-                //过滤数据条件
-           .Filter((HashMap<String, String> o) ->
-                    o.get("address").equals("\u5317\u4eac"))
-           .Save();
+ExcelFactory.saveExcel(
+        UNPOOLED_DATA_SOURCE.getConnection().
+                prepareStatement("select * FROM  users_info limit 10000").
+                executeQuery(), "知乎导出Excel.xlsx")
+        //过滤字段
+   .FilterCol(() -> new String[]{"updatetime"})
+        //过滤数据条件
+   .Filter((HashMap<String, String> o) ->
+            o.get("address").equals("\u5317\u4eac"))
+   .Save();
 
 ```
 
