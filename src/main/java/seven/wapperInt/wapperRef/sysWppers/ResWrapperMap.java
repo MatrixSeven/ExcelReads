@@ -24,7 +24,7 @@ import java.util.Map;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //¹·Éñ±£ÓÓ  \\
+//		    //ç‹—ç¥ä¿ä½‘  \\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
@@ -39,7 +39,7 @@ public abstract class ResWrapperMap extends WrapperObj<T> {
     @Override
     protected <T> T RefResWapper(String fs, boolean isMap, String key) throws Exception {
         if (config == null) {
-            throw new Exception("ÅäÖÃÀàÎª¿Õ");
+            throw new Exception("é…ç½®ç±»ä¸ºç©º");
         }
         HashMap<String,Map> maps=null;
         List<Map> list=null;
@@ -60,7 +60,7 @@ public abstract class ResWrapperMap extends WrapperObj<T> {
         if (config.getIs_loop_sheet()) {
             end_sheet = config.getEnd_sheet() == null ? hhf.getNumberOfSheets() : config.getEnd_sheet();
             if (end_sheet <= 0 || end_sheet > hhf.getNumberOfSheets()) {
-                throw new Exception("sheet·¶Î§²»ÕıÈ·");
+                throw new Exception("sheetèŒƒå›´ä¸æ­£ç¡®");
             }
         }
         for (; start_sheet < end_sheet; start_sheet++) {
@@ -73,10 +73,10 @@ public abstract class ResWrapperMap extends WrapperObj<T> {
             }
             try {
                 if (row.getPhysicalNumberOfCells() == 0)
-                    throw new Exception("ÁĞ±íÍ·»ñÈ¡Ê§°Ü");
+                    throw new Exception("åˆ—è¡¨å¤´è·å–å¤±è´¥");
             } catch (Exception e) {
                 if (config.getError_log())
-                    System.err.println("ÁĞ±íÍ·»ñÈ¡Ê§°Ü,sheet:" + start_sheet + " " + sheet.getSheetName());
+                    System.err.println("åˆ—è¡¨å¤´è·å–å¤±è´¥,sheet:" + start_sheet + " " + sheet.getSheetName());
                 continue;
             }
 
@@ -88,15 +88,15 @@ public abstract class ResWrapperMap extends WrapperObj<T> {
                     map = new HashMap<String, String>();
                     try {
                         if (titles.length < row.getPhysicalNumberOfCells()) {
-                            throw new Exception("ÁĞ±í³¤¶ÈĞ¡ÓÚÊµ¼ÊÁĞ³¤¶È");
+                            throw new Exception("åˆ—è¡¨é•¿åº¦å°äºå®é™…åˆ—é•¿åº¦");
                         }
                         if (_Require != null && (titles.length != _Require.length)) {
-                            throw new Exception("ÑéÖ¤¹æÔò³¤¶È²»¶Ô");
+                            throw new Exception("éªŒè¯è§„åˆ™é•¿åº¦ä¸å¯¹");
                         }
                     } catch (Exception e) {
                         if (config.getError_log())
                             System.err.println(
-                                    "ÁĞ±í³¤¶ÈĞ¡ÓÚÊµ¼ÊÁĞ³¤¶È sheet:" + start_sheet + " " + sheet.getSheetName() + "ĞĞ:" + rowNum);
+                                    "åˆ—è¡¨é•¿åº¦å°äºå®é™…åˆ—é•¿åº¦ sheet:" + start_sheet + " " + sheet.getSheetName() + "è¡Œ:" + rowNum);
                         continue;
                     }
                     for (int j = 0, colNum = row.getPhysicalNumberOfCells(); j < colNum; j++) {

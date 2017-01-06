@@ -12,7 +12,7 @@ package seven.wapperInt.wapperRef;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //狗神保佑  \\
+//		    //镫楃淇濅綉  \\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
@@ -32,7 +32,7 @@ import java.util.Map;
 
 /**
  * @author Seven<p>
- * @date   2016年4月12日-下午4:07:57
+ * @date   2016骞?链?2镞?涓嫔崃4:07:57
  */
 public abstract class WrapperObj<T> extends Wrapper {
 	protected DataFilterInterface filter=new DefaultDataFilter<Object>();

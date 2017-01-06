@@ -4,13 +4,14 @@ package seven.callBack;
  * [Github]https://github.com/MatrixSeven
  * [Bolg]https://matrixseven.github.io/
  * Created by seven on 2016/10/19.
- * ´Ë´¦¹ıÂËExcelµÄÁĞÊı¾İ£¨ÁĞÃû£©
- * Èç¹û¼ÓÈëºó£¬½«²»¶ÔÊµÌå½øĞĞ¸³Öµ
+ * æ­¤å¤„è¿‡æ»¤Excelçš„åˆ—æ•°æ®ï¼ˆåˆ—åï¼‰
+ * å¦‚æœåŠ å…¥åï¼Œå°†ä¸å¯¹å®ä½“è¿›è¡Œèµ‹å€¼
  */
+@FunctionalInterface
 public interface DataFilterColumnInterface {
     /**
-     * ´Ë´¦¹ıÂËExcelµÄÁĞÊı¾İ£¨ÁĞÃû£©
-     * Èç¹û¼ÓÈëºó£¬½«²»¶ÔÊµÌå½øĞĞ¸³Öµ
+     * æ­¤å¤„è¿‡æ»¤Excelçš„åˆ—æ•°æ®ï¼ˆåˆ—åï¼‰
+     * å¦‚æœåŠ å…¥åï¼Œå°†ä¸å¯¹å®ä½“è¿›è¡Œèµ‹å€¼
      * @return
      */
     public String[] filter();

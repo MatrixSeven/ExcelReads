@@ -25,14 +25,14 @@ import java.util.List;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,  \\
-//		    //¹·Éñ±£ÓÓ  \\
+//		    //ç‹—ç¥ä¿ä½‘  \\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
 //=======================================================
 /**
  * @author Seven<p>
- * @date   2016Äê4ÔÂ12ÈÕ-ÏÂÎç4:08:08
+ * @date   2016å¹´4æœˆ12æ—¥-ä¸‹åˆ4:08:08
  */
 public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 	protected Config config=new Config();
@@ -94,9 +94,9 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		}
 
 		/**
-		 * MapÊı¾İ¸öĞ£ÑéÊı×é
+		 * Mapæ•°æ®ä¸ªæ ¡éªŒæ•°ç»„
 		 * <p>
-		 * Ö§³ÖÕıÔò±í´ïÊ½
+		 * æ”¯æŒæ­£åˆ™è¡¨è¾¾å¼
 		 * 
 		 * @see RegHelper
 		 * @return
@@ -110,8 +110,8 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		}
 
 		/**
-		 * ExcelÊı¾İÈİÆ÷<br>
-		 * µ±Êı¾İ´óÓÚ5wÊ±£¬×îºÃ³õÊ¼»¯Îª´óÓÚ»òÕßµÈÓÚµ±Ç°excelĞĞÊı ×îºÃÉèÖÃ´óÓÚ»òÕß
+		 * Excelæ•°æ®å®¹å™¨<br>
+		 * å½“æ•°æ®å¤§äº5wæ—¶ï¼Œæœ€å¥½åˆå§‹åŒ–ä¸ºå¤§äºæˆ–è€…ç­‰äºå½“å‰excelè¡Œæ•° æœ€å¥½è®¾ç½®å¤§äºæˆ–è€…
 		 * 
 		 * @param voc_size
 		 */
@@ -135,7 +135,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		}
 
 		/**
-		 * ÄÚÈİ¿ªÊ¼ĞĞºÅ
+		 * å†…å®¹å¼€å§‹è¡Œå·
 		 * 
 		 */
 		public Integer getTitle_row() {
@@ -143,7 +143,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		}
 
 		/**
-		 * ±êÌâĞĞºÅ
+		 * æ ‡é¢˜è¡Œå·
 		 * 
 		 */
 		public void setTitle_row(Integer title_row) {
@@ -151,7 +151,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		}
 
 		/**
-		 * ÄÚÈİ¿ªÊ¼ĞĞºÅ
+		 * å†…å®¹å¼€å§‹è¡Œå·
 		 * 
 		 */
 		public Integer getContent_row_start() {
@@ -159,7 +159,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		}
 
 		/**
-		 * ÄÚÈİ¿ªÊ¼ĞĞºÅ
+		 * å†…å®¹å¼€å§‹è¡Œå·
 		 * 
 		 * @param content_row_start
 		 */
@@ -168,7 +168,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		}
 
 		/**
-		 * ÄÚÈİ½áÊøĞĞºÅ
+		 * å†…å®¹ç»“æŸè¡Œå·
 		 * @return
 		 */
 		public Integer getContent_row_end() {
@@ -176,7 +176,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 		}
 
 		/**
-		 * ÄÚÈİ½áÊøĞĞºÅ
+		 * å†…å®¹ç»“æŸè¡Œå·
 		 * 
 		 */
 		public void setContent_row_end(Integer content_row_end) {
@@ -210,7 +210,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 	}
 
 	/**
-	 * Éú³ÉÊı¾İ°ü£¬·µ»Ø´ò°üºÃµÄÊı¾İ
+	 * ç”Ÿæˆæ•°æ®åŒ…ï¼Œè¿”å›æ‰“åŒ…å¥½çš„æ•°æ®
 	 * @return
 	 * @throws Exception
 	 */
@@ -222,31 +222,31 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
 
 
 	/**
-	 * ¶ÔÒª°ü×°µÄÊı¾İ½øĞĞ¹ıÂË£¬¶ÔÓ¦ÊµÌåBean\n
-	 * Èç¹û·µ»Øfalse½«·ÅÆú´ËÌõÊı¾İ
+	 * å¯¹è¦åŒ…è£…çš„æ•°æ®è¿›è¡Œè¿‡æ»¤ï¼Œå¯¹åº”å®ä½“Bean\n
+	 * å¦‚æœè¿”å›falseå°†æ”¾å¼ƒæ­¤æ¡æ•°æ®
 	 * @param filter {@link DataFilterInterface}
 	 * @return
 	 */
 	public abstract Wrapper Filter(DataFilterInterface<?> filter);
 
 	/**
-	 *´Ë´¦´«ÈëÃ¿Ò»ĞĞ´ò°üºÃµÄÊı¾İ¡£¶ÔÓ¦Ò»¸öÊµÌå\n
-	 * ÔÚprocess·½·¨Àï¿É¶ÔÊôĞÔ½øĞĞ´¦Àí¼Ó¹¤
+	 *æ­¤å¤„ä¼ å…¥æ¯ä¸€è¡Œæ‰“åŒ…å¥½çš„æ•°æ®ã€‚å¯¹åº”ä¸€ä¸ªå®ä½“\n
+	 * åœ¨processæ–¹æ³•é‡Œå¯å¯¹å±æ€§è¿›è¡Œå¤„ç†åŠ å·¥
 	 * @param process {@link DataFilterProcessInterface}
 	 * @return
 	 */
 	public abstract Wrapper Process(DataFilterProcessInterface<?> process);
 
 	/**
-	 *	¶Ô½á¹ûµÄList½øĞĞÅÅĞò
+	 *	å¯¹ç»“æœçš„Listè¿›è¡Œæ’åº
 	 * @param c
 	 * @return
 	 */
 	public abstract Wrapper Sort(Comparator<?> c);
 
 	/**
-	 * ´Ë´¦¹ıÂËExcelµÄÁĞÊı¾İ£¨ÁĞÃû£©\n
-	 * Èç¹û¼ÓÈëºó£¬½«²»¶ÔÊµÌå½øĞĞ¸³Öµ
+	 * æ­¤å¤„è¿‡æ»¤Excelçš„åˆ—æ•°æ®ï¼ˆåˆ—åï¼‰\n
+	 * å¦‚æœåŠ å…¥åï¼Œå°†ä¸å¯¹å®ä½“è¿›è¡Œèµ‹å€¼
 	 * @param df {@link DataFilterColumnInterface}
 	 */
 	public abstract Wrapper FilterCol(DataFilterColumnInterface df);

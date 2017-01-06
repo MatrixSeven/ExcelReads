@@ -4,15 +4,15 @@ package seven.callBack;
  * [Github]https://github.com/MatrixSeven
  * [Bolg]https://matrixseven.github.io/
  * Created by seven on 2016/10/18.
- * ¶ÔÒª°ü×°µÄÊı¾İ½øĞĞ¹ıÂË£¬¶ÔÓ¦ÊµÌåBean£¬Èç¹û·µ»Øfalse½«·ÅÆú´ËÌõÊı¾İ
- * TÎªÊµÌåBeanÀàĞÍ
+ * å¯¹è¦åŒ…è£…çš„æ•°æ®è¿›è¡Œè¿‡æ»¤ï¼Œå¯¹åº”å®ä½“Beanï¼Œå¦‚æœè¿”å›falseå°†æ”¾å¼ƒæ­¤æ¡æ•°æ®
+ * Tä¸ºå®ä½“Beanç±»å‹
  */
 @FunctionalInterface
 public interface DataFilterInterface<T> {
     /**
-     * ¶ÔÒª°ü×°µÄÊı¾İ½øĞĞ¹ıÂË£¬¶ÔÓ¦ÊµÌåBean\n
-     * Èç¹û·µ»Øfalse½«·ÅÆú´ËÌõÊı¾İ
-     * @param t ÊµÌåBeanÀàĞÍ
+     * å¯¹è¦åŒ…è£…çš„æ•°æ®è¿›è¡Œè¿‡æ»¤ï¼Œå¯¹åº”å®ä½“Bean\n
+     * å¦‚æœè¿”å›falseå°†æ”¾å¼ƒæ­¤æ¡æ•°æ®
+     * @param t å®ä½“Beanç±»å‹
      * @return
      */
     Boolean filter(T t);

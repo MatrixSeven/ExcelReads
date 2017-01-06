@@ -9,7 +9,7 @@ package seven.savewapper.wapperRef.sysWppers;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //¹·Éñ±£ÓÓ\\
+//		    //ç‹—ç¥ä¿ä½‘\\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
@@ -51,7 +51,7 @@ public class ResExprotObj extends SaveExcelObject<Object> {
         ExcelAnno ea = null;
         for (int i = 0; i < fields.length; i++) {
             fields[i].setAccessible(true);
-            //¹ıÂËÁĞ
+            //è¿‡æ»¤åˆ—
             if (filterColBy_key.contains(fields[i].getName())) {
                 continue;
             }
@@ -70,9 +70,9 @@ public class ResExprotObj extends SaveExcelObject<Object> {
         }
         Sheet sheet = wk.createSheet("sheet1");
         sheet.setDefaultColumnWidth((short) 15);
-        // Éú³ÉÒ»¸öÑùÊ½
+        // ç”Ÿæˆä¸€ä¸ªæ ·å¼
         CellStyle style = wk.createCellStyle();
-        // ÉèÖÃÕâĞ©ÑùÊ½
+        // è®¾ç½®è¿™äº›æ ·å¼
 //        style.setFillPattern(FillPatternType.ALT_BARS);
 //        style.setBorderBottom(BorderStyle.THIN);
 //        style.setBorderLeft(BorderStyle.THIN);
@@ -88,11 +88,11 @@ public class ResExprotObj extends SaveExcelObject<Object> {
         int index = 0;
         Object object=null;
         for (Object o : list) {
-            //¹ıÂËĞĞ
+            //è¿‡æ»¤è¡Œ
             if (!filter.filter(o)) {
                 continue;
             }
-            process.process(o);//¼Ó¹¤Ã¿Ò»ĞĞ
+            process.process(o);//åŠ å·¥æ¯ä¸€è¡Œ
             row = sheet.createRow(++index);
             for (int i = 0; i < title.length; i++) {
                 Cell cell = row.createCell(i);

@@ -9,7 +9,7 @@ package seven.util;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //¹·Éñ±£ÓÓ\\
+//		    //ç‹—ç¥ä¿ä½‘\\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
@@ -44,7 +44,7 @@ public class ExcelTool {
             return new XSSFWorkbook();
         }
         if (!f.isFile()) {
-            throw new Exception("ÇëÌîĞ´ÕıÈ·Â·¾¶");
+            throw new Exception("è¯·å¡«å†™æ­£ç¡®è·¯å¾„");
         }
         type = type.substring(type.lastIndexOf(".") + 1);
         if (type.equals("xls")) {

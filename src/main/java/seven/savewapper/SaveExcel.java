@@ -9,7 +9,7 @@ package seven.savewapper;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //¹·Éñ±£ÓÓ\\
+//		    //ç‹—ç¥ä¿ä½‘\\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
@@ -31,31 +31,31 @@ public interface SaveExcel extends ExcelSuperInterface {
 
     void Save() throws Exception;
     /**
-     * ¶ÔÒª°ü×°µÄÊı¾İ½øĞĞ¹ıÂË£¬¶ÔÓ¦ÊµÌåBean\n
-     * Èç¹û·µ»Øfalse½«·ÅÆú´ËÌõÊı¾İ
+     * å¯¹è¦åŒ…è£…çš„æ•°æ®è¿›è¡Œè¿‡æ»¤ï¼Œå¯¹åº”å®ä½“Bean\n
+     * å¦‚æœè¿”å›falseå°†æ”¾å¼ƒæ­¤æ¡æ•°æ®
      * @param filter {@link DataFilterInterface}
      * @return
      */
     public abstract SaveExcel Filter(DataFilterInterface<?> filter);
 
     /**
-     *´Ë´¦´«ÈëÃ¿Ò»ĞĞ´ò°üºÃµÄÊı¾İ¡£¶ÔÓ¦Ò»¸öÊµÌå\n
-     * ÔÚprocess·½·¨Àï¿É¶ÔÊôĞÔ½øĞĞ´¦Àí¼Ó¹¤
+     *æ­¤å¤„ä¼ å…¥æ¯ä¸€è¡Œæ‰“åŒ…å¥½çš„æ•°æ®ã€‚å¯¹åº”ä¸€ä¸ªå®ä½“\n
+     * åœ¨processæ–¹æ³•é‡Œå¯å¯¹å±æ€§è¿›è¡Œå¤„ç†åŠ å·¥
      * @param process {@link DataFilterProcessInterface}
      * @return
      */
     public abstract SaveExcel Process(DataFilterProcessInterface<?> process);
 
     /**
-     *	¶Ô½á¹ûµÄList½øĞĞÅÅĞò
+     *	å¯¹ç»“æœçš„Listè¿›è¡Œæ’åº
      * @param c
      * @return
      */
     public abstract SaveExcel Sort(Comparator<? super Object> c);
 
     /**
-     * ´Ë´¦¹ıÂËExcelµÄÁĞÊı¾İ£¨ÁĞÃû£©\n
-     * Èç¹û¼ÓÈëºó£¬½«²»¶ÔÊµÌå½øĞĞ¸³Öµ
+     * æ­¤å¤„è¿‡æ»¤Excelçš„åˆ—æ•°æ®ï¼ˆåˆ—åï¼‰\n
+     * å¦‚æœåŠ å…¥åï¼Œå°†ä¸å¯¹å®ä½“è¿›è¡Œèµ‹å€¼
      * @param df {@link DataFilterColumnInterface}
      */
     public abstract SaveExcel FilterCol(DataFilterColumnInterface df);

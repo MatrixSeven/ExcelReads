@@ -24,14 +24,14 @@ import java.util.Map;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //¹·Éñ±£ÓÓ  \\
+//		    //ç‹—ç¥ä¿ä½‘  \\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
 //=======================================================
 /**
  * @author Seven<p>
- * @date   2016Äê6ÔÂ4ÈÕ-ÏÂÎç4:08:19
+ * @date   2016å¹´6æœˆ4æ—¥-ä¸‹åˆ4:08:19
  */
 @SuppressWarnings("unchecked")
 public class ExcelFactory {
@@ -44,7 +44,7 @@ public class ExcelFactory {
 	}
 	public static SaveExcel saveExcel(List<? extends Object> bean, String FilePath) throws Exception {
             if (bean.size() < 1) {
-                throw new Exception("Çë´«ÈëÊı¾İ");
+                throw new Exception("è¯·ä¼ å…¥æ•°æ®");
             }
             if (bean.get(0) instanceof Map) {
                return new ResExprotMap((List<Map>) bean,FilePath);

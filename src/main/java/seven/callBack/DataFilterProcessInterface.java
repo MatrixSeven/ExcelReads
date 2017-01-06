@@ -6,15 +6,15 @@ package seven.callBack;
  * [Github]https://github.com/MatrixSeven
  * [Bolg]https://matrixseven.github.io/
  * Created by seven on 2016/10/18.
- * ´Ë´¦´«ÈëÃ¿Ò»ĞĞ´ò°üºÃµÄÊı¾İ¡£¶ÔÓ¦Ò»¸öÊµÌå
- * TÎªÊµÌåBeanÀàĞÍ
+ * æ­¤å¤„ä¼ å…¥æ¯ä¸€è¡Œæ‰“åŒ…å¥½çš„æ•°æ®ã€‚å¯¹åº”ä¸€ä¸ªå®ä½“
+ * Tä¸ºå®ä½“Beanç±»å‹
  */
 @FunctionalInterface
 public interface DataFilterProcessInterface<T>{
     /***
-     * ´Ë´¦´«ÈëÃ¿Ò»ĞĞ´ò°üºÃµÄÊı¾İ¡£¶ÔÓ¦Ò»¸öÊµÌå£¬
-     * ÔÚprocess·½·¨Àï¿É¶ÔÊôĞÔ½øĞĞ´¦Àí¼Ó¹¤
-     * @param t ÊµÌåÀàĞÍ
+     * æ­¤å¤„ä¼ å…¥æ¯ä¸€è¡Œæ‰“åŒ…å¥½çš„æ•°æ®ã€‚å¯¹åº”ä¸€ä¸ªå®ä½“ï¼Œ
+     * åœ¨processæ–¹æ³•é‡Œå¯å¯¹å±æ€§è¿›è¡Œå¤„ç†åŠ å·¥
+     * @param t å®ä½“ç±»å‹
      */
     void process(T t);
 }

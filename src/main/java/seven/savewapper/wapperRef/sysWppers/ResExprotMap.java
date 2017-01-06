@@ -9,7 +9,7 @@ package seven.savewapper.wapperRef.sysWppers;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //¹·Éñ±£ÓÓ\\
+//		    //ç‹—ç¥ä¿ä½‘\\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
@@ -49,9 +49,9 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         }
         Sheet sheet = wk.createSheet("sheet1");
         sheet.setDefaultColumnWidth((short) 15);
-        // Éú³ÉÒ»¸öÑùÊ½
+        // ç”Ÿæˆä¸€ä¸ªæ ·å¼
         CellStyle style = wk.createCellStyle();
-        // ÉèÖÃÕâĞ©ÑùÊ½
+        // è®¾ç½®è¿™äº›æ ·å¼
 //        style.setFillPattern(FillPatternType.ALT_BARS);
 //        style.setBorderBottom(BorderStyle.THIN);
 //        style.setBorderLeft(BorderStyle.THIN);
@@ -85,7 +85,7 @@ public class ResExprotMap extends SaveExcelObject<Map> {
                 continue;
             }
             row = sheet.createRow(++index);
-            process.process(o);//¼Ó¹¤Ã¿Ò»ĞĞ
+            process.process(o);//åŠ å·¥æ¯ä¸€è¡Œ
             for (int i = 0; i < title.length; i++) {
                 Cell cell = row.createCell(i);
                 cell.setCellStyle(style);

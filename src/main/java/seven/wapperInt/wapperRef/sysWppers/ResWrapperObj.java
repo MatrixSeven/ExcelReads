@@ -27,14 +27,14 @@ import java.util.List;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //¹·Éñ±£ÓÓ  \\
+//		    //ç‹—ç¥ä¿ä½‘  \\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
 //=======================================================
 /**
  * @author Seven<p>
- * @date   2016Äê6ÔÂ4ÈÕ-ÏÂÎç4:07:14
+ * @date   2016å¹´6æœˆ4æ—¥-ä¸‹åˆ4:07:14
  */
 @SuppressWarnings({ "resource", "deprecation" ,"unchecked"})
 public abstract class ResWrapperObj<T> extends WrapperObj<T> {
@@ -90,7 +90,7 @@ public abstract class ResWrapperObj<T> extends WrapperObj<T> {
 		if (config.getIs_loop_sheet()) {
 			end_sheet = config.getEnd_sheet() == null ? hhf.getNumberOfSheets() : config.getEnd_sheet();
 			if (end_sheet <= 0 || end_sheet > hhf.getNumberOfSheets()) {
-				throw new Exception("sheet·¶Î§²»ÕıÈ·");
+				throw new Exception("sheetèŒƒå›´ä¸æ­£ç¡®");
 			}
 		}
 		for (; start_sheet < end_sheet; start_sheet++) {
@@ -106,7 +106,7 @@ public abstract class ResWrapperObj<T> extends WrapperObj<T> {
 								if (RegHelper.require(reg[j], v = getCellFormatValue(row.getCell((short) j)))) {
 									MeThodCaChe.get(titles[j]).invoke(o,titles[j],v);
 								} else {
-//									System.err.println("Êı¾İ¸ñ " + titles[j] + " Ê½²»·ûºÏ¹æ·¶---->ĞĞ:" + start + " ÁĞ" + j);
+//									System.err.println("æ•°æ®æ ¼ " + titles[j] + " å¼ä¸ç¬¦åˆè§„èŒƒ---->è¡Œ:" + start + " åˆ—" + j);
 								}
 							} else {
 								MeThodCaChe.get(titles[j]).invoke(o,getCellFormatValue(row.getCell((short) j)));
