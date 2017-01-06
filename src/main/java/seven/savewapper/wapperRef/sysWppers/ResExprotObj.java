@@ -16,7 +16,7 @@ package seven.savewapper.wapperRef.sysWppers;
 //=======================================================
 
 import org.apache.poi.ss.usermodel.*;
-import seven.savewapper.anno.ExcelAnno;
+import seven.anno.ExcelAnno;
 import seven.savewapper.wapperRef.SaveExcelObject;
 import seven.util.ExcelTool;
 
@@ -56,9 +56,9 @@ public class ResExprotObj extends SaveExcelObject<Object> {
                 continue;
             }
             ea = fields[i].getAnnotation(ExcelAnno.class);
-            if (ea != null) {
-                title[i] = ea.value();
-                align[i] = ea.align();
+            if (ea != null&&!ea.Value().equals("Null")) {
+                title[i] = ea.Value();
+                align[i] = ea.Align();
                 continue;
             }
             title[i] = fields[i].getName();

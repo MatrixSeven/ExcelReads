@@ -15,8 +15,8 @@ package seven.savewapper.wapperRef.sysWppers;
 //		   (______|______)
 //=======================================================
 
+import seven.anno.ExcelAnno;
 import seven.callBack.PackageDataInterface;
-import seven.savewapper.anno.ExcelAnno;
 import seven.util.ExcelTool;
 
 import java.lang.reflect.Field;
@@ -65,8 +65,8 @@ public class ResExprotDBObj extends ResExprotObj {
             ExcelAnno anno=null;
             for (int i = 0; i < len; i++) {
                 fields[i].setAccessible(true);
-                if((anno=fields[i].getAnnotation(ExcelAnno.class))!=null){
-                    name[i]=anno.value();
+                if((anno=fields[i].getAnnotation(ExcelAnno.class))!=null&&!anno.Value().equals("Null")){
+                    name[i]=anno.Value();
                     continue;
                 }
                 name[i]=fields[i].getName();

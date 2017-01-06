@@ -1,4 +1,4 @@
-package seven.wapperInt.anno;
+package seven.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -29,6 +29,7 @@ import java.lang.annotation.Target;
 public @interface ExcelAnno {
 	public String Value()default "Null";
 	public boolean Pass() default false;
-	public String Required() default "Null"; 
+	public String Required() default "Null";
+	public short Align() default 0x2;
 	
 }

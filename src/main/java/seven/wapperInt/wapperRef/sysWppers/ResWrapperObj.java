@@ -4,7 +4,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import seven.util.ExcelTool;
-import seven.wapperInt.anno.ExcelAnno;
+import seven.anno.ExcelAnno;
 import seven.util.RegHelper;
 import seven.wapperInt.wapperRef.WrapperObj;
 
