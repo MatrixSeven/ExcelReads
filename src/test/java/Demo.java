@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import seven.ExcelFactory;
-import seven.savewapper.anno.ExcelAnno;
+import seven.anno.ExcelAnno;
 import seven.wapperInt.wapperRef.sysWppers.ResWrapperMap;
 
 import java.util.ArrayList;
@@ -137,9 +137,9 @@ public class Demo {
 }
 
 class A {
-    @ExcelAnno(value = "姓名")
+    @ExcelAnno (Value= "姓名")
     String A;
-    @ExcelAnno(value = "年龄")
+    @ExcelAnno(Value = "年龄")
     String B;
 
     public A(String a, String b) {
