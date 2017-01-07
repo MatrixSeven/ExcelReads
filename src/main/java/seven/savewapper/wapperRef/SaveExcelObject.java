@@ -74,4 +74,9 @@ public abstract class SaveExcelObject<T> implements SaveExcel{
         }
         return this;
     }
+    protected void checkData() throws Exception {
+        if (this.list.isEmpty()) {
+            throw new Exception("数据为空，请检查数据源");
+        }
+    }
 }

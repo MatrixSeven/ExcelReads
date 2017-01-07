@@ -44,6 +44,7 @@ public class ResExprotMap extends SaveExcelObject<Map> {
     public void Save() throws Exception {
         Workbook wk = ExcelTool.newInstance(path, true);
         OutputStream out = new FileOutputStream(path);
+        checkData();
         if (c != null) {
             list.sort(c);
         }

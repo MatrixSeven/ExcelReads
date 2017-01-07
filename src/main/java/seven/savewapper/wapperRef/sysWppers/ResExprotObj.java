@@ -44,6 +44,7 @@ public class ResExprotObj extends SaveExcelObject<Object> {
     public void Save() throws Exception {
         Workbook wk = ExcelTool.newInstance(path, true);
         OutputStream out = new FileOutputStream(path);
+        checkData();
         Class<?> clazz = list.get(0).getClass();
         Field[] fields = ExcelTool.GetFilesDeep(clazz);
         String[] title = new String[fields.length];
