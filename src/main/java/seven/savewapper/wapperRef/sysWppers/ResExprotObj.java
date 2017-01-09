@@ -63,12 +63,11 @@ public class ResExprotObj extends SaveExcelObject<Object> {
                 continue;
             }
             ea = fields[i].getAnnotation(ExcelAnno.class);
+            title[i] = fields[i].getName();
             if (ea != null&&!ea.Value().equals("Null")) {
-                title[i] = ea.Value();
                 align[i] = ea.Align();
                 continue;
             }
-            title[i] = fields[i].getName();
             align[i] = 0x2;
         }
 
@@ -90,7 +89,7 @@ public class ResExprotObj extends SaveExcelObject<Object> {
         for (short i = 0; i < title.length; i++) {
             Cell cell = row.createCell(i);
             cell.setCellStyle(style);
-            cell.setCellValue(title[i]);
+            cell.setCellValue(convertTitle(title[i]));
         }
         int index = 0;
         Object object=null;
@@ -106,6 +105,7 @@ public class ResExprotObj extends SaveExcelObject<Object> {
                 cell.setCellStyle(style);
                 object=fields[i].get(o);
                 cell.setCellValue(object==null?"":object.toString());
+
             }
         }
 

@@ -22,6 +22,7 @@ import seven.callBack.DataFilterProcessInterface;
 
 import java.io.OutputStream;
 import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * [Zhihu]https://www.zhihu.com/people/Sweets07
@@ -80,5 +81,27 @@ public interface SaveExcel extends ExcelSuperInterface {
      * @param path
      */
     SaveExcel SetPath(String path);
+
+    /**
+     * 转换字段名称
+     * @param title
+     * @param new_title
+     * @return
+     */
+    SaveExcel ConvertName(String title,String new_title);
+
+    /**
+     * 转换字段
+     * @param title_mapping
+     * @return
+     */
+    SaveExcel ConvertName(HashMap<String,String> title_mapping);
+
+    /**
+     * 转换字段
+     * @param title_mapping
+     * @return
+     */
+    SaveExcel ConvertName(HashMap<String,String> title_mapping,Boolean is_init);
 
 }

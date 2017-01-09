@@ -2,6 +2,7 @@
 
 ### 更新2017/01/09
 * 增加SetPath方法，随时切换保存路径
+* 增加ConvertName方法，方便自定义Excel列名称
 * 增加Flush方法，不在建议使用~~Save(@Deprecated)~~方法进行保存输出
 * 增加SetOutputStream方法，可以放入自定义流，用于支持网页Response输出
 * 处理一些小bug，完善异常提示信息

@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ import java.util.List;
  */
 public abstract class SaveExcelObject<T> implements SaveExcel {
     protected List<T> list;
-    public static final String DEFAULT_TYPE="xlsx";
+    public static final String DEFAULT_TYPE = "xlsx";
     protected String path;
     protected List<String> filterColBy_key = new ArrayList<>();
     protected DataFilterInterface filter = new DefaultDataFilter<Object>();
@@ -47,7 +48,8 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     protected ResultSet resultSet = null;
     protected OutputStream stream = null;
     protected Boolean isResponse = false;
-    protected Workbook wk=null;
+    protected Workbook wk = null;
+    protected HashMap<String, String> convert_title = new HashMap<>();
 
     public SaveExcelObject(List<T> list, String path) {
         this.list = list;
@@ -72,8 +74,9 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
         this.filter = filter;
         return this;
     }
-    protected Workbook createWK() throws Exception{
-        return wk = ExcelTool.newInstance(path.equals("")?DEFAULT_TYPE:path, true);
+
+    protected Workbook createWK() throws Exception {
+        return wk = ExcelTool.newInstance(path.equals("") ? DEFAULT_TYPE : path, true);
     }
 
     @Override
@@ -104,11 +107,21 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
 
     protected OutputStream createStream() throws Exception {
         if (stream == null) {
-            if (path == null|| path.equals(""))
+            if (path == null || path.equals(""))
                 throw new Exception("请输入路径");
             return new FileOutputStream(path);
         }
         return stream;
+    }
+
+    /**
+     * TempName
+     */
+    private String title_=null;
+    protected String convertTitle(String title) throws Exception {
+        title_=null;
+        title_=convert_title.get(title);
+        return title_==null?title:title_;
     }
 
     @Override
@@ -126,5 +139,25 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     public SaveExcel SetPath(String path) {
         this.path = path;
         return this;
+    }
+
+    @Override
+    public SaveExcel ConvertName(String title, String new_title) {
+        convert_title.put(title, new_title);
+        return this;
+    }
+
+    @Override
+    public SaveExcel ConvertName(HashMap<String, String> title_mapping) {
+        convert_title.putAll(title_mapping);
+        return this;
+    }
+
+    @Override
+    public SaveExcel ConvertName(HashMap<String, String> title_mapping, Boolean is_init) {
+        if (is_init) {
+            convert_title.clear();
+        }
+        return ConvertName(title_mapping);
     }
 }

@@ -41,7 +41,8 @@ public class ResExprotDBObj extends ResExprotObj {
         super(resultSet, path);
         this.clazz = type;
     }
-    public ResExprotDBObj(ResultSet resultSet,Class type) {
+
+    public ResExprotDBObj(ResultSet resultSet, Class type) {
         super(resultSet);
         this.clazz = type;
     }
@@ -49,21 +50,23 @@ public class ResExprotDBObj extends ResExprotObj {
     public ResExprotDBObj CreateList() throws Exception {
         this.list = new ArrayList<>();
         if (clazz != null) {
-            Field[] fields= ExcelTool.GetFilesDeep(clazz);
-            int len =fields.length;
-            String name[]=new String[len];
-            ExcelAnno anno=null;
+            Field[] fields = ExcelTool.GetFilesDeep(clazz);
+            int len = fields.length;
+            String name[] = new String[len];
+            String f_name[] = new String[len];
+            ExcelAnno anno = null;
             for (int i = 0; i < len; i++) {
                 fields[i].setAccessible(true);
-                if((anno=fields[i].getAnnotation(ExcelAnno.class))!=null&&!anno.Value().equals("Null")){
-                    name[i]=anno.Value();
+                if ((anno = fields[i].getAnnotation(ExcelAnno.class)) != null && !anno.Value().equals("Null")) {
+                    name[i] = anno.Value();
+                    f_name[i] = fields[i].getName();
                     continue;
                 }
-                name[i]=fields[i].getName();
+                f_name[i] = name[i] = fields[i].getName();
             }
-            Object o=null;
+            Object o = null;
             while (resultSet.next()) {
-                o=clazz.newInstance();
+                o = clazz.newInstance();
                 for (int i = 0; i < len; i++) {
                     fields[i].set(o, resultSet.getString(name[i]));
                 }

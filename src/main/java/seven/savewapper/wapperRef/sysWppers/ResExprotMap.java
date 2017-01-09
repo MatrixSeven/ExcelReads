@@ -66,8 +66,7 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         Iterator<String> it = set_title.iterator();
         String t;
         String[] title;
-        List<String> l;
-        l = new ArrayList();
+        List<String> l = new ArrayList();
         while (it.hasNext()) {
             t = it.next();
             if (!filterColBy_key.contains(t)) {
@@ -80,7 +79,7 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         for (short i = 0; i < title.length; i++) {
             Cell cell = row.createCell(i);
             cell.setCellStyle(style);
-            cell.setCellValue(title[i]);
+            cell.setCellValue(convertTitle(title[i]));
         }
         int index = 0;
         for (Map<String, String> o : list) {
