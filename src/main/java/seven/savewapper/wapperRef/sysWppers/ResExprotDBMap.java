@@ -30,6 +30,9 @@ public class ResExprotDBMap extends ResExprotMap {
     public ResExprotDBMap(ResultSet resultSet, String path) {
         super(resultSet, path);
     }
+    public ResExprotDBMap(ResultSet resultSet) {
+        super(resultSet);
+    }
 
     public ResExprotMap CreateList() throws Exception {
         this.list = new ArrayList<>();

@@ -32,32 +32,22 @@ public class ResExprotDBObj extends ResExprotObj {
     protected PackageDataInterface dataInterface;
     protected Class clazz = null;
 
-    //    protected  T type;
     public ResExprotDBObj(ResultSet resultSet, String path, PackageDataInterface dataInterface) {
         super(resultSet, path);
         this.dataInterface = dataInterface;
-//        Type sType = getClass().getGenericSuperclass();
-//        Type[] generics = ((ParameterizedType) sType).getActualTypeArguments();
-//        Class<T> mTClass = (Class<T>) (generics[0]);
-//        try {
-//            type = mTClass.newInstance();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
     }
 
     public ResExprotDBObj(ResultSet resultSet, String path, Class type) {
         super(resultSet, path);
         this.clazz = type;
     }
+    public ResExprotDBObj(ResultSet resultSet,Class type) {
+        super(resultSet);
+        this.clazz = type;
+    }
 
     public ResExprotDBObj CreateList() throws Exception {
         this.list = new ArrayList<>();
-//        Object o;
-//        Method[] methods= dataInterface.getClass().getDeclaredMethods();
-//        Class<?>[] type= methods[0].getParameterTypes();
-//        Class<?> clazz= type[type.length-1].getClass();
         if (clazz != null) {
             Field[] fields= ExcelTool.GetFilesDeep(clazz);
             int len =fields.length;

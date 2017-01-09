@@ -20,7 +20,6 @@ import seven.anno.ExcelAnno;
 import seven.savewapper.wapperRef.SaveExcelObject;
 import seven.util.ExcelTool;
 
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -39,11 +38,18 @@ public class ResExprotObj extends SaveExcelObject<Object> {
     public ResExprotObj(ResultSet resultSet, String path) {
         super(resultSet, path);
     }
+    public ResExprotObj(List<Object> list){
+        super(list);
+    };
+    public ResExprotObj(ResultSet resultSet) {
+        super(resultSet);
+    }
 
     @Override
+    @Deprecated
     public void Save() throws Exception {
-        Workbook wk = ExcelTool.newInstance(path, true);
-        OutputStream out = new FileOutputStream(path);
+        OutputStream out =createStream();
+        createWK();
         checkData();
         Class<?> clazz = list.get(0).getClass();
         Field[] fields = ExcelTool.GetFilesDeep(clazz);
@@ -105,9 +111,9 @@ public class ResExprotObj extends SaveExcelObject<Object> {
 
         try {
             wk.write(out);
+            out.flush();
         } finally {
-            wk.close();
-            out.close();
+            ExcelTool.Close(wk,out);
         }
     }
 }

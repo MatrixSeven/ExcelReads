@@ -19,7 +19,6 @@ import org.apache.poi.ss.usermodel.*;
 import seven.savewapper.wapperRef.SaveExcelObject;
 import seven.util.ExcelTool;
 
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.util.*;
@@ -33,17 +32,20 @@ public class ResExprotMap extends SaveExcelObject<Map> {
     public ResExprotMap(List<Map> list, String path) {
         super(list, path);
     }
-
     public ResExprotMap(ResultSet resultSet, String path) {
         super(resultSet, path);
+    }
+    public ResExprotMap(ResultSet resultSet) {
+        super(resultSet);
     }
 
 
 
     @Override
+    @Deprecated
     public void Save() throws Exception {
-        Workbook wk = ExcelTool.newInstance(path, true);
-        OutputStream out = new FileOutputStream(path);
+        OutputStream out = createStream();
+        createWK();
         checkData();
         if (c != null) {
             list.sort(c);
@@ -95,10 +97,10 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         }
         try {
             wk.write(out);
+            out.flush();
 
         } finally {
-            wk.close();
-            out.close();
+            ExcelTool.Close(wk,out);
         }
     }
 }

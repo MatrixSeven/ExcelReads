@@ -20,6 +20,7 @@ import seven.callBack.DataFilterColumnInterface;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
 
+import java.io.OutputStream;
 import java.util.Comparator;
 
 /**
@@ -29,6 +30,7 @@ import java.util.Comparator;
  */
 public interface SaveExcel extends ExcelSuperInterface {
 
+    @Deprecated
     void Save() throws Exception;
     /**
      * 对要包装的数据进行过滤，对应实体Bean\n
@@ -36,7 +38,7 @@ public interface SaveExcel extends ExcelSuperInterface {
      * @param filter {@link DataFilterInterface}
      * @return
      */
-    public abstract SaveExcel Filter(DataFilterInterface<?> filter);
+    SaveExcel Filter(DataFilterInterface<?> filter);
 
     /**
      *此处传入每一行打包好的数据。对应一个实体\n
@@ -44,21 +46,39 @@ public interface SaveExcel extends ExcelSuperInterface {
      * @param process {@link DataFilterProcessInterface}
      * @return
      */
-    public abstract SaveExcel Process(DataFilterProcessInterface<?> process);
+    SaveExcel Process(DataFilterProcessInterface<?> process);
 
     /**
      *	对结果的List进行排序
      * @param c
      * @return
      */
-    public abstract SaveExcel Sort(Comparator<? super Object> c);
+    SaveExcel Sort(Comparator<? super Object> c);
 
     /**
      * 此处过滤Excel的列数据（列名）\n
      * 如果加入后，将不对实体进行赋值
      * @param df {@link DataFilterColumnInterface}
      */
-    public abstract SaveExcel FilterCol(DataFilterColumnInterface df);
+    SaveExcel FilterCol(DataFilterColumnInterface df);
 
+    /**
+     * 网页输出流
+     * @param stream
+     * @return
+     */
+    SaveExcel SetOutputStream(OutputStream stream) throws Exception;
+
+    /**
+     *
+     * @throws Exception
+     */
+    void Flush() throws Exception ;
+
+    /**
+     * 设置保存路径
+     * @param path
+     */
+    SaveExcel SetPath(String path);
 
 }

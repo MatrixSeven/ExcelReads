@@ -20,6 +20,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.Closeable;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -32,9 +33,6 @@ import java.lang.reflect.Method;
 public class ExcelTool {
     private ExcelTool() {
     }
-
-    ;
-
     public static final Workbook newInstance(String type, boolean isSave) throws Exception {
         File f = new File(type);
         if (isSave) {
@@ -51,6 +49,18 @@ public class ExcelTool {
             return new HSSFWorkbook(new POIFSFileSystem(f));
         }
         return new XSSFWorkbook(f);
+    }
+
+    public static final void  Close(Closeable... close)throws Exception{
+        try {
+            for(Closeable closeable:close){
+                if(closeable!=null){
+                    closeable.close();
+                }
+            }
+        }catch (Exception e){
+            throw new Exception("关闭流出错");
+        }
     }
 
     public static final Field[] GetFilesDeep(Class<?> t) {
