@@ -1,5 +1,9 @@
 ## 更新纪录
 
+### 更新2017/01/11
+* 增加AnyCol来对应FilterCol方法，只保留AnyCol类列
+* 增加SetCellStyle，支持方法链式设置列单元格风格
+
 ### 更新2017/01/09
 * 增加SetPath方法，随时切换保存路径
 * 增加ConvertName方法，方便自定义Excel列名称

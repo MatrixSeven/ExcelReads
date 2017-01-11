@@ -21,4 +21,5 @@ package seven;
  * Created by seven on 2016/12/1.
  */
 public interface ExcelSuperInterface {
+
 }

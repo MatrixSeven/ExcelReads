@@ -7,5 +7,5 @@ package seven.callBack;
  */
 @FunctionalInterface
 public interface DataFiterColumnInterface {
-    public String[] Filter();
+    public String[] filter();
 }

@@ -50,49 +50,51 @@ public class ResExprotObj extends SaveExcelObject<Object> {
     public void Save() throws Exception {
         OutputStream out =createStream();
         createWK();
+        tryCreateCellStyle();
         checkData();
         Class<?> clazz = list.get(0).getClass();
         Field[] fields = ExcelTool.GetFilesDeep(clazz);
         String[] title = new String[fields.length];
         short[] align = new short[fields.length];
         ExcelAnno ea = null;
-        for (int i = 0; i < fields.length; i++) {
-            fields[i].setAccessible(true);
-            //过滤列
-            if (filterColBy_key.contains(fields[i].getName())) {
-                continue;
+        if(anyColBy_key.isEmpty()) {
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true);
+                //过滤列
+                if (filterColBy_key.contains(fields[i].getName())) {
+                    continue;
+                }
+                ea = fields[i].getAnnotation(ExcelAnno.class);
+                title[i] = fields[i].getName();
+                if (ea != null && !ea.Value().equals("Null")) {
+                    align[i] = ea.Align();
+                    continue;
+                }
+                align[i] = 0x2;
             }
-            ea = fields[i].getAnnotation(ExcelAnno.class);
-            title[i] = fields[i].getName();
-            if (ea != null&&!ea.Value().equals("Null")) {
-                align[i] = ea.Align();
-                continue;
+        }else {
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true);
+                if(!anyColBy_key.contains( fields[i].getName())){
+                    throw new Exception("字段名无效");
+                }
             }
-            align[i] = 0x2;
+            title = anyColBy_key.toArray(new String[anyColBy_key.size()]);
         }
+
 
         if (c != null) {
             list.sort(c);
         }
         Sheet sheet = wk.createSheet("sheet1");
         sheet.setDefaultColumnWidth((short) 15);
-        // 生成一个样式
         CellStyle style = wk.createCellStyle();
-        // 设置这些样式
-//        style.setFillPattern(FillPatternType.ALT_BARS);
-//        style.setBorderBottom(BorderStyle.THIN);
-//        style.setBorderLeft(BorderStyle.THIN);
-//        style.setBorderRight(BorderStyle.THIN);
-//        style.setBorderTop(BorderStyle.THIN);
         style.setAlignment(HorizontalAlignment.CENTER);
         Row row = sheet.createRow(0);
-        for (short i = 0; i < title.length; i++) {
-            Cell cell = row.createCell(i);
-            cell.setCellStyle(style);
-            cell.setCellValue(convertTitle(title[i]));
-        }
+        initTitle(title,row,style);
         int index = 0;
         Object object=null;
+        String fn;
         for (Object o : list) {
             //过滤行
             if (!filter.filter(o)) {
@@ -104,6 +106,9 @@ public class ResExprotObj extends SaveExcelObject<Object> {
                 Cell cell = row.createCell(i);
                 cell.setCellStyle(style);
                 object=fields[i].get(o);
+                if(cell_style.containsKey(title[i])){
+                    cell.setCellStyle(cell_style.get(title[i]).getRealyStyle());
+                }
                 cell.setCellValue(object==null?"":object.toString());
 
             }

@@ -75,7 +75,7 @@ public class ResExprotDBObj extends ResExprotObj {
             return this;
         }
         while (resultSet.next()) {
-            list.add(dataInterface.PackageDataProcess(resultSet));
+            list.add(dataInterface.packageDataProcess(resultSet));
         }
         return this;
     }

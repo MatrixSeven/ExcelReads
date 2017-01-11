@@ -32,13 +32,14 @@ public class ResExprotMap extends SaveExcelObject<Map> {
     public ResExprotMap(List<Map> list, String path) {
         super(list, path);
     }
+
     public ResExprotMap(ResultSet resultSet, String path) {
         super(resultSet, path);
     }
+
     public ResExprotMap(ResultSet resultSet) {
         super(resultSet);
     }
-
 
 
     @Override
@@ -46,6 +47,7 @@ public class ResExprotMap extends SaveExcelObject<Map> {
     public void Save() throws Exception {
         OutputStream out = createStream();
         createWK();
+        tryCreateCellStyle();
         checkData();
         if (c != null) {
             list.sort(c);
@@ -55,11 +57,8 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         // 生成一个样式
         CellStyle style = wk.createCellStyle();
         // 设置这些样式
-//        style.setFillPattern(FillPatternType.ALT_BARS);
-//        style.setBorderBottom(BorderStyle.THIN);
-//        style.setBorderLeft(BorderStyle.THIN);
-//        style.setBorderRight(BorderStyle.THIN);
-//        style.setBorderTop(BorderStyle.THIN);
+
+
         style.setAlignment(HorizontalAlignment.CENTER);
         Map m = list.get(0);
         Set<String> set_title = m.keySet();
@@ -67,20 +66,30 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         String t;
         String[] title;
         List<String> l = new ArrayList();
-        while (it.hasNext()) {
-            t = it.next();
-            if (!filterColBy_key.contains(t)) {
-                l.add(t);
-            }
-        }
-        title = l.toArray(new String[l.size()]);
 
-        Row row = sheet.createRow(0);
-        for (short i = 0; i < title.length; i++) {
-            Cell cell = row.createCell(i);
-            cell.setCellStyle(style);
-            cell.setCellValue(convertTitle(title[i]));
+        if (!anyColBy_key.isEmpty()) {
+            for (Map<String, String> o : list) {
+                if (!filter.filter(o).booleanValue()) {
+                    while (it.hasNext()) {
+                        t = it.next();
+                        if (!anyColBy_key.contains(t)) {
+                            throw new Exception("字段名无效");
+                        }
+                    }
+                }
+            }
+            title = anyColBy_key.toArray(new String[anyColBy_key.size()]);
+        } else {
+            while (it.hasNext()) {
+                t = it.next();
+                if (!filterColBy_key.contains(t)) {
+                    l.add(t);
+                }
+            }
+            title = l.toArray(new String[l.size()]);
         }
+        Row row = sheet.createRow(0);
+        initTitle(title, row, style);
         int index = 0;
         for (Map<String, String> o : list) {
             if (!filter.filter(o).booleanValue()) {
@@ -91,6 +100,9 @@ public class ResExprotMap extends SaveExcelObject<Map> {
             for (int i = 0; i < title.length; i++) {
                 Cell cell = row.createCell(i);
                 cell.setCellStyle(style);
+                if (cell_style.containsKey(title[i])) {
+                    cell.setCellStyle(cell_style.get(title[i]).getRealyStyle());
+                }
                 cell.setCellValue(o.get(title[i]));
             }
         }
@@ -99,7 +111,7 @@ public class ResExprotMap extends SaveExcelObject<Map> {
             out.flush();
 
         } finally {
-            ExcelTool.Close(wk,out);
+            ExcelTool.Close(wk, out);
         }
     }
 }

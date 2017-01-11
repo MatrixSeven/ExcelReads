@@ -9,19 +9,20 @@ package seven.savewapper.wapperRef;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //狗神保佑\\
+//		    //狗神保佑 \\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
 //=======================================================
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
-import seven.callBack.DataFilterColumnInterface;
-import seven.callBack.DataFilterInterface;
-import seven.callBack.DataFilterProcessInterface;
+import seven.callBack.*;
 import seven.callBack.imp.DefaultDataFilter;
 import seven.callBack.imp.DefaultDataProFilter;
 import seven.savewapper.SaveExcel;
+import seven.savewapper.cellStyle.CellStyle;
 import seven.util.ExcelTool;
 
 import java.io.FileOutputStream;
@@ -42,6 +43,7 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     public static final String DEFAULT_TYPE = "xlsx";
     protected String path;
     protected List<String> filterColBy_key = new ArrayList<>();
+    protected List<String> anyColBy_key = new ArrayList<>();
     protected DataFilterInterface filter = new DefaultDataFilter<Object>();
     protected DataFilterProcessInterface process = new DefaultDataProFilter<Object>();
     protected Comparator<? super Object> c = null;
@@ -50,6 +52,9 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     protected Boolean isResponse = false;
     protected Workbook wk = null;
     protected HashMap<String, String> convert_title = new HashMap<>();
+    protected HashMap<String, CellStyle> cell_style = new HashMap<>();
+    protected List<CellStyleCallbackInterface> cellStyleCallbackInterfaces=new ArrayList<>();
+
 
     public SaveExcelObject(List<T> list, String path) {
         this.list = list;
@@ -76,6 +81,9 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     }
 
     protected Workbook createWK() throws Exception {
+        if(wk!=null){
+            return wk;
+        }
         return wk = ExcelTool.newInstance(path.equals("") ? DEFAULT_TYPE : path, true);
     }
 
@@ -117,11 +125,12 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     /**
      * TempName
      */
-    private String title_=null;
+    private String title_ = null;
+
     protected String convertTitle(String title) throws Exception {
-        title_=null;
-        title_=convert_title.get(title);
-        return title_==null?title:title_;
+        title_ = null;
+        title_ = convert_title.get(title);
+        return title_ == null ? title : title_;
     }
 
     @Override
@@ -160,4 +169,45 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
         }
         return ConvertName(title_mapping);
     }
+
+    @Override
+    public SaveExcel SetCellStyle(String name, CellStyleInterface styleInterface){
+        if(wk==null){
+            cellStyleCallbackInterfaces.add(new CellStyleCallbackInterface(name,styleInterface));
+            return this;
+        }
+        cell_style.put(name, styleInterface.create(CellStyle.CreateStyle(wk.createCellStyle())));
+        return this;
+    }
+
+    protected void tryCreateCellStyle() throws Exception{
+        if(wk==null){
+            throw new Exception("请输入路径并且初始化WK对象");
+        }
+        for (CellStyleCallbackInterface c:cellStyleCallbackInterfaces){
+            c.create(wk,cell_style);
+        }
+    }
+
+    @Override
+    public SaveExcel AnyCol(DataFilterColumnInterface df) {
+        for (String s : df.filter()) {
+            anyColBy_key.add(s);
+        }
+        return this;
+    }
+
+
+
+    protected void initTitle(String[] title, Row row, org.apache.poi.ss.usermodel.CellStyle  defStyle) throws Exception{
+        for (short i = 0; i < title.length; i++) {
+            Cell cell = row.createCell(i);
+            cell.setCellStyle(defStyle);
+            if(cell_style.containsKey(title[i])){
+                cell.setCellStyle(cell_style.get(title[i]).getRealyStyle());
+            }
+            cell.setCellValue(convertTitle(title[i]));
+        }
+    }
+
 }
