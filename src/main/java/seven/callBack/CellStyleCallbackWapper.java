@@ -25,15 +25,13 @@ import java.util.Map;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2017/1/11.
  */
-public class CellStyleCallbackInterface {
+public final class CellStyleCallbackWapper {
     CellStyleInterface cellStyle;
     String name;
-
-    public CellStyleCallbackInterface( String name,CellStyleInterface cellStyle) {
+    public CellStyleCallbackWapper(String name, CellStyleInterface cellStyle) {
         this.cellStyle = cellStyle;
         this.name = name;
     }
-
     public void create(Workbook wk, Map<String, CellStyle> cellStyleMap) throws Exception {
         cellStyleMap.put(name, cellStyle.create(CellStyle.CreateStyle(wk.createCellStyle())));
     }

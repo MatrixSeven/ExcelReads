@@ -49,11 +49,10 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     protected Comparator<? super Object> c = null;
     protected ResultSet resultSet = null;
     protected OutputStream stream = null;
-    protected Boolean isResponse = false;
     protected Workbook wk = null;
     protected HashMap<String, String> convert_title = new HashMap<>();
     protected HashMap<String, CellStyle> cell_style = new HashMap<>();
-    protected List<CellStyleCallbackInterface> cellStyleCallbackInterfaces=new ArrayList<>();
+    private List<CellStyleCallbackWapper> cellStyleCallbackWappers = new ArrayList<>();
 
 
     public SaveExcelObject(List<T> list, String path) {
@@ -81,10 +80,7 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     }
 
     protected Workbook createWK() throws Exception {
-        if(wk!=null){
-            return wk;
-        }
-        return wk = ExcelTool.newInstance(path.equals("") ? DEFAULT_TYPE : path, true);
+        return wk != null ? wk : (wk = ExcelTool.newInstance(path.equals("") ? DEFAULT_TYPE : path, true));
     }
 
     @Override
@@ -122,14 +118,8 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
         return stream;
     }
 
-    /**
-     * TempName
-     */
-    private String title_ = null;
-
     protected String convertTitle(String title) throws Exception {
-        title_ = null;
-        title_ = convert_title.get(title);
+        String title_ = convert_title.get(title);
         return title_ == null ? title : title_;
     }
 
@@ -171,21 +161,21 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     }
 
     @Override
-    public SaveExcel SetCellStyle(String name, CellStyleInterface styleInterface){
-        if(wk==null){
-            cellStyleCallbackInterfaces.add(new CellStyleCallbackInterface(name,styleInterface));
+    public SaveExcel SetCellStyle(String name, CellStyleInterface styleInterface) {
+        if (wk == null) {
+            cellStyleCallbackWappers.add(new CellStyleCallbackWapper(name, styleInterface));
             return this;
         }
         cell_style.put(name, styleInterface.create(CellStyle.CreateStyle(wk.createCellStyle())));
         return this;
     }
 
-    protected void tryCreateCellStyle() throws Exception{
-        if(wk==null){
+    protected void tryCreateCellStyle() throws Exception {
+        if (wk == null) {
             throw new Exception("请输入路径并且初始化WK对象");
         }
-        for (CellStyleCallbackInterface c:cellStyleCallbackInterfaces){
-            c.create(wk,cell_style);
+        for (CellStyleCallbackWapper c : cellStyleCallbackWappers) {
+            c.create(wk, cell_style);
         }
     }
 
@@ -198,12 +188,11 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     }
 
 
-
-    protected void initTitle(String[] title, Row row, org.apache.poi.ss.usermodel.CellStyle  defStyle) throws Exception{
+    protected void initTitle(String[] title, Row row, org.apache.poi.ss.usermodel.CellStyle defStyle) throws Exception {
         for (short i = 0; i < title.length; i++) {
             Cell cell = row.createCell(i);
             cell.setCellStyle(defStyle);
-            if(cell_style.containsKey(title[i])){
+            if (cell_style.containsKey(title[i])) {
                 cell.setCellStyle(cell_style.get(title[i]).getRealyStyle());
             }
             cell.setCellValue(convertTitle(title[i]));
