@@ -25,10 +25,10 @@ import java.util.Map;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2017/1/11.
  */
-public final class CellStyleCallbackWapper {
+public final class CellStyleCallbackWrapper {
     CellStyleInterface cellStyle;
     String name;
-    public CellStyleCallbackWapper(String name, CellStyleInterface cellStyle) {
+    public CellStyleCallbackWrapper(String name, CellStyleInterface cellStyle) {
         this.cellStyle = cellStyle;
         this.name = name;
     }

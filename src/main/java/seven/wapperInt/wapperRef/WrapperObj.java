@@ -12,7 +12,7 @@ package seven.wapperInt.wapperRef;
 //		        `;_:    `"'
 //		      .'"""""`.
 //		     /,  ya ,\\
-//		    //镫楃淇濅綉  \\
+//		    //狗神保佑  \\
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
@@ -32,7 +32,7 @@ import java.util.Map;
 
 /**
  * @author Seven<p>
- * @date   2016骞?链?2镞?涓嫔崃4:07:57
+ * @date   2016年4月12日-下午4:07:57
  */
 public abstract class WrapperObj<T> extends Wrapper {
 	protected DataFilterInterface filter=new DefaultDataFilter<Object>();
@@ -40,7 +40,7 @@ public abstract class WrapperObj<T> extends Wrapper {
 	protected List<String> filterColBy_key=new ArrayList<>();
 	protected List<String> filterColBy_value=new ArrayList<>();
 	protected Comparator<? super Object> c=null;
-    protected String fs;
+	protected String fs;
 	protected static final  boolean isMap=false;
 
 	protected abstract <T> T RefResWapper(String fs,boolean isMap,String key) throws Exception;

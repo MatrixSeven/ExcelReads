@@ -52,7 +52,7 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     protected Workbook wk = null;
     protected HashMap<String, String> convert_title = new HashMap<>();
     protected HashMap<String, CellStyle> cell_style = new HashMap<>();
-    private List<CellStyleCallbackWapper> cellStyleCallbackWappers = new ArrayList<>();
+    private List<CellStyleCallbackWrapper> cellStyleCallbackWappers = new ArrayList<>();
 
 
     public SaveExcelObject(List<T> list, String path) {
@@ -163,7 +163,7 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     @Override
     public SaveExcel SetCellStyle(String name, CellStyleInterface styleInterface) {
         if (wk == null) {
-            cellStyleCallbackWappers.add(new CellStyleCallbackWapper(name, styleInterface));
+            cellStyleCallbackWappers.add(new CellStyleCallbackWrapper(name, styleInterface));
             return this;
         }
         cell_style.put(name, styleInterface.create(CellStyle.CreateStyle(wk.createCellStyle())));
@@ -174,7 +174,7 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
         if (wk == null) {
             throw new Exception("请输入路径并且初始化WK对象");
         }
-        for (CellStyleCallbackWapper c : cellStyleCallbackWappers) {
+        for (CellStyleCallbackWrapper c : cellStyleCallbackWappers) {
             c.create(wk, cell_style);
         }
     }
