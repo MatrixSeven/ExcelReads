@@ -8,9 +8,9 @@ import seven.callBack.DataFilterProcessInterface;
  * Created by seven on 2016/10/18.
  */
 @SuppressWarnings("unchecked")
-public class DefaultDataProFilter<T> implements DataFilterProcessInterface<T> {
+public class DefaultDataProFilter implements DataFilterProcessInterface<Object> {
     @Override
-    public void process(T o) {
+    public void process(Object o) {
 
     }
 }

@@ -25,16 +25,16 @@ import java.util.HashMap;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2017/1/1.
  */
-public class ResExprotDBMap extends ResExprotMap {
+public class ResExportDBMap extends ResExportMap {
 
-    public ResExprotDBMap(ResultSet resultSet, String path) {
+    public ResExportDBMap(ResultSet resultSet, String path) {
         super(resultSet, path);
     }
-    public ResExprotDBMap(ResultSet resultSet) {
+    public ResExportDBMap(ResultSet resultSet) {
         super(resultSet);
     }
 
-    public ResExprotMap CreateList() throws Exception {
+    public ResExportMap CreateList() throws Exception {
         this.list = new ArrayList<>();
         HashMap<String, String> stringStringHashMap;
         if (resultSet != null) {

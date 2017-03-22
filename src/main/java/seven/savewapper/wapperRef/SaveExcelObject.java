@@ -44,8 +44,8 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     protected String path;
     protected List<String> filterColBy_key = new ArrayList<>();
     protected List<String> anyColBy_key = new ArrayList<>();
-    protected DataFilterInterface filter = new DefaultDataFilter<Object>();
-    protected DataFilterProcessInterface process = new DefaultDataProFilter<Object>();
+    protected DataFilterInterface filter = new DefaultDataFilter();
+    protected DataFilterProcessInterface process = new DefaultDataProFilter();
     protected Comparator<? super Object> c = null;
     protected ResultSet resultSet = null;
     protected OutputStream stream = null;

@@ -2,10 +2,10 @@ package seven;
 
 import seven.callBack.PackageDataInterface;
 import seven.savewapper.SaveExcel;
-import seven.savewapper.wapperRef.sysWppers.ResExprotDBMap;
-import seven.savewapper.wapperRef.sysWppers.ResExprotDBObj;
-import seven.savewapper.wapperRef.sysWppers.ResExprotMap;
-import seven.savewapper.wapperRef.sysWppers.ResExprotObj;
+import seven.savewapper.wapperRef.sysWppers.ResExportDBMap;
+import seven.savewapper.wapperRef.sysWppers.ResExportDBObj;
+import seven.savewapper.wapperRef.sysWppers.ResExportMap;
+import seven.savewapper.wapperRef.sysWppers.ResExportObj;
 import seven.wapperInt.Wrapper;
 import seven.wapperInt.wapperRef.WrapperObj;
 
@@ -62,9 +62,9 @@ public class ExcelFactory {
                 throw new Exception("请传入数据");
             }
             if (bean.get(0) instanceof Map) {
-               return new ResExprotMap((List<Map>) bean,FilePath);
+               return new ResExportMap((List<Map>) bean,FilePath);
             }
-         return new ResExprotObj((List)bean, FilePath);
+         return new ResExportObj((List)bean, FilePath);
 	}
 
     /**
@@ -75,7 +75,7 @@ public class ExcelFactory {
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath) throws Exception {
-            return new ResExprotDBMap(resultSet,FilePath);
+            return new ResExportDBMap(resultSet,FilePath);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ExcelFactory {
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath, PackageDataInterface packageDataInterface) throws Exception {
-        return new ResExprotDBObj(resultSet,FilePath,packageDataInterface);
+        return new ResExportDBObj(resultSet,FilePath,packageDataInterface);
     }
 
     /**
@@ -98,7 +98,7 @@ public class ExcelFactory {
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet,Class type) throws Exception {
-        return new ResExprotDBObj(resultSet,type);
+        return new ResExportDBObj(resultSet,type);
     }
 
 
@@ -109,6 +109,6 @@ public class ExcelFactory {
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet) throws Exception {
-        return new ResExprotDBMap(resultSet);
+        return new ResExportDBMap(resultSet);
     }
 }

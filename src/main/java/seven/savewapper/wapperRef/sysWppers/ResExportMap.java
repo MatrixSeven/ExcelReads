@@ -28,16 +28,16 @@ import java.util.*;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2016/11/30.
  */
-public class ResExprotMap extends SaveExcelObject<Map> {
-    public ResExprotMap(List<Map> list, String path) {
+public class ResExportMap extends SaveExcelObject<Map> {
+    public ResExportMap(List<Map> list, String path) {
         super(list, path);
     }
 
-    public ResExprotMap(ResultSet resultSet, String path) {
+    public ResExportMap(ResultSet resultSet, String path) {
         super(resultSet, path);
     }
 
-    public ResExprotMap(ResultSet resultSet) {
+    public ResExportMap(ResultSet resultSet) {
         super(resultSet);
     }
 
@@ -57,7 +57,6 @@ public class ResExprotMap extends SaveExcelObject<Map> {
         // 生成一个样式
         CellStyle style = wk.createCellStyle();
         // 设置这些样式
-
 
         style.setAlignment(HorizontalAlignment.CENTER);
         Map m = list.get(0);

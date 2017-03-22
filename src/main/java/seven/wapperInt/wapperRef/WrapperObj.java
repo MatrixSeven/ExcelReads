@@ -35,15 +35,15 @@ import java.util.Map;
  * @date   2016年4月12日-下午4:07:57
  */
 public abstract class WrapperObj<T> extends Wrapper {
-	protected DataFilterInterface filter=new DefaultDataFilter<Object>();
-	protected DataFilterProcessInterface process=new DefaultDataProFilter<Object>();
+	protected DataFilterInterface filter=new DefaultDataFilter();
+	protected DataFilterProcessInterface process=new DefaultDataProFilter();
 	protected List<String> filterColBy_key=new ArrayList<>();
 	protected List<String> filterColBy_value=new ArrayList<>();
 	protected Comparator<? super Object> c=null;
 	protected String fs;
 	protected static final  boolean isMap=false;
 
-	protected abstract <T> T RefResWapper(String fs,boolean isMap,String key) throws Exception;
+	protected abstract <T> T RefResWrapper(String fs, boolean isMap, String key) throws Exception;
 
 
 	protected boolean isNull(Map<String, String> map) {
@@ -71,12 +71,12 @@ public abstract class WrapperObj<T> extends Wrapper {
 		this.c = c;return this;
 	}
 	public List<T> Create() throws Exception{
-		return RefResWapper(fs,isMap,null);
+		return RefResWrapper(fs,isMap,null);
 	}
 
 	@Override
 	public  <T> T  CreateMap(String key)throws Exception {
-		return RefResWapper(fs,!isMap,key);
+		return RefResWrapper(fs,!isMap,key);
 	}
 
 	public Wrapper Filter(DataFilterInterface<?> filter) {

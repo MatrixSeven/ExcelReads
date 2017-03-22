@@ -37,7 +37,7 @@ import java.util.Map;
 public abstract class ResWrapperMap extends WrapperObj<T> {
 
     @Override
-    protected <T> T RefResWapper(String fs, boolean isMap, String key) throws Exception {
+    protected <T> T RefResWrapper(String fs, boolean isMap, String key) throws Exception {
         if (config == null) {
             throw new Exception("配置类为空");
         }
