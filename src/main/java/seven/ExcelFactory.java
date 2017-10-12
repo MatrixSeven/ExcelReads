@@ -78,9 +78,9 @@ public class ExcelFactory {
             throw new Exception("请传入数据");
         }
         if (bean.get(0) instanceof Map) {
-            return new ResExprotMap((List<Map>) bean);
+            return new ResExportMap((List<Map>) bean);
         }
-        return new ResExprotObj((List)bean);
+        return new ResExportObj((List)bean);
     }
 
 

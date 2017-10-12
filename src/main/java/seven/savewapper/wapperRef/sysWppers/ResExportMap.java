@@ -29,6 +29,11 @@ import java.util.*;
  * Created by seven on 2016/11/30.
  */
 public class ResExportMap extends SaveExcelObject<Map> {
+
+    public ResExportMap(List<Map> list) {
+        super(list);
+    }
+
     public ResExportMap(List<Map> list, String path) {
         super(list, path);
     }
@@ -40,9 +45,8 @@ public class ResExportMap extends SaveExcelObject<Map> {
     public ResExportMap(ResultSet resultSet) {
         super(resultSet);
     }
-    public ResExprotMap(List<Map> list) {
-        super(list);
-    }
+
+
 
 
     @Override
