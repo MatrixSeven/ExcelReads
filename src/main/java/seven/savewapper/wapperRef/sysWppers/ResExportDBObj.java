@@ -28,26 +28,26 @@ import java.util.ArrayList;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2017/1/1.
  */
-public class ResExprotDBObj extends ResExprotObj {
+public class ResExportDBObj extends ResExportObj {
     protected PackageDataInterface dataInterface;
     protected Class clazz = null;
 
-    public ResExprotDBObj(ResultSet resultSet, String path, PackageDataInterface dataInterface) {
+    public ResExportDBObj(ResultSet resultSet, String path, PackageDataInterface dataInterface) {
         super(resultSet, path);
         this.dataInterface = dataInterface;
     }
 
-    public ResExprotDBObj(ResultSet resultSet, String path, Class type) {
+    public ResExportDBObj(ResultSet resultSet, String path, Class type) {
         super(resultSet, path);
         this.clazz = type;
     }
 
-    public ResExprotDBObj(ResultSet resultSet, Class type) {
+    public ResExportDBObj(ResultSet resultSet, Class type) {
         super(resultSet);
         this.clazz = type;
     }
 
-    public ResExprotDBObj CreateList() throws Exception {
+    public ResExportDBObj CreateList() throws Exception {
         this.list = new ArrayList<>();
         if (clazz != null) {
             Field[] fields = ExcelTool.GetFilesDeep(clazz);

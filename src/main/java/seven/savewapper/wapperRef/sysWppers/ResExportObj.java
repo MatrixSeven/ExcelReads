@@ -30,18 +30,18 @@ import java.util.List;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2016/11/30.
  */
-public class ResExprotObj extends SaveExcelObject<Object> {
+public class ResExportObj extends SaveExcelObject<Object> {
 
-    public ResExprotObj(List<Object> list, String path) {
+    public ResExportObj(List<Object> list, String path) {
         super(list, path);
     }
-    public ResExprotObj(ResultSet resultSet, String path) {
+    public ResExportObj(ResultSet resultSet, String path) {
         super(resultSet, path);
     }
-    public ResExprotObj(List<Object> list){
+    public ResExportObj(List<Object> list){
         super(list);
     };
-    public ResExprotObj(ResultSet resultSet) {
+    public ResExportObj(ResultSet resultSet) {
         super(resultSet);
     }
 

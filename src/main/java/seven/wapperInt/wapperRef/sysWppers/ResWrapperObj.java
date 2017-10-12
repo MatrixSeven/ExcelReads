@@ -41,7 +41,7 @@ public abstract class ResWrapperObj<T> extends WrapperObj<T> {
 
     @Override
 	@SuppressWarnings({ "resource", "deprecation", "unchecked" })
-	protected <T> T RefResWapper(String fs, boolean isMap, String key) throws Exception {
+	protected <T> T RefResWrapper(String fs, boolean isMap, String key) throws Exception {
 		HashMap<String, Method> MeThodCaChe = new HashMap<String, Method>();
 		HashMap<String,T> maps=null;
 		List<T> list=null;
