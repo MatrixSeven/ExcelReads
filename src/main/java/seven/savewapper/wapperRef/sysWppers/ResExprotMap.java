@@ -40,6 +40,9 @@ public class ResExprotMap extends SaveExcelObject<Map> {
     public ResExprotMap(ResultSet resultSet) {
         super(resultSet);
     }
+    public ResExprotMap(List<Map> list) {
+        super(list);
+    }
 
 
     @Override

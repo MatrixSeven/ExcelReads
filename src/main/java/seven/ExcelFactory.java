@@ -46,7 +46,7 @@ public class ExcelFactory {
      * @return
      * @throws Exception
      */
-	public static Wrapper getBeans(String FilePath, WrapperObj r) throws Exception {
+	public static Wrapper   getBeans(String FilePath, WrapperObj r) throws Exception {
 		return (Wrapper)r.init(FilePath);
 	}
 
@@ -66,6 +66,23 @@ public class ExcelFactory {
             }
          return new ResExprotObj((List)bean, FilePath);
 	}
+
+    /**
+     * 保存Excel
+     * @param bean
+     * @return
+     * @throws Exception
+     */
+    public static SaveExcel saveExcel(List<? extends Object> bean) throws Exception {
+        if (bean.size() < 1) {
+            throw new Exception("请传入数据");
+        }
+        if (bean.get(0) instanceof Map) {
+            return new ResExprotMap((List<Map>) bean);
+        }
+        return new ResExprotObj((List)bean);
+    }
+
 
     /**
      * 保存Excel
