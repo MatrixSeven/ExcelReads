@@ -18,32 +18,37 @@ package seven.wapperInt.wapperRef;
 //		   (______|______)
 //=======================================================
 
-import seven.wapperInt.Wrapper;
 import seven.callBack.DataFilterColumnInterface;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
 import seven.callBack.imp.DefaultDataFilter;
 import seven.callBack.imp.DefaultDataProFilter;
+import seven.wapperInt.Config;
+import seven.wapperInt.Wrapper;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * @author Seven<p>
  * @date   2016年4月12日-下午4:07:57
  */
+@SuppressWarnings("all")
 public abstract class WrapperObj<T> extends Wrapper {
 	protected DataFilterInterface filter=new DefaultDataFilter();
 	protected DataFilterProcessInterface process=new DefaultDataProFilter();
-	protected List<String> filterColBy_key=new ArrayList<>();
-	protected List<String> filterColBy_value=new ArrayList<>();
+	protected List<String> filterColByKey =new ArrayList<>();
+	protected List<String> filterColByValue =new ArrayList<>();
 	protected Comparator<? super Object> c=null;
 	protected String fs;
 	protected static final  boolean isMap=false;
 
 	protected abstract <T> T RefResWrapper(String fs, boolean isMap, String key) throws Exception;
+
+
+	public WrapperObj(Consumer<Config> consumer) {
+		super(consumer);
+	}
 
 
 	protected boolean isNull(Map<String, String> map) {
@@ -56,14 +61,12 @@ public abstract class WrapperObj<T> extends Wrapper {
 
 
 	public Wrapper FilterCol(DataFilterColumnInterface df) {
-		for (String s:df.filter() ) {
-			filterColBy_key.add(s);
-		}
+		filterColByKey.addAll(Arrays.asList(df.filter()));
 		return this;
 	}
 
-	public Wrapper init(String FilePath){
-		this.fs=FilePath;
+	public Wrapper init(String filePath){
+		this.fs=filePath;
 		return this;
 	}
 

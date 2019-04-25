@@ -31,44 +31,46 @@ import java.util.Map;
 //=======================================================
 /**
  * @author Seven<p>
- * @date   2016年6月4日-下午4:08:19
+ * @date 2016年6月4日-下午4:08:19
  */
 @SuppressWarnings("unchecked")
 public class ExcelFactory {
 
-	private ExcelFactory() {
-	}
+    private ExcelFactory() {
+    }
 
     /**
      * 读取Excel
-     * @param FilePath  路径
-     * @param r 包装类
+     * @param FilePath 路径
+     * @param r        包装类
      * @return
      * @throws Exception
      */
-	public static Wrapper   getBeans(String FilePath, WrapperObj r) throws Exception {
-		return (Wrapper)r.init(FilePath);
-	}
+    public static Wrapper getBeans(String FilePath, WrapperObj r) throws Exception {
+        return r.init(FilePath);
+    }
 
     /**
      * 保存Excel
+     *
      * @param bean
      * @param FilePath
      * @return
      * @throws Exception
      */
-	public static SaveExcel saveExcel(List<? extends Object> bean, String FilePath) throws Exception {
-            if (bean.size() < 1) {
-                throw new Exception("请传入数据");
-            }
-            if (bean.get(0) instanceof Map) {
-               return new ResExportMap((List<Map>) bean,FilePath);
-            }
-         return new ResExportObj((List)bean, FilePath);
-	}
+    public static SaveExcel saveExcel(List<? extends Object> bean, String FilePath) throws Exception {
+        if (bean.size() < 1) {
+            throw new Exception("请传入数据");
+        }
+        if (bean.get(0) instanceof Map) {
+            return new ResExportMap((List<Map>) bean, FilePath);
+        }
+        return new ResExportObj((List) bean, FilePath);
+    }
 
     /**
      * 保存Excel
+     *
      * @param bean
      * @return
      * @throws Exception
@@ -80,23 +82,25 @@ public class ExcelFactory {
         if (bean.get(0) instanceof Map) {
             return new ResExportMap((List<Map>) bean);
         }
-        return new ResExportObj((List)bean);
+        return new ResExportObj((List) bean);
     }
 
 
     /**
      * 保存Excel
+     *
      * @param resultSet
      * @param FilePath
      * @return
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath) throws Exception {
-            return new ResExportDBMap(resultSet,FilePath);
+        return new ResExportDBMap(resultSet, FilePath);
     }
 
     /**
      * 保存Excel
+     *
      * @param resultSet
      * @param FilePath
      * @param packageDataInterface
@@ -104,23 +108,25 @@ public class ExcelFactory {
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath, PackageDataInterface packageDataInterface) throws Exception {
-        return new ResExportDBObj(resultSet,FilePath,packageDataInterface);
+        return new ResExportDBObj(resultSet, FilePath, packageDataInterface);
     }
 
     /**
      * 保存Excel
+     *
      * @param resultSet
      * @param type
      * @return
      * @throws Exception
      */
-    public static SaveExcel saveExcel(ResultSet resultSet,Class type) throws Exception {
-        return new ResExportDBObj(resultSet,type);
+    public static SaveExcel saveExcel(ResultSet resultSet, Class type) throws Exception {
+        return new ResExportDBObj(resultSet, type);
     }
 
 
     /**
      * 保存Excel
+     *
      * @param resultSet
      * @return
      * @throws Exception

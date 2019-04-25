@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author Seven<p>
- * @date 2016年6月4日-下午4:07:25
+ * 2016年6月4日-下午4:07:25
  */
 @Deprecated
 public class RegHelper {

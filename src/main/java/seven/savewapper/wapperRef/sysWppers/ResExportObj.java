@@ -64,13 +64,22 @@ public class ResExportObj extends SaveExcelObject<Object> {
                 if (filterColBy_key.contains(fields[i].getName())) {
                     continue;
                 }
+
                 ea = fields[i].getAnnotation(ExcelAnno.class);
+                if (ea != null) {
+                    if(ea.Pass()) {
+                        continue;
+                    }}
                 title[i] = fields[i].getName();
-                if (ea != null && !ea.Value().equals("Null")) {
-                    align[i] = ea.Align();
-                    continue;
-                }
                 align[i] = 0x2;
+                if (ea != null) {
+                    if(ea.Align()!=0x2){
+                        align[i] = ea.Align();
+                    }
+                    if (!ea.Value().equals("Null")) {
+                        title[i] = ea.Value();
+                    }
+                }
             }
         }else {
             for (int i = 0; i < fields.length; i++) {

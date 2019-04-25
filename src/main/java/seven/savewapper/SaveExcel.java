@@ -86,7 +86,7 @@ public interface SaveExcel extends ExcelSuperInterface {
     /**
      * 网页输出流
      *
-     * @param stream
+     * @param strea
      * @return
      */
     SaveExcel SetOutputStream(OutputStream stream) throws Exception;
@@ -137,4 +137,3 @@ public interface SaveExcel extends ExcelSuperInterface {
      */
     SaveExcel SetCellStyle(String name, CellStyleInterface cellStyle);
 }
-
