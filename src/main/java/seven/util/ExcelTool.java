@@ -51,7 +51,7 @@ public class ExcelTool {
         return new XSSFWorkbook(f);
     }
 
-    public static final void  Close(Closeable... close)throws Exception{
+    public static void  Close(Closeable... close)throws Exception{
         try {
             for(Closeable closeable:close){
                 if(closeable!=null){
@@ -63,10 +63,10 @@ public class ExcelTool {
         }
     }
 
-    public static final Field[] GetFilesDeep(Class<?> t) {
+    public static Field[] GetFilesDeep(Class<?> t) {
         if (!t.getSuperclass().equals(Object.class)) {
-            Field fieldSu[] = GetFilesDeep(t.getSuperclass());
-            Field fieldSe[] = t.getDeclaredFields();
+            Field[] fieldSu = GetFilesDeep(t.getSuperclass());
+            Field[] fieldSe = t.getDeclaredFields();
             Field[] field = new Field[fieldSe.length + fieldSu.length];
             System.arraycopy(fieldSe, 0, field, 0, fieldSe.length);
             System.arraycopy(fieldSu, 0, field, fieldSe.length, fieldSu.length);
@@ -77,8 +77,8 @@ public class ExcelTool {
 
     public static final Method[] GetMethodDeep(Class<?> t) {
         if (!t.getSuperclass().equals(Object.class)) {
-            Method MethodSu[] = GetMethodDeep(t.getSuperclass());
-            Method MethodSe[] = t.getDeclaredMethods();
+            Method[] MethodSu = GetMethodDeep(t.getSuperclass());
+            Method[] MethodSe = t.getDeclaredMethods();
             Method[] Method = new Method[MethodSe.length + MethodSu.length];
             System.arraycopy(MethodSe, 0, Method, 0, MethodSe.length);
             System.arraycopy(MethodSu, 0, Method, MethodSe.length, MethodSu.length);

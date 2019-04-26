@@ -1,5 +1,12 @@
 ## 更新纪录
 
+### 更新2017/01/06
+* 整合注解，导出和读取使用同一个ExcelAnno注解
+* 统一编码为UTF-8
+* 修复据库查询的导出(Object)递归越栈问题
+* 增加新的xxx.Class定义类型导出，操作更简单
+* 导出注解支持(自己使用seven.savewapper.anno.ExcelAnno类型注解)
+
 ### 更新2017/01/11
 * 增加AnyCol来对应FilterCol方法，只保留AnyCol类列
 * 增加SetCellStyle，支持方法链式设置列单元格风格
@@ -26,7 +33,7 @@
 * 丢入Result参数后的操作就如同操作Map/Object一样
 
 ### 更新2017/01/01
-* 增加ResExprotDBMap&ResExprotDBObj用于支持数据库导出
+* 增加ResExportDBMap&ResExportDBObj用于支持数据库导出
 * 支持基于数据库查询的导出(Map),直接放入Result对象即可
 * 支持基于数据库查询的导出(Object),直接放入Result对象即可
 

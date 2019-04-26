@@ -32,27 +32,28 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * [Zhihu]https://www.zhihu.com/people/Sweets07
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2016/11/30.
  */
-public abstract class SaveExcelObject<T> implements SaveExcel {
+public abstract class SaveExcelObject<T> implements SaveExcel<T> {
     protected List<T> list;
     public static final String DEFAULT_TYPE = "xlsx";
     protected String path;
-    protected List<String> filterColBy_key = new ArrayList<>();
-    protected List<String> anyColBy_key = new ArrayList<>();
-    protected DataFilterInterface filter = new DefaultDataFilter();
-    protected DataFilterProcessInterface process = new DefaultDataProFilter();
-    protected Comparator<? super Object> c = null;
+    protected List<String> filterColByKey = new ArrayList<>();
+    protected List<String> anyColByKey = new ArrayList<>();
+    protected DataFilterInterface<T> filter = new DefaultDataFilter<T>();
+    protected DataFilterProcessInterface<T> process = new DefaultDataProFilter<T>();
+    protected Comparator<? super T> c = null;
     protected ResultSet resultSet = null;
     protected OutputStream stream = null;
     protected Workbook wk = null;
-    protected HashMap<String, String> convert_title = new HashMap<>();
-    protected HashMap<String, CellStyle> cell_style = new HashMap<>();
-    private List<CellStyleCallbackWrapper> cellStyleCallbackWappers = new ArrayList<>();
+    protected HashMap<String, String> convertTitle = new HashMap<>();
+    protected HashMap<String, CellStyle> cellStyle = new HashMap<>();
+    private List<CellStyleCallbackWrapper> cellStyleCallbackWrappers = new ArrayList<>();
 
 
     public SaveExcelObject(List<T> list, String path) {
@@ -74,7 +75,7 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     }
 
     @Override
-    public SaveExcelObject Filter(DataFilterInterface<?> filter) {
+    public SaveExcelObject<T> Filter(DataFilterInterface<T> filter) {
         this.filter = filter;
         return this;
     }
@@ -84,22 +85,20 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     }
 
     @Override
-    public SaveExcelObject Process(DataFilterProcessInterface<?> process) {
+    public SaveExcelObject<T> Process(DataFilterProcessInterface<T> process) {
         this.process = process;
         return this;
     }
 
     @Override
-    public SaveExcelObject Sort(Comparator<? super Object> c) {
+    public SaveExcelObject<T> Sort(Comparator<? super T> c) {
         this.c = c;
         return this;
     }
 
     @Override
-    public SaveExcelObject FilterCol(DataFilterColumnInterface df) {
-        for (String s : df.filter()) {
-            filterColBy_key.add(s);
-        }
+    public SaveExcelObject<T> FilterCol(Consumer<List<String>> df) {
+        df.accept(filterColByKey);
         return this;
     }
 
@@ -119,12 +118,12 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     }
 
     protected String convertTitle(String title) throws Exception {
-        String title_ = convert_title.get(title);
+        String title_ = convertTitle.get(title);
         return title_ == null ? title : title_;
     }
 
     @Override
-    public SaveExcel SetOutputStream(OutputStream stream) throws Exception {
+    public SaveExcel<T> SetOutputStream(OutputStream stream) throws Exception {
         this.stream = stream;
         return this;
     }
@@ -135,38 +134,38 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
     }
 
     @Override
-    public SaveExcel SetPath(String path) {
+    public SaveExcel<T> SetPath(String path) {
         this.path = path;
         return this;
     }
 
     @Override
-    public SaveExcel ConvertName(String title, String new_title) {
-        convert_title.put(title, new_title);
+    public SaveExcel<T> ConvertName(String title, String newTitle) {
+        convertTitle.put(title, newTitle);
         return this;
     }
 
     @Override
-    public SaveExcel ConvertName(HashMap<String, String> title_mapping) {
-        convert_title.putAll(title_mapping);
+    public SaveExcel<T> ConvertName(HashMap<String, String> titleMapping) {
+        convertTitle.putAll(titleMapping);
         return this;
     }
 
     @Override
-    public SaveExcel ConvertName(HashMap<String, String> title_mapping, Boolean is_init) {
-        if (is_init) {
-            convert_title.clear();
+    public SaveExcel<T> ConvertName(HashMap<String, String> titleMapping, Boolean isInit) {
+        if (isInit) {
+            convertTitle.clear();
         }
-        return ConvertName(title_mapping);
+        return ConvertName(titleMapping);
     }
 
     @Override
-    public SaveExcel SetCellStyle(String name, CellStyleInterface styleInterface) {
+    public SaveExcel<T> SetCellStyle(String name, CellStyleInterface styleInterface) {
         if (wk == null) {
-            cellStyleCallbackWappers.add(new CellStyleCallbackWrapper(name, styleInterface));
+            cellStyleCallbackWrappers.add(new CellStyleCallbackWrapper(name, styleInterface));
             return this;
         }
-        cell_style.put(name, styleInterface.create(CellStyle.CreateStyle(wk.createCellStyle())));
+        cellStyle.put(name, styleInterface.create(CellStyle.CreateStyle(wk.createCellStyle())));
         return this;
     }
 
@@ -174,16 +173,14 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
         if (wk == null) {
             throw new Exception("请输入路径并且初始化WK对象");
         }
-        for (CellStyleCallbackWrapper c : cellStyleCallbackWappers) {
-            c.create(wk, cell_style);
+        for (CellStyleCallbackWrapper c : cellStyleCallbackWrappers) {
+            c.create(wk, cellStyle);
         }
     }
 
     @Override
-    public SaveExcel AnyCol(DataFilterColumnInterface df) {
-        for (String s : df.filter()) {
-            anyColBy_key.add(s);
-        }
+    public SaveExcel<T> AnyCol(Consumer<List<String>> df) {
+        df.accept(this.anyColByKey);
         return this;
     }
 
@@ -192,8 +189,8 @@ public abstract class SaveExcelObject<T> implements SaveExcel {
         for (short i = 0; i < title.length; i++) {
             Cell cell = row.createCell(i);
             cell.setCellStyle(defStyle);
-            if (cell_style.containsKey(title[i])) {
-                cell.setCellStyle(cell_style.get(title[i]).getRealyStyle());
+            if (cellStyle.containsKey(title[i])) {
+                cell.setCellStyle(cellStyle.get(title[i]).getRealyStyle());
             }
             cell.setCellValue(convertTitle(title[i]));
         }

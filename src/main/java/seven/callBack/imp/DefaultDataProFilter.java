@@ -1,5 +1,6 @@
 package seven.callBack.imp;
 
+import org.apache.poi.ss.formula.functions.T;
 import seven.callBack.DataFilterProcessInterface;
 
 /**
@@ -8,9 +9,10 @@ import seven.callBack.DataFilterProcessInterface;
  * Created by seven on 2016/10/18.
  */
 @SuppressWarnings("unchecked")
-public class DefaultDataProFilter implements DataFilterProcessInterface<Object> {
+public class DefaultDataProFilter<T> implements DataFilterProcessInterface<T> {
+
     @Override
-    public void process(Object o) {
+    public void accept(T o) {
 
     }
 }

@@ -28,7 +28,8 @@ import java.util.*;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2016/11/30.
  */
-public class ResExportMap extends SaveExcelObject<Map> {
+@SuppressWarnings("all")
+public class ResExportMap extends SaveExcelObject<java.util.Map> {
 
     public ResExportMap(List<Map> list) {
         super(list);
@@ -45,8 +46,6 @@ public class ResExportMap extends SaveExcelObject<Map> {
     public ResExportMap(ResultSet resultSet) {
         super(resultSet);
     }
-
-
 
 
     @Override
@@ -67,47 +66,50 @@ public class ResExportMap extends SaveExcelObject<Map> {
 
         style.setAlignment(HorizontalAlignment.CENTER);
         Map m = list.get(0);
-        Set<String> set_title = m.keySet();
-        Iterator<String> it = set_title.iterator();
+        Set<String> setTitle = m.keySet();
+        Iterator<String> it = setTitle.iterator();
         String t;
         String[] title;
         List<String> l = new ArrayList();
 
-        if (!anyColBy_key.isEmpty()) {
+        if (!anyColByKey.isEmpty()) {
             for (Map<String, String> o : list) {
-                if (!filter.filter(o).booleanValue()) {
-                    while (it.hasNext()) {
-                        t = it.next();
-                        if (!anyColBy_key.contains(t)) {
-                            throw new Exception("字段名无效");
-                        }
+                if (!filter.test(o)) {
+                    HashSet<String> strings = new HashSet<>(setTitle);
+                    strings.removeAll(setTitle);
+                    if (!strings.isEmpty()) {
+                        throw new Exception("字段名无效");
                     }
                 }
             }
-            title = anyColBy_key.toArray(new String[anyColBy_key.size()]);
+            title = anyColByKey.toArray(new String[anyColByKey.size()]);
         } else {
             while (it.hasNext()) {
                 t = it.next();
-                if (!filterColBy_key.contains(t)) {
+                if (!filterColByKey.contains(t)) {
                     l.add(t);
                 }
             }
             title = l.toArray(new String[l.size()]);
         }
+
         Row row = sheet.createRow(0);
+
         initTitle(title, row, style);
+
         int index = 0;
-        for (Map<String, String> o : list) {
-            if (!filter.filter(o).booleanValue()) {
+        for (
+                Map<String, String> o : list) {
+            if (!filter.test(o)) {
                 continue;
             }
             row = sheet.createRow(++index);
-            process.process(o);//加工每一行
+            process.accept(o);//加工每一行
             for (int i = 0; i < title.length; i++) {
                 Cell cell = row.createCell(i);
                 cell.setCellStyle(style);
-                if (cell_style.containsKey(title[i])) {
-                    cell.setCellStyle(cell_style.get(title[i]).getRealyStyle());
+                if (cellStyle.containsKey(title[i])) {
+                    cell.setCellStyle(cellStyle.get(title[i]).getRealyStyle());
                 }
                 cell.setCellValue(o.get(title[i]));
             }

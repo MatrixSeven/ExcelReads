@@ -15,6 +15,7 @@ package seven.savewapper.wapperRef.sysWppers;
 //		   (______|______)
 //=======================================================
 
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import seven.anno.ExcelAnno;
 import seven.savewapper.wapperRef.SaveExcelObject;
@@ -30,15 +31,15 @@ import java.util.List;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2016/11/30.
  */
-public class ResExportObj extends SaveExcelObject<Object> {
+public class ResExportObj<T> extends SaveExcelObject<T> {
 
-    public ResExportObj(List<Object> list, String path) {
+    public ResExportObj(List<T> list, String path) {
         super(list, path);
     }
     public ResExportObj(ResultSet resultSet, String path) {
         super(resultSet, path);
     }
-    public ResExportObj(List<Object> list){
+    public ResExportObj(List<T> list){
         super(list);
     };
     public ResExportObj(ResultSet resultSet) {
@@ -57,11 +58,11 @@ public class ResExportObj extends SaveExcelObject<Object> {
         String[] title = new String[fields.length];
         short[] align = new short[fields.length];
         ExcelAnno ea = null;
-        if(anyColBy_key.isEmpty()) {
+        if(anyColByKey.isEmpty()) {
             for (int i = 0; i < fields.length; i++) {
                 fields[i].setAccessible(true);
                 //过滤列
-                if (filterColBy_key.contains(fields[i].getName())) {
+                if (filterColByKey.contains(fields[i].getName())) {
                     continue;
                 }
 
@@ -84,11 +85,11 @@ public class ResExportObj extends SaveExcelObject<Object> {
         }else {
             for (int i = 0; i < fields.length; i++) {
                 fields[i].setAccessible(true);
-                if(!anyColBy_key.contains( fields[i].getName())){
+                if(!anyColByKey.contains(fields[i].getName())){
                     throw new Exception("字段名无效");
                 }
             }
-            title = anyColBy_key.toArray(new String[anyColBy_key.size()]);
+            title = anyColByKey.toArray(new String[anyColByKey.size()]);
         }
 
 
@@ -104,19 +105,19 @@ public class ResExportObj extends SaveExcelObject<Object> {
         int index = 0;
         Object object=null;
         String fn;
-        for (Object o : list) {
+        for (T o : list) {
             //过滤行
-            if (!filter.filter(o)) {
+            if (!filter.test(o)) {
                 continue;
             }
-            process.process(o);//加工每一行
+            process.accept(o);//加工每一行
             row = sheet.createRow(++index);
             for (int i = 0; i < title.length; i++) {
                 Cell cell = row.createCell(i);
                 cell.setCellStyle(style);
                 object=fields[i].get(o);
-                if(cell_style.containsKey(title[i])){
-                    cell.setCellStyle(cell_style.get(title[i]).getRealyStyle());
+                if(cellStyle.containsKey(title[i])){
+                    cell.setCellStyle(cellStyle.get(title[i]).getRealyStyle());
                 }
                 cell.setCellValue(object==null?"":object.toString());
 

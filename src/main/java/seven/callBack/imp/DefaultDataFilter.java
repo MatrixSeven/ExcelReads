@@ -7,9 +7,9 @@ import seven.callBack.DataFilterInterface;
  * [Bolg]https://matrixseven.github.io/
  * Created by seven on 2016/10/18.
  */
-public class DefaultDataFilter implements DataFilterInterface<Object>{
+public class DefaultDataFilter<T> implements DataFilterInterface<T>{
     @Override
-    public Boolean filter(Object o) {
+    public boolean test(T o) {
         return true;
     }
 }

@@ -52,8 +52,8 @@ public class ResExportDBObj extends ResExportObj {
         if (clazz != null) {
             Field[] fields = ExcelTool.GetFilesDeep(clazz);
             int len = fields.length;
-            String name[] = new String[len];
-            String f_name[] = new String[len];
+            String[] name = new String[len];
+            String[] f_name = new String[len];
             ExcelAnno anno = null;
             for (int i = 0; i < len; i++) {
                 fields[i].setAccessible(true);

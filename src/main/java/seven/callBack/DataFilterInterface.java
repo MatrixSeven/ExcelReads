@@ -1,5 +1,7 @@
 package seven.callBack;
 
+import java.util.function.Predicate;
+
 /**
  * [Github]https://github.com/MatrixSeven
  * [Bolg]https://matrixseven.github.io/
@@ -8,12 +10,7 @@ package seven.callBack;
  * T为实体Bean类型
  */
 @FunctionalInterface
-public interface DataFilterInterface<T> {
-    /**
-     * 对要包装的数据进行过滤，对应实体Bean\n
-     * 如果返回false将放弃此条数据
-     * @param t 实体Bean类型
-     * @return
-     */
-    Boolean filter(T t);
+public interface DataFilterInterface<T> extends Predicate<T> {
+
+
 }

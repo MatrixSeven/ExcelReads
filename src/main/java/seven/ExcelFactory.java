@@ -1,5 +1,6 @@
 package seven;
 
+import org.apache.poi.ss.formula.functions.T;
 import seven.callBack.PackageDataInterface;
 import seven.savewapper.SaveExcel;
 import seven.savewapper.wapperRef.sysWppers.ResExportDBMap;
@@ -46,7 +47,7 @@ public class ExcelFactory {
      * @return
      * @throws Exception
      */
-    public static Wrapper getBeans(String FilePath, WrapperObj r) throws Exception {
+    public static <T> Wrapper<T> getBeans(String FilePath, WrapperObj<T> r) throws Exception {
         return r.init(FilePath);
     }
 
@@ -58,14 +59,14 @@ public class ExcelFactory {
      * @return
      * @throws Exception
      */
-    public static SaveExcel saveExcel(List<? extends Object> bean, String FilePath) throws Exception {
+    public static  <T> SaveExcel<T> saveExcel(List<? extends T> bean, String FilePath) throws Exception {
         if (bean.size() < 1) {
             throw new Exception("请传入数据");
         }
         if (bean.get(0) instanceof Map) {
-            return new ResExportMap((List<Map>) bean, FilePath);
+            return (SaveExcel<T>) new ResExportMap((List<Map>)bean, FilePath);
         }
-        return new ResExportObj((List) bean, FilePath);
+        return new ResExportObj(bean, FilePath);
     }
 
     /**

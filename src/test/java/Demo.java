@@ -14,17 +14,17 @@
 //		   (______|______)
 //=======================================================
 
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import seven.ExcelFactory;
 import seven.anno.ExcelAnno;
-import seven.wapperInt.wapperRef.sysWppers.ResWrapperMap;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import seven.wapperInt.WrapperFactory;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * [Zhihu]https://www.zhihu.com/people/Sweets07
@@ -36,55 +36,26 @@ public class Demo {
     @Test
     public void Test_01() throws Exception {
 
-//        HashMap a=new HashMap();
-//        a.put(this.clone(),this.clone());
-//        ExcelFactory.getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
-//                new ResWrapperMap((Config it)->it.setContentRowEnd(12))). //这里能够处理每一行数据
-//                Process((HashMap<String, String> o) -> System.out.println(o + "\n")
-//                //这里能够处理时候过滤某一列
-//        ).FilterCol(() -> new String[]{}
-//                //这里能根据某一行的某一列的内容来取舍这行数据
-//        ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5
-//                //排序
-//        ).Sort((o1, o2) -> o1.hashCode() > o2.hashCode() ? 1 : hashCode() == o2.hashCode() ? 0 : -1).Create();
-//
-//        System.out.println(
-//                getBeans(System.getProperty("user.dir").concat("\\测试.xls"),
-//                        new ResWrapperMap() {
-//                            @Override
-//                            protected void LoadConfig(Config config) {
-//                                config.setContentRowStart(3);
-//                                config.setTitleRow(2);
-//                            }
-//                        }).
-//                        Process((HashMap<String, String> o) -> {
-//                                }
-//                        ).FilterCol(() -> new String[]{}
-//                ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5).<Map>CreateMap("创建人"));
-//        System.err.println("=======================================================================");
-//        getBeans(System.getProperty("user.dir").concat("\\测试.xlsx"),
-//                new ResWrapperMap(it->it.getErrorLog())).
-//                Process((HashMap<String, String> o) -> {
-//                        }
-//                ).FilterCol(() -> new String[]{}
-//        ).Filter((HashMap<String, String> o) -> o.get("创建人") != null && o.get("创建人").length() > 5).Create();
-//
-//
-        Map map = ExcelFactory.
-                getBeans(
-                        "/Users/evs/IdeaProjects/ExcelReads/ExcelReads/测试.xlsx",
-                        new ResWrapperMap(it -> it.setContentRowStart(3)
-                                .setTitleRow(2))).Process(o -> {
-        }).FilterCol(() -> new String[]{}).Filter((HashMap<String, String> o) -> o.get("创建人") != null &&
-                o.get("创建人").length() > 4).<Map>CreateMap("创建人");
-        System.out.println(map);
+        String filePath = System.getProperty("user.dir").concat("/测试.xls");
+        String filePath2 = System.getProperty("user.dir").concat("/seven.xlsx");
 
+        List<Map<String, String>> list = ExcelFactory.getBeans(filePath, WrapperFactory
+                .MakeMap(it -> it.vocSize(1999).title(2).content(3)))
+                .Filter(it -> !it.get("服务IP").contains("12"))
+                .Process(it -> it.put("add", "这个是我增加的"))
+                .FilterCol(df -> df.add("连接类型"))
+                .CreateMap();
 
-    }
+        System.out.println(list);
 
+        List<A> create = ExcelFactory.getBeans(filePath2, WrapperFactory.<A>MakeObj(it -> it.vocSize(1999)
+                .title(0).content(1), A.class))
+                .Filter(it -> it.getA().equals(""))
+                .FilterCol(it -> it.add("1"))
+                .Sort(Comparator.comparing(A::getA))
+                .Create();
+        System.out.println(create);
 
-    @Test
-    public void Test_03() throws Exception {
 
     }
 
@@ -96,34 +67,46 @@ public class Demo {
         aa.add(new A("唐山", "18"));
         aa.add(new A("狗东", "15"));
         aa.add(new A("百毒", "12"));
-        ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("\\seven.xlsx"))
-                .Filter((A a) -> a.getA().length() == 2)
-                .Process((A a) -> a.setA(a.getA().concat("_seven")))
-                .Save();
+        ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("/seven.xlsx"))
+                .Filter(a -> a.getA().equals("唐山"))
+                .Process(a -> a.setA(a.getA().concat("_seven")))
+                .Sort(Comparator.comparing(A::getA))
+                .Flush();
 
 
         List<Map> m = new ArrayList<>();
-        Map mm = new HashMap();
-        mm.put("A", "w");
-        mm.put("A1", "w2");
-        mm.put("A2", "w3");
-        Map mmm = new HashMap();
-        mmm.put("A", "23");
-        mmm.put("A1", "w3asf2");
-        mmm.put("A2", "w二3");
+        Map<String, String> mm = new HashMap<>();
+        mm.put("姓名", "w");
+        mm.put("年龄", "w2");
+        mm.put("性别", "w3");
+        Map<String, String> mmm = new HashMap<>();
+        mmm.put("姓名", "23");
+        mmm.put("年龄", "w3asf2");
+        mmm.put("性别", "w二3");
         m.add(mm);
         m.add(mmm);
-        ExcelFactory.saveExcel(m, System.getProperty("user.dir").concat("\\SaveMap.xlsx")
-        ).Save();
+        ExcelFactory.saveExcel(m, System.getProperty("user.dir").concat("/SaveMap_.xlsx"))
+                .SetCellStyle("A", cellStyle -> cellStyle
+                        .setFillPattern(FillPatternType.DIAMONDS)
+                        .setAlignment(HorizontalAlignment.RIGHT)
+                        .setFillForegroundColor(HSSFColor.WHITE.index)
+                        .setBottomBorderColor(HSSFColor.RED.index)
+                        .setFillBackgroundColor(HSSFColor.GOLD.index)
+                        .setRightBorderColor(HSSFColor.INDIGO.index))
+                .ConvertName("A", "我的世界")
+                .Flush();
 
     }
 }
 
 class A {
     @ExcelAnno(Value = "姓名")
-    String A;
+    private String A;
     @ExcelAnno(Value = "年龄")
-    String B;
+    private String B;
+
+    public A() {
+    }
 
     public A(String a, String b) {
         A = a;
@@ -144,5 +127,13 @@ class A {
 
     public void setB(String b) {
         B = b;
+    }
+
+    @Override
+    public String toString() {
+        return "A{" +
+                "A='" + A + '\'' +
+                ", B='" + B + '\'' +
+                '}';
     }
 }

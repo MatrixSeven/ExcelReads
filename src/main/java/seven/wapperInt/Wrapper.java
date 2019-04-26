@@ -6,6 +6,7 @@ import seven.ExcelSuperInterface;
 import seven.callBack.DataFilterColumnInterface;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
+import seven.config.Config;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 //=======================================================
@@ -35,7 +37,7 @@ import java.util.function.Consumer;
  * @author Seven<p>
  * 2016年4月12日-下午4:08:08
  */
-public abstract class Wrapper implements Serializable, ExcelSuperInterface {
+public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
     protected Config config = new Config();
     protected DecimalFormat df = new DecimalFormat("0");
 
@@ -85,10 +87,13 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
      * @return
      * @throws Exception
      */
-    public abstract <T> List<T> Create() throws Exception;
+    public abstract  List<T> Create() throws Exception;
 
 
-    public abstract <T> T CreateMap(String key) throws Exception;
+    public abstract List<Map<String,String>> CreateMap() throws Exception;
+
+    public abstract Map<String,Map<String,String>> CreateMap(String key) throws Exception;
+
 
 
     /**
@@ -98,7 +103,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
      * @param filter {@link DataFilterInterface}
      * @return
      */
-    public abstract Wrapper Filter(DataFilterInterface<?> filter);
+    public abstract Wrapper<T> Filter(DataFilterInterface<? extends T> filter);
 
     /**
      * 此处传入每一行打包好的数据。对应一个实体\n
@@ -107,7 +112,7 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
      * @param process {@link DataFilterProcessInterface}
      * @return
      */
-    public abstract Wrapper Process(DataFilterProcessInterface<?> process);
+    public abstract Wrapper<T> Process(DataFilterProcessInterface<? extends T> process);
 
     /**
      * 对结果的List进行排序
@@ -115,14 +120,14 @@ public abstract class Wrapper implements Serializable, ExcelSuperInterface {
      * @param c
      * @return
      */
-    public abstract Wrapper Sort(Comparator<?> c);
+    public abstract Wrapper<T> Sort(Comparator<? extends T> c);
 
     /**
      * 此处过滤Excel的列数据（列名）\n
      * 如果加入后，将不对实体进行赋值
      *
-     * @param df {@link DataFilterColumnInterface}
+     * @param consumer {@link DataFilterColumnInterface}
      */
-    public abstract Wrapper FilterCol(DataFilterColumnInterface df);
+    public abstract Wrapper<T> FilterCol(Consumer<List<String>> consumer);
 
 }

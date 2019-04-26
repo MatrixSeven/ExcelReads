@@ -15,6 +15,7 @@ package seven.savewapper;
 //		   (______|______)
 //=======================================================
 
+import org.apache.poi.ss.formula.functions.T;
 import seven.ExcelSuperInterface;
 import seven.callBack.CellStyleInterface;
 import seven.callBack.DataFilterColumnInterface;
@@ -24,13 +25,15 @@ import seven.callBack.DataFilterProcessInterface;
 import java.io.OutputStream;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * [Zhihu]https://www.zhihu.com/people/Sweets07
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2016/11/30.
  */
-public interface SaveExcel extends ExcelSuperInterface {
+public interface SaveExcel<T> extends ExcelSuperInterface {
 
     /**
      * 请使用Flush
@@ -47,7 +50,7 @@ public interface SaveExcel extends ExcelSuperInterface {
      * @param filter {@link DataFilterInterface}
      * @return
      */
-    SaveExcel Filter(DataFilterInterface<?> filter);
+    SaveExcel<T> Filter(DataFilterInterface<T> filter);
 
     /**
      * 此处传入每一行打包好的数据。对应一个实体\n
@@ -56,7 +59,7 @@ public interface SaveExcel extends ExcelSuperInterface {
      * @param process {@link DataFilterProcessInterface}
      * @return
      */
-    SaveExcel Process(DataFilterProcessInterface<?> process);
+    SaveExcel<T> Process(DataFilterProcessInterface<T> process);
 
 
     /**
@@ -65,31 +68,31 @@ public interface SaveExcel extends ExcelSuperInterface {
      * @param c
      * @return
      */
-    SaveExcel Sort(Comparator<? super Object> c);
+    SaveExcel<T> Sort(Comparator<? super T> c);
 
     /**
      * 此处过滤Excel的列数据（列名）\n
-     * 如果加入后，将不对实体进行赋值
+     * 如果加入后，只保留对应数据
      *
-     * @param df {@link DataFilterColumnInterface}
+     * @param consumer {@link DataFilterColumnInterface}
      */
-    SaveExcel FilterCol(DataFilterColumnInterface df);
+    SaveExcel<T> FilterCol(Consumer<List<String>> consumer);
 
     /**
      * 此处过滤Excel的列数据（列名）\n
-     * 如果加入后，只要这些列
+     * 如果加入后，删除这些列
      *
-     * @param df {@link DataFilterColumnInterface}
+     * @param consumer {@link DataFilterColumnInterface}
      */
-    SaveExcel AnyCol(DataFilterColumnInterface df);
+    SaveExcel<T> AnyCol(Consumer<List<String>> consumer);
 
     /**
      * 网页输出流
      *
-     * @param strea
+     * @param stream
      * @return
      */
-    SaveExcel SetOutputStream(OutputStream stream) throws Exception;
+    SaveExcel<T> SetOutputStream(OutputStream stream) throws Exception;
 
     /**
      * @throws Exception
@@ -101,32 +104,32 @@ public interface SaveExcel extends ExcelSuperInterface {
      *
      * @param path
      */
-    SaveExcel SetPath(String path);
+    SaveExcel<T> SetPath(String path);
 
     /**
      * 转换字段名称
      *
      * @param title
-     * @param new_title
+     * @param newTitle
      * @return
      */
-    SaveExcel ConvertName(String title, String new_title);
+    SaveExcel<T> ConvertName(String title, String newTitle);
 
     /**
      * 转换字段
      *
-     * @param title_mapping
+     * @param titleMapping
      * @return
      */
-    SaveExcel ConvertName(HashMap<String, String> title_mapping);
+    SaveExcel<T> ConvertName(HashMap<String, String> titleMapping);
 
     /**
      * 转换字段
      *
-     * @param title_mapping
+     * @param titleMapping
      * @return
      */
-    SaveExcel ConvertName(HashMap<String, String> title_mapping, Boolean is_init);
+    SaveExcel<T> ConvertName(HashMap<String, String> titleMapping, Boolean isInit);
 
     /**
      * 设置风格.必须保证wk不能为null。
@@ -135,5 +138,5 @@ public interface SaveExcel extends ExcelSuperInterface {
      * @param cellStyle
      * @return
      */
-    SaveExcel SetCellStyle(String name, CellStyleInterface cellStyle);
+    SaveExcel<T> SetCellStyle(String name, CellStyleInterface cellStyle);
 }

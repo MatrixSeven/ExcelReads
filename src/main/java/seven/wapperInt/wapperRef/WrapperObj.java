@@ -23,7 +23,7 @@ import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
 import seven.callBack.imp.DefaultDataFilter;
 import seven.callBack.imp.DefaultDataProFilter;
-import seven.wapperInt.Config;
+import seven.config.Config;
 import seven.wapperInt.Wrapper;
 
 import java.util.*;
@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  * @date   2016年4月12日-下午4:07:57
  */
 @SuppressWarnings("all")
-public abstract class WrapperObj<T> extends Wrapper {
+public abstract class WrapperObj<T> extends Wrapper<T> {
 	protected DataFilterInterface filter=new DefaultDataFilter();
 	protected DataFilterProcessInterface process=new DefaultDataProFilter();
 	protected List<String> filterColByKey =new ArrayList<>();
@@ -60,8 +60,9 @@ public abstract class WrapperObj<T> extends Wrapper {
 	}
 
 
-	public Wrapper FilterCol(DataFilterColumnInterface df) {
-		filterColByKey.addAll(Arrays.asList(df.filter()));
+	@Override
+	public Wrapper<T> FilterCol(Consumer<List<String>> consumer) {
+		consumer.accept(filterColByKey);
 		return this;
 	}
 
@@ -70,7 +71,7 @@ public abstract class WrapperObj<T> extends Wrapper {
 		return this;
 	}
 
-	public Wrapper Sort(Comparator c) {
+	public Wrapper<T> Sort(Comparator c) {
 		this.c = c;return this;
 	}
 	public List<T> Create() throws Exception{
@@ -78,14 +79,22 @@ public abstract class WrapperObj<T> extends Wrapper {
 	}
 
 	@Override
-	public  <T> T  CreateMap(String key)throws Exception {
+	public  List<Map<String,String>>  CreateMap()throws Exception {
+		return RefResWrapper(fs,isMap,null);
+	}
+
+	@Override
+	public Map<String, Map<String, String>> CreateMap(String key) throws Exception {
 		return RefResWrapper(fs,!isMap,key);
 	}
 
-	public Wrapper Filter(DataFilterInterface<?> filter) {
+	@Override
+	public Wrapper<T> Filter(DataFilterInterface<? extends T> filter) {
 		this.filter = filter;return this;
 	}
-	public Wrapper Process(DataFilterProcessInterface<?> process) {
+
+	@Override
+	public Wrapper<T> Process(DataFilterProcessInterface<? extends T> process) {
 		this.process = process;return this;
 	}
 }

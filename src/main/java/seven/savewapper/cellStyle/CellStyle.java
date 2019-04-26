@@ -144,6 +144,6 @@ public class CellStyle {
 
     private org.apache.poi.ss.usermodel.CellStyle cellStyle;
     public static final CellStyle CreateStyle(org.apache.poi.ss.usermodel.CellStyle cellStyle ) {
-        return new CellStyle(cellStyle).setFillPattern(FillPatternType.BRICKS);
+        return new CellStyle(cellStyle);
     }
 }
