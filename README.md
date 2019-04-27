@@ -13,6 +13,16 @@
 * JavaBean实体支持使用注解添加正则规则校验，HashMap支持数组规则校验
 * 依赖POI，使用Maven构建
 
+在项目的pom文件增加下面内容,即可食用! Enjoy it!!!
+```xml
+<dependency>
+  <groupId>com.github.matrixseven</groupId>
+  <artifactId>ExcelReads</artifactId>
+  <version>1.0.1</version>
+</dependency>
+
+```
+
 ## [更新日志详见:UpdateLogs.md](UPDATELOG.MD)
 ###最近三次更新:
 

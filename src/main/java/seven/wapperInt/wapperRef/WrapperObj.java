@@ -18,7 +18,6 @@ package seven.wapperInt.wapperRef;
 //		   (______|______)
 //=======================================================
 
-import seven.callBack.DataFilterColumnInterface;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
 import seven.callBack.imp.DefaultDataFilter;
@@ -31,7 +30,7 @@ import java.util.function.Consumer;
 
 /**
  * @author Seven<p>
- * @date   2016年4月12日-下午4:07:57
+ * date   2016年4月12日-下午4:07:57
  */
 @SuppressWarnings("all")
 public abstract class WrapperObj<T> extends Wrapper<T> {

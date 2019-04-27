@@ -10,6 +10,7 @@ package seven.callBack;
 public interface DataFilterColumnInterface {
     /**
      *{@link seven.savewapper.SaveExcel}
+     * @return String[]
      */
-    public String[] filter();
+    String[] filter();
 }

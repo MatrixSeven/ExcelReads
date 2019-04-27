@@ -37,6 +37,7 @@ import java.util.function.Consumer;
  * @author Seven<p>
  * 2016年4月12日-下午4:08:08
  */
+@SuppressWarnings("all")
 public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
     protected Config config = new Config();
     protected DecimalFormat df = new DecimalFormat("0");
@@ -84,7 +85,7 @@ public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
     /**
      * 生成数据包，返回打包好的数据
      *
-     * @return
+     * @return List
      * @throws Exception
      */
     public abstract  List<T> Create() throws Exception;
@@ -101,7 +102,7 @@ public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
      * 如果返回false将放弃此条数据
      *
      * @param filter {@link DataFilterInterface}
-     * @return
+     * @return Wrapper
      */
     public abstract Wrapper<T> Filter(DataFilterInterface<? extends T> filter);
 
@@ -110,7 +111,7 @@ public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
      * 在process方法里可对属性进行处理加工
      *
      * @param process {@link DataFilterProcessInterface}
-     * @return
+     * @return Wrapper
      */
     public abstract Wrapper<T> Process(DataFilterProcessInterface<? extends T> process);
 
@@ -118,7 +119,7 @@ public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
      * 对结果的List进行排序
      *
      * @param c
-     * @return
+     * @return Wrapper
      */
     public abstract Wrapper<T> Sort(Comparator<? extends T> c);
 

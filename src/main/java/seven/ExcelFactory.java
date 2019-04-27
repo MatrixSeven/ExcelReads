@@ -1,6 +1,5 @@
 package seven;
 
-import org.apache.poi.ss.formula.functions.T;
 import seven.callBack.PackageDataInterface;
 import seven.savewapper.SaveExcel;
 import seven.savewapper.wapperRef.sysWppers.ResExportDBMap;
@@ -32,9 +31,9 @@ import java.util.Map;
 //=======================================================
 /**
  * @author Seven<p>
- * @date 2016年6月4日-下午4:08:19
+ * date 2016年6月4日-下午4:08:19
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("all")
 public class ExcelFactory {
 
     private ExcelFactory() {
@@ -44,7 +43,7 @@ public class ExcelFactory {
      * 读取Excel
      * @param FilePath 路径
      * @param r        包装类
-     * @return
+     * @return Wrapper
      * @throws Exception
      */
     public static <T> Wrapper<T> getBeans(String FilePath, WrapperObj<T> r) throws Exception {
@@ -56,7 +55,7 @@ public class ExcelFactory {
      *
      * @param bean
      * @param FilePath
-     * @return
+     * @return SaveExcel
      * @throws Exception
      */
     public static  <T> SaveExcel<T> saveExcel(List<? extends T> bean, String FilePath) throws Exception {
@@ -73,7 +72,7 @@ public class ExcelFactory {
      * 保存Excel
      *
      * @param bean
-     * @return
+     * @return SaveExcel
      * @throws Exception
      */
     public static SaveExcel saveExcel(List<? extends Object> bean) throws Exception {
@@ -92,7 +91,7 @@ public class ExcelFactory {
      *
      * @param resultSet
      * @param FilePath
-     * @return
+     * @return SaveExcel
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath) throws Exception {
@@ -105,7 +104,7 @@ public class ExcelFactory {
      * @param resultSet
      * @param FilePath
      * @param packageDataInterface
-     * @return
+     * @return SaveExcel
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath, PackageDataInterface packageDataInterface) throws Exception {
@@ -117,7 +116,7 @@ public class ExcelFactory {
      *
      * @param resultSet
      * @param type
-     * @return
+     * @return SaveExcel
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, Class type) throws Exception {
@@ -129,7 +128,7 @@ public class ExcelFactory {
      * 保存Excel
      *
      * @param resultSet
-     * @return
+     * @return SaveExcel
      * @throws Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet) throws Exception {
