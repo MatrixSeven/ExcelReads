@@ -1,14 +1,13 @@
 package seven.wapperInt.wapperRef.sysWppers;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import seven.config.Config;
 import seven.util.ExcelTool;
 import seven.util.RegHelper;
-import seven.config.Config;
 import seven.wapperInt.wapperRef.WrapperObj;
 
 import java.util.*;
@@ -106,18 +105,20 @@ public class ResWrapperMap extends WrapperObj<Map<String,String>> {
                     } catch (Exception e) {
                         logger.error("列表长度小于实际列长度 startSheet:{},sheetName:{}, row:{}", start_sheet, sheet.getSheetName(), rowNum);
                     }
-                    for (int j = 0, colNum = row.getPhysicalNumberOfCells(); j < colNum; j++) {
-                        if (require != null && !(require[j].equals("Null")) && filterColByKey.contains(titles[j])) {
+                    for (int j = 0, colNum = row.getPhysicalNumberOfCells(); j < colNum&&j<titles.length; j++) {
+                        if (require != null && !(require[j].equals("Null")) && !filterColByKey.contains(titles[j])) {
                             if (RegHelper.require(require[j], getCellFormatValue(row.getCell((short) j)))) {
                                 map.put(titles[j], getCellFormatValue(row.getCell((short) j)));
                             } else {
                             }
                         } else {
-                            map.put(titles[j], getCellFormatValue(row.getCell((short) j)));
+                            if(!filterColByKey.contains(titles[j])) {
+                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)));
+                            }
                         }
                     }
                     if (!isNull(map))
-                        if (this.filter.test(map)) {
+                        if (!this.filter.test(map)) {
                             continue;
                         }
                     this.process.accept(map);

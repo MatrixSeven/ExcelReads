@@ -17,6 +17,7 @@
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.util.StringUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -36,18 +37,17 @@ public class Demo {
     @Test
     public void Test_01() throws Exception {
 
-        String filePath = System.getProperty("user.dir").concat("/测试.xls");
-        String filePath2 = System.getProperty("user.dir").concat("/seven.xlsx");
+        String filePath = System.getProperty("user.dir").concat("/test.xlsx");
 
         List<Map<String, String>> list = ExcelFactory.getBeans(filePath, WrapperFactory
-                .MakeMap(it -> it.vocSize(1999).title(2).content(3)))
-                .Filter(it -> !it.get("服务IP").contains("12"))
-                .Process(it -> it.put("add", "这个是我增加的"))
-                .FilterCol(df -> df.add("连接类型"))
-                .CreateMap();
+                .MakeMap(it -> it.vocSize(1999).title(0).content(2).isLoopSheet(true)))
+                .Filter(it->it.get("Run").equals("Y"))
+                .Filter(it->!it.getOrDefault("Test"," ").equals(" "))
+                .Create();
 
         System.out.println(list);
 
+        String filePath2 = System.getProperty("user.dir").concat("/seven.xlsx");
         List<A> create = ExcelFactory.getBeans(filePath2, WrapperFactory.<A>MakeObj(it -> it.vocSize(1999)
                 .title(0).content(1), A.class))
                 .Filter(it -> it.getA().equals(""))
@@ -88,13 +88,7 @@ public class Demo {
         ExcelFactory.saveExcel(m, System.getProperty("user.dir").concat("/SaveMap_.xlsx"))
                 .SetCellStyle("A", cellStyle -> cellStyle
                         .setFillPattern(FillPatternType.DIAMONDS)
-                        .setAlignment(HorizontalAlignment.RIGHT)
-                        .setFillForegroundColor(HSSFColor.WHITE.index)
-                        .setBottomBorderColor(HSSFColor.RED.index)
-                        .setFillBackgroundColor(HSSFColor.GOLD.index)
-                        .setRightBorderColor(HSSFColor.INDIGO.index))
-                .ConvertName("A", "我的世界")
-                .Flush();
+                        .setAlignment(HorizontalAlignment.RIGHT)).Flush();
 
     }
 }

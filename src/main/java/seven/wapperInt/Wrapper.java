@@ -41,15 +41,16 @@ import java.util.function.Consumer;
 public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
     protected Config config = new Config();
     protected DecimalFormat df = new DecimalFormat("0");
+    private static final String BLANK="";
 
     protected String getCellFormatValue(Cell cell) {
         String cellValue;
         if (cell != null) {
             switch (cell.getCellType()) {
-                case Cell.CELL_TYPE_NUMERIC:
+                case NUMERIC:
                     cellValue = df.format(cell.getNumericCellValue());
                     break;
-                case Cell.CELL_TYPE_FORMULA: {
+                case FORMULA: {
                     if (HSSFDateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -59,20 +60,16 @@ public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
                     }
                     break;
                 }
-                case Cell.CELL_TYPE_BLANK:
-                    cellValue = " ";
-                    break;
-                case Cell.CELL_TYPE_STRING:
+                case STRING:
                     cellValue = cell.getStringCellValue();
                     break;
-                case Cell.CELL_TYPE_ERROR:
-                    cellValue = " ";
-                    break;
+                case ERROR:
+                case BLANK:
                 default:
-                    cellValue = " ";
+                    cellValue = BLANK;
             }
         } else {
-            cellValue = "";
+            cellValue = BLANK;
         }
         return cellValue;
     }
@@ -88,13 +85,12 @@ public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
      * @return List
      * @throws Exception
      */
-    public abstract  List<T> Create() throws Exception;
+    public abstract List<T> Create() throws Exception;
 
 
-    public abstract List<Map<String,String>> CreateMap() throws Exception;
+    public abstract List<Map<String, String>> CreateMap() throws Exception;
 
-    public abstract Map<String,Map<String,String>> CreateMap(String key) throws Exception;
-
+    public abstract Map<String, Map<String, String>> CreateMap(String key) throws Exception;
 
 
     /**
