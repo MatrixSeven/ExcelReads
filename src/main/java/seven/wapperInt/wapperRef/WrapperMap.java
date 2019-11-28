@@ -23,11 +23,14 @@ import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
 import seven.callBack.imp.DefaultDataFilter;
 import seven.callBack.imp.DefaultDataProFilter;
-import seven.wapperInt.ReaderObj;
+import seven.wapperInt.ReaderMap;
 import seven.wapperInt.Wrapper;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -35,14 +38,10 @@ import java.util.function.Consumer;
  * date   2016年4月12日-下午4:07:57
  */
 @SuppressWarnings("all")
-public abstract class WrapperObj<T> extends Wrapper implements ReaderObj<T> {
-    private static final Logger logger = LoggerFactory.getLogger(WrapperObj.class);
+public abstract class WrapperMap<T> extends Wrapper implements ReaderMap {
+    private static final Logger logger = LoggerFactory.getLogger(WrapperMap.class);
 
-
-
-
-
-    public WrapperObj(Consumer<seven.config.Config> consumer) {
+    public WrapperMap(Consumer<seven.config.Config> consumer) {
         super(consumer);
     }
 
@@ -56,18 +55,18 @@ public abstract class WrapperObj<T> extends Wrapper implements ReaderObj<T> {
     }
 
 
-    public ReaderObj<T> init(String filePath) {
+    public Wrapper init(String filePath) {
         this.fs = filePath;
         return this;
     }
 
-    public ReaderObj<T> init(File file) {
+    public Wrapper init(File file) {
         this.fs = file.getPath();
-        this.file=file;
+        this.file = file;
         return this;
     }
 
-    public ReaderObj<T> Sort(Comparator c) {
+    public ReaderMap Sort(Comparator c) {
         this.c = c;
         return this;
     }
@@ -80,29 +79,36 @@ public abstract class WrapperObj<T> extends Wrapper implements ReaderObj<T> {
     }
 
     @Override
-    public ReaderObj<T> FilterCol(Consumer<List<String>> consumer) {
+    public ReaderMap FilterCol(Consumer<List<String>> consumer) {
         consumer.accept(filterColByKey);
         return this;
     }
 
+    @Override
+    public List<Map<String, String>> CreateMap() throws Exception {
+        if (config.getIsLoopSheet()) {
+            throw new RuntimeException("开启LoopSheet选项,请使用CreateMapLoop");
+        }
+        return refResWrapper(fs, isMap);
+    }
 
     @Override
-    public Map<String, List<T>> CreateObjLoop() throws Exception {
+    public Map<String, Map<String, String>> CreateMapLoop() throws Exception {
         if (!config.getIsLoopSheet()) {
-            throw new RuntimeException("未开启LoopSheet选项,请使用Create");
+            throw new RuntimeException("未开启LoopSheet选项,请使用CreateMapLoop");
         }
         return refResWrapper(fs, isMap);
     }
 
 
     @Override
-    public ReaderObj<T> Filter(DataFilterInterface<? extends T> filter) {
+    public ReaderMap Filter(DataFilterInterface<? extends Map> filter) {
         this.filter = filter;
         return this;
     }
 
     @Override
-    public ReaderObj<T> Process(DataFilterProcessInterface<? extends T> process) {
+    public ReaderMap Process(DataFilterProcessInterface<? extends Map> process) {
         this.process = process;
         return this;
     }

@@ -6,15 +6,18 @@ import seven.ExcelSuperInterface;
 import seven.callBack.DataFilterColumnInterface;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
+import seven.callBack.imp.DefaultDataFilter;
+import seven.callBack.imp.DefaultDataProFilter;
 import seven.config.Config;
 
+import java.io.File;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 //=======================================================
@@ -38,10 +41,18 @@ import java.util.function.Consumer;
  * 2016年4月12日-下午4:08:08
  */
 @SuppressWarnings("all")
-public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
+public abstract class Wrapper implements Serializable {
     protected Config config = new Config();
     protected DecimalFormat df = new DecimalFormat("0");
     private static final String BLANK="";
+    protected DataFilterInterface filter=new DefaultDataFilter();
+    protected DataFilterProcessInterface process=new DefaultDataProFilter();
+    protected List<String> filterColByKey =new ArrayList<>();
+    protected List<String> filterColByValue =new ArrayList<>();
+    protected Comparator<? super Object> c=null;
+    protected String fs;
+    protected File file;
+    protected static final  boolean isMap=false;
 
     protected String getCellFormatValue(Cell cell) {
         String cellValue;
@@ -77,54 +88,5 @@ public abstract class Wrapper<T> implements Serializable, ExcelSuperInterface {
     public Wrapper(Consumer<Config> consumer) {
         consumer.accept(this.config);
     }
-
-
-    /**
-     * 生成数据包，返回打包好的数据
-     *
-     * @return List
-     * @throws Exception
-     */
-    public abstract List<T> Create() throws Exception;
-
-
-    public abstract List<Map<String, String>> CreateMap() throws Exception;
-
-    public abstract Map<String, Map<String, String>> CreateMap(String key) throws Exception;
-
-
-    /**
-     * 对要包装的数据进行过滤，对应实体Bean\n
-     * 如果返回false将放弃此条数据
-     *
-     * @param filter {@link DataFilterInterface}
-     * @return Wrapper
-     */
-    public abstract Wrapper<T> Filter(DataFilterInterface<? extends T> filter);
-
-    /**
-     * 此处传入每一行打包好的数据。对应一个实体\n
-     * 在process方法里可对属性进行处理加工
-     *
-     * @param process {@link DataFilterProcessInterface}
-     * @return Wrapper
-     */
-    public abstract Wrapper<T> Process(DataFilterProcessInterface<? extends T> process);
-
-    /**
-     * 对结果的List进行排序
-     *
-     * @param c
-     * @return Wrapper
-     */
-    public abstract Wrapper<T> Sort(Comparator<? extends T> c);
-
-    /**
-     * 此处过滤Excel的列数据（列名）\n
-     * 如果加入后，将不对实体进行赋值
-     *
-     * @param consumer {@link DataFilterColumnInterface}
-     */
-    public abstract Wrapper<T> FilterCol(Consumer<List<String>> consumer);
-
+    protected abstract <T> T refResWrapper(String fs, boolean isMap) throws Exception;
 }

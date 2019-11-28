@@ -6,9 +6,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import seven.anno.ExcelAnno;
+import seven.config.Config;
 import seven.util.ExcelTool;
 import seven.util.RegHelper;
-import seven.config.Config;
+import seven.wapperInt.ReaderObj;
 import seven.wapperInt.wapperRef.WrapperObj;
 
 import java.lang.reflect.*;
@@ -39,19 +40,18 @@ import java.util.function.Consumer;
  * 2016年6月4日-下午4:07:14
  */
 @SuppressWarnings({"all"})
-public class ResWrapperObj<T> extends WrapperObj<T> {
+public class ResWrapperObj<T> extends WrapperObj<T>  {
     private static final Logger logger = LoggerFactory.getLogger(ResWrapperObj.class);
 
     @Override
-    protected <T> T RefResWrapper(String fs, boolean isMap, String key) throws Exception {
+    protected <T> T refResWrapper(String fs, boolean isMap) throws Exception {
         config.check();
         HashMap<String, Method> MeThodCaChe = new HashMap<>();
         HashMap<String, T> maps = null;
         List<T> list = null;
 
-        Class<? extends Object> clazz = type;
-        Constructor[] constructors = clazz.getConstructors();
-        Field[] F = clazz.getDeclaredFields();
+        Constructor[] constructors = type.getConstructors();
+        Field[] F = type.getDeclaredFields();
         ExcelAnno Ex = null;
         String[] reg = new String[F.length];
         Arrays.fill(reg, "Null");
@@ -59,13 +59,13 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
         Field Map_key = null;
         if (isMap) {
             maps = new HashMap<String, T>(config.getVocSize());
-            Map_key = clazz.getDeclaredField(key);
-            Map_key.setAccessible(true);
+            //Map_key = clazz.getDeclaredField(key);
+            //Map_key.setAccessible(true);
         } else {
             list = new ArrayList<T>(config.getVocSize());
         }
         for (Field f : F) {
-            Method method = clazz.getMethod("set" + f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1),
+            Method method = type.getMethod("set" + f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1),
                                             new Class[]{String.class});
             method.setAccessible(true);
             if ((Ex = f.getAnnotation(ExcelAnno.class)) != null && !Ex.Pass()) {
@@ -75,7 +75,7 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
                 MeThodCaChe.put(f.getName(), method);
             }
         }
-        Constructor<?> declaredConstructor = clazz.getDeclaredConstructor();
+        Constructor<?> declaredConstructor = type.getDeclaredConstructor();
         declaredConstructor.setAccessible(true);
         String[] titles;
         Sheet sheet;
@@ -102,7 +102,7 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
         }
         for (; start_sheet < end_sheet; start_sheet++) {
             int start = config.getContentRowStart();
-            for (int rowNum = sheet.getLastRowNum(); start < rowNum; start++) {
+            for (int rowNum = sheet.getLastRowNum(); start <= rowNum; start++) {
                 row = sheet.getRow(start);
                 if (null != row) {
                     o = (T) declaredConstructor.newInstance();
@@ -119,12 +119,12 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
                             }
                         }
                     }
-                    if (this.filter.test(o)) {
+                    if (!this.filter.test(o)) {
                         continue;
                     }
                     process.accept(o);
                     if (isMap) {
-                        maps.put(Map_key.get(o).toString(), o);
+                        //maps.put(Map_key.get(o).toString(), o);
                     } else {
                         list.add((T) o);
                     }
@@ -142,20 +142,21 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
 
     private Class type;
 
-    public ResWrapperObj(Consumer<Config> consumer, Class<?> t) {
+    public ResWrapperObj(Class clazz,Consumer<Config> consumer) {
         super(consumer);
-        type = t;
+        this.type=clazz;
+
     }
 
-//	public ResWrapperObj(Consumer<Config> consumer) {
-//		super(consumer);
-//		Type sType = getClass().getGenericSuperclass();
-//		Type[] generics = ((ParameterizedType) sType).getActualTypeArguments();
-//		Class<T> mTClass = (Class<T>) (generics[0]);
-//		try {
-//			type = mTClass.newInstance();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	//public ResWrapperObj(Consumer<Config> consumer) {
+	//	super(consumer);
+	//	Type sType = getClass().getGenericSuperclass();
+	//	Type[] generics = ((ParameterizedType) sType).getActualTypeArguments();
+	//	Class<T> mTClass = (Class<T>) (generics[0]);
+	//	try {
+	//		type = mTClass.newInstance();
+	//	} catch (Exception e) {
+	//		e.printStackTrace();
+	//	}
+	//}
 }

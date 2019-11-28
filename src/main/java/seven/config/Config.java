@@ -9,16 +9,18 @@ import java.util.Objects;
 public class Config {
     private static final Logger logger= LoggerFactory.getLogger(Config.class);
 
-    private Integer titleRow = 1;
-    private Integer contentRowStart = 2;
+    private Integer titleRow = 0;
+    private Integer contentRowStart = 1;
     private Integer contentRowEnd = null;
     private Boolean isLoopSheet = false;
     private Boolean errorLog = false;
-    private Integer vocSize = 10000;
+    private Integer vocSize = 128;
     @Deprecated
     private String[] require = null;
     private Integer startSheet = 0;
     private Integer endSheet = null;
+    private Integer sheetIndex=-1;
+    private String sheetName = null;
 
     public Config() {
     }
@@ -77,6 +79,23 @@ public class Config {
         return this;
     }
 
+    public Integer getSheetIndex() {
+        return sheetIndex;
+    }
+
+    public Config setSheetIndex(Integer sheetIndex) {
+        this.sheetIndex = sheetIndex;
+        return this;
+    }
+
+    public String getSheetName() {
+        return sheetName;
+    }
+
+    public Config setSheetName(String sheetName) {
+        this.sheetName = sheetName;
+        return this;
+    }
 
     /**
      * 内容开始行号
