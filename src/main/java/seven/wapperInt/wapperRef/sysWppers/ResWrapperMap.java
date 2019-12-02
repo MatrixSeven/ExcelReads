@@ -97,7 +97,7 @@ public class ResWrapperMap<T> extends WrapperMap<T> {
             row = sheet.getRow(config.getTitleRow());
             titles = new String[row.getPhysicalNumberOfCells()];
             for (int i = 0, rows = row.getPhysicalNumberOfCells(); i < rows; i++) {
-                titles[i] = getCellFormatValue(row.getCell((short) i));
+                titles[i] = getCellFormatValue(row.getCell((short) i)).toString();
             }
             try {
                 if (row.getPhysicalNumberOfCells() == 0) {
@@ -130,13 +130,13 @@ public class ResWrapperMap<T> extends WrapperMap<T> {
                     }
                     for (int j = 0, colNum = row.getPhysicalNumberOfCells(); j < colNum && j < titles.length; j++) {
                         if (require != null && !(require[j].equals("Null")) && !filterColByKey.contains(titles[j])) {
-                            if (RegHelper.require(require[j], getCellFormatValue(row.getCell((short) j)))) {
-                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)));
+                            if (RegHelper.require(require[j], getCellFormatValue(row.getCell((short) j)).toString())) {
+                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)).toString());
                             } else {
                             }
                         } else {
                             if (!filterColByKey.contains(titles[j])) {
-                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)));
+                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)).toString());
                             }
                         }
                     }

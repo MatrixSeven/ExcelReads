@@ -95,7 +95,7 @@ public abstract class WrapperMap<T> extends Wrapper implements ReaderMap {
     @Override
     public Map<String, Map<String, String>> CreateMapLoop() throws Exception {
         if (!config.getIsLoopSheet()) {
-            throw new RuntimeException("未开启LoopSheet选项,请使用CreateMapLoop");
+            throw new RuntimeException("未开启LoopSheet选项,请使用CreateMap");
         }
         return refResWrapper(fs, isMap);
     }
