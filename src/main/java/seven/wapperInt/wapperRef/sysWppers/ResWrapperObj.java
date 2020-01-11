@@ -6,16 +6,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import seven.anno.ExcelAnno;
+import seven.callBack.ConvertInterface;
+import seven.config.Config;
+import seven.handler.InPutHandler;
+import seven.handler.HandlerFactory;
 import seven.util.ExcelTool;
 import seven.util.RegHelper;
-import seven.config.Config;
 import seven.wapperInt.wapperRef.WrapperObj;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 //=======================================================
@@ -42,40 +42,49 @@ import java.util.function.Consumer;
 public class ResWrapperObj<T> extends WrapperObj<T> {
     private static final Logger logger = LoggerFactory.getLogger(ResWrapperObj.class);
 
-    @Override
-    protected <T> T RefResWrapper(String fs, boolean isMap, String key) throws Exception {
-        config.check();
-        HashMap<String, Method> MeThodCaChe = new HashMap<>();
-        HashMap<String, T> maps = null;
-        List<T> list = null;
+    private static <T, R> R Try(Class<T> clazz) {
+        try {
+            return (R) clazz.newInstance();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        logger.warn("数据转化注册失败,{},放弃处理", clazz);
+        return null;
+    }
 
-        Class<? extends Object> clazz = type;
-        Constructor[] constructors = clazz.getConstructors();
-        Field[] F = clazz.getDeclaredFields();
+    @Override
+    protected <T> T refResWrapper(String fs, boolean isMap) throws Exception {
+        config.check();
+        HashMap<String, Field> FieldCaChe = new HashMap<>();
+        List<T> data = null;
+        Constructor[] constructors = type.getConstructors();
+        Field[] F = type.getDeclaredFields();
         ExcelAnno Ex = null;
         String[] reg = new String[F.length];
         Arrays.fill(reg, "Null");
         int reg_index = 0;
         Field Map_key = null;
-        if (isMap) {
-            maps = new HashMap<String, T>(config.getVocSize());
-            Map_key = clazz.getDeclaredField(key);
-            Map_key.setAccessible(true);
-        } else {
-            list = new ArrayList<T>(config.getVocSize());
-        }
+        data = new ArrayList<T>(config.getVocSize());
+        Map<String, ConvertInterface> convertMap = new HashMap<>();
         for (Field f : F) {
-            Method method = clazz.getMethod("set" + f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1),
-                                            new Class[]{String.class});
-            method.setAccessible(true);
+            f.setAccessible(true);
             if ((Ex = f.getAnnotation(ExcelAnno.class)) != null && !Ex.Pass()) {
                 reg[reg_index++] = Ex.Required();
-                MeThodCaChe.put(Ex.Value(),method);
+                FieldCaChe.put(Ex.Value(), f);
+                if (Ex.Convert() != null) {
+                    convertMap.put(Ex.Value(), Try(Ex.Convert()));
+                }
             } else {
-                MeThodCaChe.put(f.getName(), method);
+                FieldCaChe.put(f.getName(), f);
             }
         }
-        Constructor<?> declaredConstructor = clazz.getDeclaredConstructor();
+        config.getConvertMap().forEach((k, v) -> {
+            convertMap.put(k, Try(v));
+        });
+        config.getConvertMapImpl().forEach((k, v) -> {
+            convertMap.put(k, v);
+        });
+        Constructor<?> declaredConstructor = type.getDeclaredConstructor();
         declaredConstructor.setAccessible(true);
         String[] titles;
         Sheet sheet;
@@ -102,60 +111,61 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
         }
         for (; start_sheet < end_sheet; start_sheet++) {
             int start = config.getContentRowStart();
-            for (int rowNum = sheet.getLastRowNum(); start < rowNum; start++) {
+            for (int rowNum = sheet.getLastRowNum(); start <= rowNum; start++) {
                 row = sheet.getRow(start);
                 if (null != row) {
                     o = (T) declaredConstructor.newInstance();
                     for (int j = 0, colNum = row.getPhysicalNumberOfCells(); j < colNum; j++) {
-                        if (MeThodCaChe.containsKey(titles[j]) && !this.filterColByKey.contains(titles[j])) {
+                        if (FieldCaChe.containsKey(titles[j]) && !this.filterColByKey.contains(titles[j])) {
+                            ConvertInterface orDefault = convertMap.getOrDefault(titles[j], it -> it);
+                            Field field = FieldCaChe.get(titles[j]);
+                            String cellFormatValue = getCellFormatValue(row.getCell((short) j));
+                            InPutHandler handlerType = HandlerFactory.getInPutHandler(field.getType());
                             if (!reg[j].equals("Null")) {
-                                if (RegHelper.require(reg[j], v = getCellFormatValue(row.getCell((short) j)))) {
-                                    MeThodCaChe.get(titles[j]).invoke(o, titles[j], v);
+                                if (RegHelper.require(reg[j], v = cellFormatValue)) {
+                                    field.set(o, handlerType.Handler(v));
                                 } else {
                                     logger.warn("数据格  {} 式不符合规范---->行:{} 列:{}", titles[j], start, j);
                                 }
                             } else {
-                                MeThodCaChe.get(titles[j]).invoke(o, getCellFormatValue(row.getCell((short) j)));
+                                field.set(o, handlerType.Handler(cellFormatValue));
                             }
                         }
                     }
-                    if (this.filter.test(o)) {
+                    if (!this.filter.test(o)) {
                         continue;
                     }
                     process.accept(o);
-                    if (isMap) {
-                        maps.put(Map_key.get(o).toString(), o);
-                    } else {
-                        list.add((T) o);
-                    }
+                    data.add((T) o);
                 }
             }
         }
-        if (!isMap) {
-            if (c != null) {
-                list.sort(c);
-            }
-            return (T) list;
+
+        if (c != null) {
+            data.sort(c);
         }
-        return (T) maps;
+        return (T) data;
+
+
     }
 
     private Class type;
 
-    public ResWrapperObj(Consumer<Config> consumer, Class<?> t) {
+    public ResWrapperObj(Class clazz, Consumer<Config> consumer) {
         super(consumer);
-        type = t;
+        this.type = clazz;
+
     }
 
-//	public ResWrapperObj(Consumer<Config> consumer) {
-//		super(consumer);
-//		Type sType = getClass().getGenericSuperclass();
-//		Type[] generics = ((ParameterizedType) sType).getActualTypeArguments();
-//		Class<T> mTClass = (Class<T>) (generics[0]);
-//		try {
-//			type = mTClass.newInstance();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+    //public ResWrapperObj(Consumer<Config> consumer) {
+    //	super(consumer);
+    //	Type sType = getClass().getGenericSuperclass();
+    //	Type[] generics = ((ParameterizedType) sType).getActualTypeArguments();
+    //	Class<T> mTClass = (Class<T>) (generics[0]);
+    //	try {
+    //		type = mTClass.newInstance();
+    //	} catch (Exception e) {
+    //		e.printStackTrace();
+    //	}
+    //}
 }

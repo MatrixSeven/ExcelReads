@@ -33,7 +33,7 @@ import java.util.function.Consumer;
  * [Github]https://github.com/MatrixSeven
  * Created by seven on 2016/11/30.
  */
-public interface SaveExcel<T> extends ExcelSuperInterface {
+public interface SaveExcel<T>  {
 
     /**
      * 请使用Flush

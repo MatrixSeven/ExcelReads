@@ -14,16 +14,16 @@
 //		   (______|______)
 //=======================================================
 
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.util.StringUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import seven.ExcelFactory;
 import seven.anno.ExcelAnno;
-import seven.wapperInt.WrapperFactory;
+
+
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
@@ -37,22 +37,31 @@ public class Demo {
     @Test
     public void Test_01() throws Exception {
 
-        String filePath = System.getProperty("user.dir").concat("/test.xlsx");
+        String filePath = System.getProperty("user.dir").concat("/测试.xlsx");
 
-        List<Map<String, String>> list = ExcelFactory.getBeans(filePath, WrapperFactory
-                .MakeMap(it -> it.vocSize(1999).title(0).content(2).isLoopSheet(true)))
-                .Filter(it->it.get("Run").equals("Y"))
-                .Filter(it->!it.getOrDefault("Test"," ").equals(" "))
-                .Create();
+        Map<String, Map<String, String>> maps = ExcelFactory.getMaps(filePath, it -> it.vocSize(1999)
+                                                                                       .title(2)
+                                                                                       .content(3)
+                                                                                       .isLoopSheet(true))
+                                                            //.Filter(it -> it.get("在线人数").equals("43"))
+                                                            .CreateMapLoop();
+        //
+        System.out.println(maps);
 
-        System.out.println(list);
-
+        List<Map<String, String>> maps2 = ExcelFactory.getMaps(filePath, it -> it.vocSize(1999)
+                                                                                 .title(2)
+                                                                                 .content(3))
+                                                      //.Filter(it -> it.get("在线人数").equals("43"))
+                                                      .CreateMap();
+        List<B> create1 = ExcelFactory.<B>getBeans(B.class, filePath,it->it.title(2)
+                                                                         .content(3)).Create();
+        System.out.println(create1);
+        //
         String filePath2 = System.getProperty("user.dir").concat("/seven.xlsx");
-        List<A> create = ExcelFactory.getBeans(filePath2, WrapperFactory.<A>MakeObj(it -> it.vocSize(1999)
-                .title(0).content(1), A.class))
-                .Filter(it -> it.getA().equals(""))
-                .FilterCol(it -> it.add("1"))
-                .Sort(Comparator.comparing(A::getA))
+        List<A> create = ExcelFactory.<A>getBeans(A.class, filePath2,
+                                                  it -> it.withConvert("姓名", ConvertTest.class)
+                                                          .withConvert("姓名", f -> f.toString().concat("111111111")))
+                .Process(A::getB)
                 .Create();
         System.out.println(create);
 
@@ -62,22 +71,22 @@ public class Demo {
     @Test
     public void Test_02() throws Exception {
         List<A> aa = new ArrayList<>();
-        aa.add(new A("小明", "15"));
-        aa.add(new A("小绿", "13"));
-        aa.add(new A("唐山", "18"));
-        aa.add(new A("狗东", "15"));
-        aa.add(new A("百毒", "12"));
+        aa.add(new A("小明", 15,LocalDateTime.now()));
+        aa.add(new A("小绿", 13,LocalDateTime.now()));
+        aa.add(new A("唐山", 18,LocalDateTime.now()));
+        aa.add(new A("狗东", 15,LocalDateTime.now()));
+        aa.add(new A("百毒",12,LocalDateTime.now()));
         ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("/seven.xlsx"))
-                .Filter(a -> a.getA().equals("唐山"))
-                .Process(a -> a.setA(a.getA().concat("_seven")))
-                .Sort(Comparator.comparing(A::getA))
-                .Flush();
+                    //.Filter(a -> a.getA().equals("唐山"))
+                    //.Process(a -> a.setA(a.getA().concat("_seven")))
+                    .Sort(Comparator.comparing(A::getA))
+                    .Flush();
 
 
-        List<Map> m = new ArrayList<>();
+        List<Map<String, String>> m = new ArrayList<>();
         Map<String, String> mm = new HashMap<>();
         mm.put("姓名", "w");
-        mm.put("年龄", "w2");
+        mm.put("年龄", "1");
         mm.put("性别", "w3");
         Map<String, String> mmm = new HashMap<>();
         mmm.put("姓名", "23");
@@ -86,9 +95,20 @@ public class Demo {
         m.add(mm);
         m.add(mmm);
         ExcelFactory.saveExcel(m, System.getProperty("user.dir").concat("/SaveMap_.xlsx"))
-                .SetCellStyle("A", cellStyle -> cellStyle
-                        .setFillPattern(FillPatternType.DIAMONDS)
-                        .setAlignment(HorizontalAlignment.RIGHT)).Flush();
+                    .SetCellStyle("A", cellStyle -> cellStyle.setFillPattern(FillPatternType.DIAMONDS)
+                                                             .setAlignment(HorizontalAlignment.RIGHT))
+                    .Flush();
+
+    }
+
+    @Test
+    public void Test_03() throws Exception {
+        Map<String, Map<String, String>> maps = ExcelFactory.getMaps("/home/seven/Desktop/fqlde.xlsx", it -> it.title(0)
+                                                                                                               .content(1)
+                                                                                                               .isLoopSheet(true))
+                                                            .CreateMapLoop();
+        System.out.println(maps);
+
 
     }
 }
@@ -96,15 +116,19 @@ public class Demo {
 class A {
     @ExcelAnno(Value = "姓名")
     private String A;
-    @ExcelAnno(Value = "年龄")
-    private String B;
+    @ExcelAnno(Value = "年龄", Convert = ConvertTest.class)
+    private Integer B;
+
+    @ExcelAnno(Value = "日期")
+    private LocalDateTime localDateTime;
 
     public A() {
     }
 
-    public A(String a, String b) {
+    public A(String a, Integer b,LocalDateTime localDateTime) {
         A = a;
         B = b;
+        this.localDateTime=localDateTime;
     }
 
     public String getA() {
@@ -115,19 +139,16 @@ class A {
         A = a;
     }
 
-    public String getB() {
+    public Integer getB() {
         return B;
     }
 
-    public void setB(String b) {
+    public void setB(Integer b) {
         B = b;
     }
 
     @Override
     public String toString() {
-        return "A{" +
-                "A='" + A + '\'' +
-                ", B='" + B + '\'' +
-                '}';
+        return "A{" + "A='" + A + '\'' + ", B='" + B + '\'' + '}';
     }
 }

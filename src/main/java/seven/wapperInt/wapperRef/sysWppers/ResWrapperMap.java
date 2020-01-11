@@ -5,9 +5,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import seven.config.Config;
 import seven.util.ExcelTool;
 import seven.util.RegHelper;
+import seven.wapperInt.wapperRef.WrapperMap;
 import seven.wapperInt.wapperRef.WrapperObj;
 
 import java.util.*;
@@ -34,19 +34,20 @@ import java.util.function.Consumer;
  * @author Seven<p>
  */
 @SuppressWarnings({"all"})
-public class ResWrapperMap extends WrapperObj<Map<String,String>> {
+public class ResWrapperMap<T> extends WrapperMap<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(ResWrapperMap.class);
 
-    public ResWrapperMap(Consumer<Config> consumer) {
+    public ResWrapperMap(Consumer<seven.config.Config> consumer) {
         super(consumer);
     }
 
     @Override
-    protected <T> T RefResWrapper(String fs, boolean isMap, String key) throws Exception {
+    protected <T> T refResWrapper(String fs, boolean isMap) throws Exception {
         config.check();
         HashMap<String, Map> maps = null;
         List<Map> list = null;
+        //TODO fix
         if (isMap) {
             maps = new HashMap<>(config.getVocSize());
         } else {
@@ -68,13 +69,35 @@ public class ResWrapperMap extends WrapperObj<Map<String,String>> {
                 throw new Exception("sheet范围不正确");
             }
         }
-        for (; start_sheet < end_sheet; start_sheet++) {
 
+
+        if (config.getSheetName() != null) {
+            boolean f=false;
+            for (; start_sheet < end_sheet; start_sheet++) {
+                sheet = hhf.getSheetAt(start_sheet);
+                String sheetName = sheet.getSheetName().trim();
+                if (sheetName.equals(config.getSheetName().trim())) {
+                    f=true;
+                    break;
+                }
+            }
+            if(!f){
+                throw new RuntimeException("输入Sheet名称有误");
+            }
+        }
+
+        if (config.getSheetIndex() != -1) {
+            start_sheet = config.getSheetIndex();
+            end_sheet = start_sheet + 1;
+        }
+
+        Map<String, Object> sheetMap = new HashMap<>();
+        for (; start_sheet < end_sheet; start_sheet++) {
             sheet = hhf.getSheetAt(start_sheet);
             row = sheet.getRow(config.getTitleRow());
             titles = new String[row.getPhysicalNumberOfCells()];
             for (int i = 0, rows = row.getPhysicalNumberOfCells(); i < rows; i++) {
-                titles[i] = getCellFormatValue(row.getCell((short) i));
+                titles[i] = getCellFormatValue(row.getCell((short) i)).toString();
             }
             try {
                 if (row.getPhysicalNumberOfCells() == 0) {
@@ -105,31 +128,37 @@ public class ResWrapperMap extends WrapperObj<Map<String,String>> {
                     } catch (Exception e) {
                         logger.error("列表长度小于实际列长度 startSheet:{},sheetName:{}, row:{}", start_sheet, sheet.getSheetName(), rowNum);
                     }
-                    for (int j = 0, colNum = row.getPhysicalNumberOfCells(); j < colNum&&j<titles.length; j++) {
+                    for (int j = 0, colNum = row.getPhysicalNumberOfCells(); j < colNum && j < titles.length; j++) {
                         if (require != null && !(require[j].equals("Null")) && !filterColByKey.contains(titles[j])) {
-                            if (RegHelper.require(require[j], getCellFormatValue(row.getCell((short) j)))) {
-                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)));
+                            if (RegHelper.require(require[j], getCellFormatValue(row.getCell((short) j)).toString())) {
+                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)).toString());
                             } else {
                             }
                         } else {
-                            if(!filterColByKey.contains(titles[j])) {
-                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)));
+                            if (!filterColByKey.contains(titles[j])) {
+                                map.put(titles[j], getCellFormatValue(row.getCell((short) j)).toString());
                             }
                         }
                     }
-                    if (!isNull(map))
-                        if (!this.filter.test(map)) {
-                            continue;
-                        }
+                    if (!isNull(map)) if (!this.filter.test(map)) {
+                        continue;
+                    }
                     this.process.accept(map);
                     if (isMap) {
-                        maps.put(map.get(key), map);
+                        //maps.put(map.get(key), map);
                     } else {
                         list.add(map);
                     }
 
                 }
             }
+            if (config.getIsLoopSheet()) {
+                sheetMap.put(sheet.getSheetName(), list);
+                list = new ArrayList<>();
+            }
+        }
+        if (config.getIsLoopSheet()) {
+            return (T) sheetMap;
         }
         if (!isMap) {
             if (c != null) {
