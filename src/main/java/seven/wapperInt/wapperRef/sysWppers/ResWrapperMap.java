@@ -30,7 +30,7 @@ import java.util.function.Consumer;
 //=======================================================
 
 /**
- * @author Seven<p>
+ * @author Seven
  */
 @SuppressWarnings({"all"})
 public class ResWrapperMap<T> extends WrapperMap<T> {

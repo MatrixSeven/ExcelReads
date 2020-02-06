@@ -92,9 +92,13 @@
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
+						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

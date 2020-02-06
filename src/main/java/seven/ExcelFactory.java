@@ -1,6 +1,5 @@
 package seven;
 
-import org.apache.poi.ss.formula.functions.T;
 import seven.callBack.PackageDataInterface;
 import seven.config.Config;
 import seven.savewapper.SaveExcel;
@@ -10,7 +9,6 @@ import seven.savewapper.wapperRef.sysWppers.ResExportMap;
 import seven.savewapper.wapperRef.sysWppers.ResExportObj;
 import seven.wapperInt.ReaderMap;
 import seven.wapperInt.ReaderObj;
-import seven.wapperInt.wapperRef.WrapperObj;
 import seven.wapperInt.wapperRef.sysWppers.ResWrapperMap;
 import seven.wapperInt.wapperRef.sysWppers.ResWrapperObj;
 
@@ -51,9 +49,8 @@ public class ExcelFactory {
      * 读取Excel
      *
      * @param FilePath 路径
-     * @param r        包装类
      * @return Wrapper
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static ReaderMap getMaps(String FilePath) throws Exception {
         return (ReaderMap) new ResWrapperMap(it->{}).init(FilePath);
@@ -63,9 +60,8 @@ public class ExcelFactory {
      * 读取Excel
      *
      * @param FilePath 路径
-     * @param r        包装类
      * @return Wrapper
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static <T> ReaderObj<T> getBeans(Class clazz,String FilePath) throws Exception {
         return new ResWrapperObj(clazz,it->{}).init(FilePath);
@@ -77,7 +73,7 @@ public class ExcelFactory {
      * @param FilePath 路径
      * @param r        包装类
      * @return Wrapper
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static ReaderMap getMaps(String FilePath, Consumer<Config> config) throws Exception {
         return (ReaderMap) new ResWrapperMap(config).init(FilePath);
@@ -87,7 +83,9 @@ public class ExcelFactory {
      * 读取Excel
      *
      * @param FilePath 路径
-     * @param r        包装类
+     * @param clazz clazz
+     * @param config config
+     * @param <T> t
      * @return Wrapper
      * @throws Exception
      */
@@ -97,11 +95,9 @@ public class ExcelFactory {
 
     /**
      * 读取Excel
-     *
-     * @param FilePath 路径
-     * @param r        包装类
+     * @param file file
      * @return Wrapper
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static ReaderMap getMaps(File file) throws Exception {
         return (ReaderMap) new ResWrapperMap(it->{}).init(file);
@@ -109,63 +105,48 @@ public class ExcelFactory {
 
     /**
      * 读取Excel
-     *
-     * @param FilePath 路径
-     * @param r        包装类
+     * @param clazz clazz
+     * @param file file
+     * @param <T> T
      * @return Wrapper
-     * @throws Exception
+     * @throws Exception Exception
      */
-    public static <T> ReaderObj<T> getBeans(Class clazz,File file) throws Exception {
+    public static <T> ReaderObj<T> getBeans(Class<?> clazz,File file) throws Exception {
         return new ResWrapperObj(clazz,it->{}).init(file);
     }
 
     /**
      * 读取Excel
-     *
-     * @param FilePath 路径
-     * @param r        包装类
+     * @param file file
+     * @param config config
      * @return Wrapper
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static ReaderMap getMaps(File file, Consumer<Config> config) throws Exception {
         return (ReaderMap) new ResWrapperMap(config).init(file);
     }
 
+
     /**
      * 读取Excel
-     *
-     * @param FilePath 路径
-     * @param r        包装类
-     * @return Wrapper
-     * @throws Exception
+     * @param clazz clazz
+     * @param file file
+     * @param config config
+     * @param <T> <T>
+     * @return T
+     * @throws Exception Exception
      */
-    public static <T> ReaderObj<T> getBeans(Class clazz,File file, Consumer<Config> config) throws Exception {
+    public static <T> ReaderObj<T> getBeans(Class<?> clazz,File file, Consumer<Config> config) throws Exception {
         return new ResWrapperObj(clazz, config).init(file);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * 保存Excel
-     *
-     * @param bean
-     * @param FilePath
+     * @param <T> T
+     * @param bean bean
+     * @param FilePath FilePath
      * @return SaveExcel
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static <T> SaveExcel<T> saveExcel(List<? extends T> bean, String FilePath) throws Exception {
         if (bean.size() < 1) {
@@ -180,9 +161,9 @@ public class ExcelFactory {
     /**
      * 保存Excel
      *
-     * @param bean
+     * @param bean bean
      * @return SaveExcel
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static SaveExcel saveExcel(List<? extends Object> bean) throws Exception {
         if (bean.size() < 1) {
@@ -198,10 +179,10 @@ public class ExcelFactory {
     /**
      * 保存Excel
      *
-     * @param resultSet
-     * @param FilePath
+     * @param resultSet resultSet
+     * @param FilePath FilePath
      * @return SaveExcel
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath) throws Exception {
         return new ResExportDBMap(resultSet, FilePath);
@@ -210,11 +191,11 @@ public class ExcelFactory {
     /**
      * 保存Excel
      *
-     * @param resultSet
-     * @param FilePath
-     * @param packageDataInterface
+     * @param resultSet resultSet
+     * @param FilePath FilePath
+     * @param packageDataInterface packageDataInterface
      * @return SaveExcel
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, String FilePath, PackageDataInterface packageDataInterface) throws Exception {
         return new ResExportDBObj(resultSet, FilePath, packageDataInterface);
@@ -223,10 +204,10 @@ public class ExcelFactory {
     /**
      * 保存Excel
      *
-     * @param resultSet
-     * @param type
+     * @param resultSet resultSet
+     * @param type type
      * @return SaveExcel
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet, Class type) throws Exception {
         return new ResExportDBObj(resultSet, type);
@@ -236,9 +217,9 @@ public class ExcelFactory {
     /**
      * 保存Excel
      *
-     * @param resultSet
+     * @param resultSet resultSet
      * @return SaveExcel
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static SaveExcel saveExcel(ResultSet resultSet) throws Exception {
         return new ResExportDBMap(resultSet);

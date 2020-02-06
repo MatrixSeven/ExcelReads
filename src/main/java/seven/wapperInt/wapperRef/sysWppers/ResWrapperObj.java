@@ -179,7 +179,7 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
 
     private Class type;
 
-    public ResWrapperObj(Class clazz, Consumer<Config> consumer) {
+    public ResWrapperObj(Class<?> clazz, Consumer<Config> consumer) {
         super(consumer);
         this.type = clazz;
 

@@ -24,7 +24,8 @@ public class Config {
     private Integer endSheet = null;
     private Integer sheetIndex = -1;
     private String sheetName = null;
-    private Map<String, Class<? extends ConvertInterface<?>>> convertMap = new HashMap<>();
+    private Map<String, Class<? extends ConvertInterface
+            <?>>> convertMap = new HashMap<>();
     private Map<String, ConvertInterface<?>> convertMapImpl = new HashMap<>();
 
     public Config() {
@@ -53,7 +54,7 @@ public class Config {
      * Map数据个校验数组
      * <p>
      * 支持正则表达式
-     *
+     * @param require require
      * @see seven.util.RegHelper
      */
     @Deprecated
@@ -68,8 +69,8 @@ public class Config {
     /**
      * Excel数据容器<br>
      * 当数据大于5w时，最好初始化为大于或者等于当前excel行数 最好设置大于或者
-     *
-     * @param vocSize
+     * @return Config Config
+     * @param vocSize vocSize
      */
     public Config vocSize(Integer vocSize) {
         this.vocSize = vocSize;
@@ -85,6 +86,12 @@ public class Config {
         return this;
     }
 
+    /**
+     *
+     * @param name name
+     * @param clazz clazz
+     * @return Config Config
+     */
     @Deprecated
     public Config withConvert(String name, Class<? extends ConvertInterface<?>> clazz) {
         this.convertMap.put(name, clazz);
@@ -92,9 +99,9 @@ public class Config {
     }
 
     /**
-     * @param name
-     * @param convert
-     * @return
+     * @param name name
+     * @param convert convert
+     * @return Config
      */
     @Deprecated
     public Config withConvert(String name, ConvertInterface<?> convert) {
@@ -106,15 +113,26 @@ public class Config {
         return sheetIndex;
     }
 
+    /**
+     * @param sheetIndex
+     * @return Config Config
+     */
     public Config setSheetIndex(Integer sheetIndex) {
         this.sheetIndex = sheetIndex;
         return this;
     }
 
+    /**
+     * @return String
+     */
     public String getSheetName() {
         return sheetName;
     }
 
+    /**
+     * @param sheetName
+     * @return Config Config
+     */
     public Config setSheetName(String sheetName) {
         this.sheetName = sheetName;
         return this;
@@ -145,7 +163,7 @@ public class Config {
     /**
      * 内容开始行号
      *
-     * @param contentRowStart
+     * @param contentRowStart contentRowStart
      */
     public Config content(Integer contentRowStart) {
         this.contentRowStart = contentRowStart;

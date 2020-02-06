@@ -18,7 +18,6 @@ package seven;
 import seven.callBack.DataFilterColumnInterface;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
-import seven.wapperInt.Wrapper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -36,7 +35,7 @@ public interface ExcelSuperInterface<T,R> {
      * 如果返回false将放弃此条数据
      *
      * @param filter {@link DataFilterInterface}
-     * @return Wrapper
+     * @return Wrapper Wrapper
      */
      T Filter(DataFilterInterface<? extends R> filter);
 
@@ -45,15 +44,15 @@ public interface ExcelSuperInterface<T,R> {
      * 在process方法里可对属性进行处理加工
      *
      * @param process {@link DataFilterProcessInterface}
-     * @return Wrapper
+     * @return Wrapper Wrapper
      */
      T Process(DataFilterProcessInterface<? extends R> process);
 
     /**
      * 对结果的List进行排序
      *
-     * @param c
-     * @return Wrapper
+     * @param c c
+     * @return Wrapper Wrapper
      */
      T Sort(Comparator<? extends R> c);
 
@@ -62,6 +61,7 @@ public interface ExcelSuperInterface<T,R> {
      * 如果加入后，将不对实体进行赋值
      *
      * @param consumer {@link DataFilterColumnInterface}
+     * @return Wrapper Wrapper
      */
      T FilterCol(Consumer<List<String>> consumer);
 
