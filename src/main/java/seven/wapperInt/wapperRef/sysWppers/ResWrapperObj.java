@@ -57,6 +57,7 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
         config.check();
         HashMap<String, Field> FieldCaChe = new HashMap<>();
         List<T> data = null;
+        Map<String, List<T>> map = new HashMap<>();
         Constructor[] constructors = type.getConstructors();
         Field[] F = type.getDeclaredFields();
         ExcelAnno Ex = null;
@@ -95,6 +96,14 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
         Workbook hhf = ExcelTool.newInstance(fs, false);
         ;
         int end_sheet = start_sheet + 1;
+        if (config.getIsLoopSheet()) {
+            map = new HashMap<>();
+            end_sheet = config.getEndSheet() == null ? hhf.getNumberOfSheets() : config.getEndSheet();
+            if (end_sheet <= 0 || end_sheet > hhf.getNumberOfSheets()) {
+                logger.error("sheet范围不正确");
+                throw new Exception("sheet范围不正确");
+            }
+        }
         sheet = hhf.getSheetAt(start_sheet);
         row = sheet.getRow(config.getTitleRow());
         titles = new String[row.getPhysicalNumberOfCells()];
@@ -110,6 +119,7 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
             }
         }
         for (; start_sheet < end_sheet; start_sheet++) {
+            sheet = hhf.getSheetAt(start_sheet);
             int start = config.getContentRowStart();
             for (int rowNum = sheet.getLastRowNum(); start <= rowNum; start++) {
                 row = sheet.getRow(start);
@@ -117,18 +127,28 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
                     o = (T) declaredConstructor.newInstance();
                     for (int j = 0, colNum = row.getPhysicalNumberOfCells(); j < colNum; j++) {
                         if (FieldCaChe.containsKey(titles[j]) && !this.filterColByKey.contains(titles[j])) {
-                            ConvertInterface orDefault = convertMap.getOrDefault(titles[j], it -> it);
+                            ConvertInterface orDefault = convertMap.get(titles[j]);
                             Field field = FieldCaChe.get(titles[j]);
                             String cellFormatValue = getCellFormatValue(row.getCell((short) j));
                             InPutHandler handlerType = HandlerFactory.getInPutHandler(field.getType());
                             if (!reg[j].equals("Null")) {
                                 if (RegHelper.require(reg[j], v = cellFormatValue)) {
                                     field.set(o, handlerType.Handler(v));
+//                                    if (Objects.isNull(orDefault)) {
+//                                        field.set(o, handlerType.Handler(v));
+//                                    } else {
+//                                        field.set(o, orDefault.convert(v));
+//                                    };
                                 } else {
                                     logger.warn("数据格  {} 式不符合规范---->行:{} 列:{}", titles[j], start, j);
                                 }
                             } else {
                                 field.set(o, handlerType.Handler(cellFormatValue));
+//                                if (Objects.isNull(orDefault)) {
+//                                    field.set(o, handlerType.Handler(cellFormatValue));
+//                                } else {
+//                                    field.set(o, orDefault.convert(cellFormatValue));
+//                                };
                             }
                         }
                     }
@@ -139,10 +159,18 @@ public class ResWrapperObj<T> extends WrapperObj<T> {
                     data.add((T) o);
                 }
             }
+
+            map.put(sheet.getSheetName(), data);
+            data = new ArrayList<>();
+
+
         }
 
         if (c != null) {
             data.sort(c);
+        }
+        if (config.getIsLoopSheet()) {
+            return (T) map;
         }
         return (T) data;
 

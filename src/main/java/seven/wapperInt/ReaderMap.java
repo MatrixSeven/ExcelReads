@@ -17,11 +17,9 @@ package seven.wapperInt;
 //=======================================================
 
 import seven.ExcelSuperInterface;
-import seven.config.Config;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * @author Seven
@@ -33,5 +31,5 @@ public interface ReaderMap extends ExcelSuperInterface<ReaderMap,Map> {
 
     List<Map<String, String>> CreateMap() throws Exception;
 
-    Map<String, Map<String, String>> CreateMapLoop() throws Exception;
+    Map<String, List<Map<String, String>>> CreateMapLoop() throws Exception;
 }

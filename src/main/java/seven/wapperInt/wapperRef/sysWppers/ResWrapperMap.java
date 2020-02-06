@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import seven.util.ExcelTool;
 import seven.util.RegHelper;
 import seven.wapperInt.wapperRef.WrapperMap;
-import seven.wapperInt.wapperRef.WrapperObj;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -45,7 +44,7 @@ public class ResWrapperMap<T> extends WrapperMap<T> {
     @Override
     protected <T> T refResWrapper(String fs, boolean isMap) throws Exception {
         config.check();
-        HashMap<String, Map> maps = null;
+        HashMap<String, List<Map>> maps = null;
         List<Map> list = null;
         //TODO fix
         if (isMap) {

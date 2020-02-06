@@ -2,7 +2,8 @@
 
 ![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/apache/maven.svg?label=License)
 ![Jenkins Status](https://img.shields.io/jenkins/s/https/builds.apache.org/job/maven-box/job/maven/job/master.svg?style=flat-square)
-
+![language](https://img.shields.io/badge/language-java-orange.svg)
+![last_release](https://img.shields.io/badge/release-1.0.3-green)
 ## ExcelReads是什么?
 * 这是一个通用的简单的Excel读取器
 * 支持自定义JavaBean实体读取和HashMap自动读取
@@ -18,13 +19,21 @@
 <dependency>
   <groupId>com.github.matrixseven</groupId>
   <artifactId>ExcelReads</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
 </dependency>
+
+
 
 ```
 
 ## [更新日志详见:UpdateLogs.md](UPDATELOG.MD)
 ###最近三次更新:
+
+
+#### 更新2019/12/2　
+* 替换导出方式
+* 增加 Create/CreateLoop[Map|Obj]
+* 更新顶层接口
 
 #### 更新2019/4/26　(诈尸更新)
 * 更加完善的类型推导，书写更方便(Great!!!)
@@ -37,12 +46,6 @@
 * 增加AnyCol来对应FilterCol方法，只保留AnyCol类列
 * 增加SetCellStyle，突破CellStyle绑定wk约束，链式设置列单元格风格（非常狗血）
 
-#### 更新2017/01/09
-* 增加SetPath方法，随时切换保存路径
-* 增加ConvertName方法，方便自定义Excel列名称
-* 增加Flush方法，不在建议使用~~Save(@Deprecated)~~方法进行保存输出
-* 增加SetOutputStream方法，可以放入自定义流，用于支持网页Response输出
-* 处理一些小bug，完善异常提示信息
 
 ### 其他
 * 自定义读取支持出简单的规范化数据格式，即典型的表头格式
@@ -64,22 +67,31 @@
 
 * 喜大若奔（。・・）ノ　Filter/Sort等lambda操作不用在声明类型(~~还是要写一个泛型~~)
 ```java
-//读取到Map类型
-//使用 .CreateMap(key_v) 生成Map<Key,Map>类型数据
-List<Map<String, String>> list = ExcelFactory.getBeans(filePath, WrapperFactory
-    .MakeMap(it -> it.vocSize(1999).title(2).content(3)))
-    .Filter(it -> !it.get("服务IP").contains("12"))
-    .Process(it -> it.put("add", "这个是我增加的"))
-    .FilterCol(df -> df.add("连接类型"))
-    .CreateMap();
-
-//读取到自定义JavaBean类型
-List<A> create = ExcelFactory.getBeans(filePath2, WrapperFactory.<A>MakeObj(it -> it.vocSize(1999)
-    .title(0).content(1), A.class))
-    .Filter(it -> it.getA().equals(""))
-    .FilterCol(it -> it.add("1"))
-    .Sort(Comparator.comparing(A::getA))
-    .Create();
+    //CreateMapLoop 多sheet|isLoopSheet
+    Map<String, Map<String, String>> maps = ExcelFactory.getMaps(filePath, it -> it.vocSize(1999)
+            .title(2)
+            .content(3)
+            .isLoopSheet(true))
+            .Filter(it -> it.get("在线人数").equals("43"))
+            .CreateMapLoop();
+    //CreateMap 单个
+    List<Map<String, String>> maps2 = ExcelFactory.getMaps(filePath, it -> it.vocSize(1999)
+            .title(2)
+            .content(3))
+            .Filter(it -> it.get("在线人数").equals("43"))
+            .CreateMap();
+    //Create Obj
+    List<B> create = ExcelFactory.<B>getBeans(B.class, filePath, it -> it.title(2)
+            .content(3)).Create();
+    System.out.println(create);
+    //CreateObjLoop
+    String filePath2 = System.getProperty("user.dir").concat("/seven.xlsx");
+    Map<String, List<A>> stringListMap = ExcelFactory.<A>getBeans(A.class, filePath2,
+            it -> it.withConvert("姓名", ConvertTest.class)
+                    .isLoopSheet(true)
+                    .withConvert("姓名", f -> f.toString().concat("111111111")))
+            .Process(a -> a.setA(a.getA() + "fuck"))
+            .CreateObjLoop();
 ```
 ## 数据库导出自定义Bean类型写法（xxx.Class类型）
 ```java
@@ -118,3 +130,7 @@ ExcelFactory.saveExcel(ps.executeQuery()).SetPath("seven.xlsx")
 * QQ: 985390927
 * weibo: [@Alden_情绪控](http://weibo.com/Sweets07)
 * Blog: [http://blog.52python.cn](http://blog.52python.cn)
+
+## Acknowledgement
+特别感谢 [JetBrains](https://www.jetbrains.com/?from=matrixSeven) 为开源项目提供免费的 [IntelliJ IDEA](https://www.jetbrains.com/idea/?from=matrixSeven) 等 IDE 的授权  
+[<img src="jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=matrixSeven)

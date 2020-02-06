@@ -24,8 +24,8 @@ public class Config {
     private Integer endSheet = null;
     private Integer sheetIndex = -1;
     private String sheetName = null;
-    private Map<String, Class<? extends ConvertInterface>> convertMap = new HashMap<>();
-    private Map<String, ConvertInterface> convertMapImpl = new HashMap<>();
+    private Map<String, Class<? extends ConvertInterface<?>>> convertMap = new HashMap<>();
+    private Map<String, ConvertInterface<?>> convertMapImpl = new HashMap<>();
 
     public Config() {
     }
@@ -86,7 +86,7 @@ public class Config {
     }
 
     @Deprecated
-    public Config withConvert(String name, Class<? extends ConvertInterface> clazz) {
+    public Config withConvert(String name, Class<? extends ConvertInterface<?>> clazz) {
         this.convertMap.put(name, clazz);
         return this;
     }
@@ -97,7 +97,7 @@ public class Config {
      * @return
      */
     @Deprecated
-    public Config withConvert(String name, ConvertInterface convert) {
+    public Config withConvert(String name, ConvertInterface<?> convert) {
         this.convertMapImpl.put(name, convert);
         return this;
     }
@@ -161,11 +161,11 @@ public class Config {
         return contentRowEnd;
     }
 
-    public Map<String, Class<? extends ConvertInterface>> getConvertMap() {
+    public Map<String, Class<? extends ConvertInterface<?>>> getConvertMap() {
         return convertMap;
     }
 
-    public Map<String, ConvertInterface> getConvertMapImpl() {
+    public Map<String, ConvertInterface<?>> getConvertMapImpl() {
         return convertMapImpl;
     }
 

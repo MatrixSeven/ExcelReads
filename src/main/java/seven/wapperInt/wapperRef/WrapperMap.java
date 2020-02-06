@@ -21,13 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
-import seven.callBack.imp.DefaultDataFilter;
-import seven.callBack.imp.DefaultDataProFilter;
 import seven.wapperInt.ReaderMap;
 import seven.wapperInt.Wrapper;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +90,7 @@ public abstract class WrapperMap<T> extends Wrapper implements ReaderMap {
     }
 
     @Override
-    public Map<String, Map<String, String>> CreateMapLoop() throws Exception {
+    public Map<String, List<Map<String, String>>> CreateMapLoop() throws Exception {
         if (!config.getIsLoopSheet()) {
             throw new RuntimeException("未开启LoopSheet选项,请使用CreateMap");
         }

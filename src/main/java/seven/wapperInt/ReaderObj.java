@@ -32,6 +32,6 @@ public interface ReaderObj<T> extends ExcelSuperInterface<ReaderObj<T>,T> {
 
     List<T> Create() throws Exception;
 
-    Map<String,List<T>> CreateObjLoop() throws Exception;
+    Map<String, List<T>> CreateObjLoop() throws Exception;
 
 }

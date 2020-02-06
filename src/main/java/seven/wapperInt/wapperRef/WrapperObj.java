@@ -21,8 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import seven.callBack.DataFilterInterface;
 import seven.callBack.DataFilterProcessInterface;
-import seven.callBack.imp.DefaultDataFilter;
-import seven.callBack.imp.DefaultDataProFilter;
 import seven.wapperInt.ReaderObj;
 import seven.wapperInt.Wrapper;
 

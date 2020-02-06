@@ -39,31 +39,33 @@ public class Demo {
 
         String filePath = System.getProperty("user.dir").concat("/测试.xlsx");
 
-        Map<String, Map<String, String>> maps = ExcelFactory.getMaps(filePath, it -> it.vocSize(1999)
-                                                                                       .title(2)
-                                                                                       .content(3)
-                                                                                       .isLoopSheet(true))
-                                                            //.Filter(it -> it.get("在线人数").equals("43"))
-                                                            .CreateMapLoop();
-        //
+        //CreateMapLoop
+        Map<String, List<Map<String, String>>> maps = ExcelFactory.getMaps(filePath, it -> it.vocSize(1999)
+                .title(2)
+                .content(3)
+                .isLoopSheet(true))
+                .Filter(it -> it.get("在线人数").equals("43"))
+                .CreateMapLoop();
         System.out.println(maps);
-
+        //CreateMap
         List<Map<String, String>> maps2 = ExcelFactory.getMaps(filePath, it -> it.vocSize(1999)
-                                                                                 .title(2)
-                                                                                 .content(3))
-                                                      //.Filter(it -> it.get("在线人数").equals("43"))
-                                                      .CreateMap();
-        List<B> create1 = ExcelFactory.<B>getBeans(B.class, filePath,it->it.title(2)
-                                                                         .content(3)).Create();
-        System.out.println(create1);
-        //
-        String filePath2 = System.getProperty("user.dir").concat("/seven.xlsx");
-        List<A> create = ExcelFactory.<A>getBeans(A.class, filePath2,
-                                                  it -> it.withConvert("姓名", ConvertTest.class)
-                                                          .withConvert("姓名", f -> f.toString().concat("111111111")))
-                .Process(A::getB)
-                .Create();
+                .title(2)
+                .content(3))
+                .Filter(it -> it.get("在线人数").equals("43"))
+                .CreateMap();
+        //Create Obj
+        List<B> create = ExcelFactory.<B>getBeans(B.class, filePath, it -> it.title(2)
+                .content(3)).Create();
         System.out.println(create);
+//        CreateObjLoop
+        Map<String, List<B>> stringListMap = ExcelFactory.<B>getBeans(B.class, filePath,
+                it -> it.isLoopSheet(true)
+                        .title(2)
+                        .content(3))
+//                        .withConvert("name", f -> f.concat("111111111")))
+                .Process(a -> a.setAre(a.getAre().concat("|fuck")))
+                .CreateObjLoop();
+        System.out.println(stringListMap);
 
 
     }
@@ -71,16 +73,16 @@ public class Demo {
     @Test
     public void Test_02() throws Exception {
         List<A> aa = new ArrayList<>();
-        aa.add(new A("小明", 15,LocalDateTime.now()));
-        aa.add(new A("小绿", 13,LocalDateTime.now()));
-        aa.add(new A("唐山", 18,LocalDateTime.now()));
-        aa.add(new A("狗东", 15,LocalDateTime.now()));
-        aa.add(new A("百毒",12,LocalDateTime.now()));
+        aa.add(new A("小明", 15, LocalDateTime.now()));
+        aa.add(new A("小绿", 13, LocalDateTime.now()));
+        aa.add(new A("唐山", 18, LocalDateTime.now()));
+        aa.add(new A("狗东", 15, LocalDateTime.now()));
+        aa.add(new A("百毒", 12, LocalDateTime.now()));
         ExcelFactory.saveExcel(aa, System.getProperty("user.dir").concat("/seven.xlsx"))
-                    //.Filter(a -> a.getA().equals("唐山"))
-                    //.Process(a -> a.setA(a.getA().concat("_seven")))
-                    .Sort(Comparator.comparing(A::getA))
-                    .Flush();
+                //.Filter(a -> a.getA().equals("唐山"))
+                //.Process(a -> a.setA(a.getA().concat("_seven")))
+                .Sort(Comparator.comparing(A::getA))
+                .Flush();
 
 
         List<Map<String, String>> m = new ArrayList<>();
@@ -95,18 +97,18 @@ public class Demo {
         m.add(mm);
         m.add(mmm);
         ExcelFactory.saveExcel(m, System.getProperty("user.dir").concat("/SaveMap_.xlsx"))
-                    .SetCellStyle("A", cellStyle -> cellStyle.setFillPattern(FillPatternType.DIAMONDS)
-                                                             .setAlignment(HorizontalAlignment.RIGHT))
-                    .Flush();
+                .SetCellStyle("A", cellStyle -> cellStyle.setFillPattern(FillPatternType.DIAMONDS)
+                        .setAlignment(HorizontalAlignment.RIGHT))
+                .Flush();
 
     }
 
     @Test
     public void Test_03() throws Exception {
-        Map<String, Map<String, String>> maps = ExcelFactory.getMaps("/home/seven/Desktop/fqlde.xlsx", it -> it.title(0)
-                                                                                                               .content(1)
-                                                                                                               .isLoopSheet(true))
-                                                            .CreateMapLoop();
+        Map<String, List<Map<String, String>>> maps = ExcelFactory.getMaps("/home/seven/Desktop/fqlde.xlsx", it -> it.title(0)
+                .content(1)
+                .isLoopSheet(true))
+                .CreateMapLoop();
         System.out.println(maps);
 
 
@@ -125,10 +127,10 @@ class A {
     public A() {
     }
 
-    public A(String a, Integer b,LocalDateTime localDateTime) {
+    public A(String a, Integer b, LocalDateTime localDateTime) {
         A = a;
         B = b;
-        this.localDateTime=localDateTime;
+        this.localDateTime = localDateTime;
     }
 
     public String getA() {

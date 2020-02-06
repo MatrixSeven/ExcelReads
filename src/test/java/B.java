@@ -104,4 +104,18 @@ public class B {
     public void setAge(Integer age) {
         this.age = age;
     }
+
+    @Override
+    public String toString() {
+        return "B{" +
+                "time=" + time +
+                ", money=" + money +
+                ", oneLine=" + oneLine +
+                ", ip='" + ip + '\'' +
+                ", are='" + are + '\'' +
+                ", user='" + user + '\'' +
+                ", type='" + type + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }
