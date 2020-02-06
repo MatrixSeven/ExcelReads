@@ -116,7 +116,7 @@ ExcelFactory.saveExcel(ps.executeQuery()).SetPath("seven.xlsx")
 ```
 
  ## 效果
-![ExcelReads](效果.png)
+![ExcelReads](效果_.png)
 ## 实体类截图
 ![ExcelReads](实体类.png)
 ## 继承关系
