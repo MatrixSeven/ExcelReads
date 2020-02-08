@@ -1,9 +1,9 @@
 # ExcelReads(简单Excel通用读写器)
 
 ![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/apache/maven.svg?label=License)
-![Jenkins Status](https://img.shields.io/jenkins/s/https/builds.apache.org/job/maven-box/job/maven/job/master.svg?style=flat-square)
+![Jenkins Status](https://img.shields.io/badge/build-passing-green)
+![last_release](https://img.shields.io/badge/release-1.0.4-green)
 ![language](https://img.shields.io/badge/language-java-orange.svg)
-![last_release](https://img.shields.io/badge/release-1.0.3-green)
 ## ExcelReads是什么?
 * 这是一个通用的简单的Excel读取器
 * 支持自定义JavaBean实体读取和HashMap自动读取
@@ -19,7 +19,7 @@
 <dependency>
   <groupId>com.github.matrixseven</groupId>
   <artifactId>ExcelReads</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 </dependency>
 
 
@@ -27,7 +27,7 @@
 ```
 
 ## [更新日志详见:UpdateLogs.md](UPDATELOG.MD)
-###最近三次更新:
+### 最近三次更新:
 
 
 #### 更新2019/12/2　
@@ -83,7 +83,6 @@
     //Create Obj
     List<B> create = ExcelFactory.<B>getBeans(B.class, filePath, it -> it.title(2)
             .content(3)).Create();
-    System.out.println(create);
     //CreateObjLoop
     String filePath2 = System.getProperty("user.dir").concat("/seven.xlsx");
     Map<String, List<A>> stringListMap = ExcelFactory.<A>getBeans(A.class, filePath2,
@@ -126,6 +125,7 @@ ExcelFactory.saveExcel(ps.executeQuery()).SetPath("seven.xlsx")
 ## 写入效果
 ![ExcelReads](write.png)
 
+## 
 * 邮件(hacker.kill07@gmail.com)
 * QQ: 985390927
 * weibo: [@Alden_情绪控](http://weibo.com/Sweets07)

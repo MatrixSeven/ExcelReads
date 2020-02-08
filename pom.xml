@@ -4,7 +4,7 @@
 	<groupId>com.github.matrixseven</groupId>
 	<artifactId>ExcelReads</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<name>ExcelReads</name>
 	<description>A ExcelReads Utils By Seven</description>
 	<url>https://github.com/MatrixSeven/ExcelReads</url>
