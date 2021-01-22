@@ -132,5 +132,5 @@ ExcelFactory.saveExcel(ps.executeQuery()).SetPath("seven.xlsx")
 * Blog: [http://blog.52python.cn](http://blog.52python.cn)
 
 ## Acknowledgement
-特别感谢 [JetBrains](https://www.jetbrains.com/?from=matrixSeven) 为开源项目提供免费的 [IntelliJ IDEA](https://www.jetbrains.com/idea/?from=matrixSeven) 等 IDE 的授权  
+!特别感谢 [JetBrains](https://www.jetbrains.com/?from=matrixSeven) 为开源项目提供免费的 [IntelliJ IDEA](https://www.jetbrains.com/idea/?from=matrixSeven) 等 IDE 的授权  
 [<img src="jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=matrixSeven)
